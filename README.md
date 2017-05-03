@@ -1,3 +1,3 @@
 # ankihelper
 
-Currently under development.
+Currently under development...

@@ -1,0 +1,26 @@
+package com.mmjang.ankihelperrefactor.app;
+
+import java.util.Map;
+
+/**
+ * Created by liao on 2017/4/20.
+ */
+
+public class Definition {
+
+    private Map<String, String> exportElements;
+    private String displayHtml;
+
+    Definition(Map<String, String> expEle, String dspHtml){
+        exportElements = expEle;
+        displayHtml = dspHtml;
+    }
+
+    public Map<String, String> getExportElements(String key){
+        return exportElements;
+    }
+
+    public String getDisplayHtml(){
+        return displayHtml;
+    }
+}

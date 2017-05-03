@@ -195,7 +195,10 @@ public class PopupActivity extends Activity {
 
     private void processDefinitionList(List<Definition> definitionList){
         DefinitionAdapter defAdapter = new DefinitionAdapter(definitionList);
-        recyclerViewDefinitionList.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setAutoMeasureEnabled(true);
+        recyclerViewDefinitionList.setLayoutManager(llm);
+        recyclerViewDefinitionList.setNestedScrollingEnabled(false);
         recyclerViewDefinitionList.setAdapter(defAdapter);
     }
 }

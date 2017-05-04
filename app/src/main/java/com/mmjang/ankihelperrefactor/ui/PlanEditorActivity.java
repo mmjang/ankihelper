@@ -280,7 +280,7 @@ public class PlanEditorActivity extends AppCompatActivity {
         }
 
         fieldsSpinnersContainer.setLayoutManager(new LinearLayoutManager(this));
-        fieldsSpinnersContainer.setAdapter(new FieldMapSpinnerListAdapter(fieldsMapItemList));
+        fieldsSpinnersContainer.setAdapter(new FieldMapSpinnerListAdapter(PlanEditorActivity.this, fieldsMapItemList));
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

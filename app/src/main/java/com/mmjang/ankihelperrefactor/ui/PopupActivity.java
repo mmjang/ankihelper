@@ -127,6 +127,7 @@ public class PopupActivity extends Activity {
         }
         ArrayAdapter<String> planSpinnerAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, planNameArr);
+        planSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         planSpinner.setAdapter(planSpinnerAdapter);
         //set plan to last selected plan
         String lastSelectedPlan = settings.getLastSelectedPlan();

@@ -1,5 +1,6 @@
 package com.mmjang.ankihelperrefactor.ui;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,7 @@ import java.util.List;
 public class FieldMapSpinnerListAdapter
         extends RecyclerView.Adapter<FieldMapSpinnerListAdapter.ViewHolder>{
     private List<FieldsMapItem> mFieldsMapItemList;
-
+    private Activity mActivity;
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView exportElementName;
         Spinner fieldsSpinner;
@@ -33,8 +34,9 @@ public class FieldMapSpinnerListAdapter
         }
     }
 
-    public FieldMapSpinnerListAdapter(List<FieldsMapItem> itemList){
+    public FieldMapSpinnerListAdapter(Activity activity, List<FieldsMapItem> itemList){
         mFieldsMapItemList = itemList;
+        mActivity = activity;
     }
 
     @Override
@@ -51,8 +53,8 @@ public class FieldMapSpinnerListAdapter
         final FieldsMapItem item = mFieldsMapItemList.get(position);
         holder.exportElementName.setText(item.getField());
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                MyApplication.getContext(),
-                android.R.layout.simple_spinner_dropdown_item,
+                mActivity,
+                R.layout.support_simple_spinner_dropdown_item,
                 item.getExportedElementNames()
         );
         holder.fieldsSpinner.setAdapter(arrayAdapter);

@@ -9,7 +9,6 @@ public class Constant {
             "空",
             "加粗的例句",
             "挖空的例句",
-
     };
 
     public static String[] getSharedExportElements(){

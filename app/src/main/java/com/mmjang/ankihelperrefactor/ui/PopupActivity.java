@@ -204,7 +204,7 @@ public class PopupActivity extends Activity {
     }
 
     private void processDefinitionList(List<Definition> definitionList){
-        DefinitionAdapter defAdapter = new DefinitionAdapter(definitionList);
+        DefinitionAdapter defAdapter = new DefinitionAdapter(PopupActivity.this, definitionList, mTextSplitter, currentOutputPlan);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setAutoMeasureEnabled(true);
         recyclerViewDefinitionList.setLayoutManager(llm);

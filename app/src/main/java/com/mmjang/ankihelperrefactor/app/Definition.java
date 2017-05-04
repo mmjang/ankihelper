@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Definition {
 
-    private Map<String, String> exportElements;
+    private Map<String,String> exportElements;
     private String displayHtml;
 
     Definition(Map<String, String> expEle, String dspHtml){
@@ -16,8 +16,12 @@ public class Definition {
         displayHtml = dspHtml;
     }
 
-    public Map<String, String> getExportElements(String key){
-        return exportElements;
+    public String getExportElement(String key){
+        return exportElements.get(key);
+    }
+
+    public boolean hasElement(String key){
+        return exportElements.containsKey(key);
     }
 
     public String getDisplayHtml(){

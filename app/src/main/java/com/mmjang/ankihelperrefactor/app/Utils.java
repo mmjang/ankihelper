@@ -31,8 +31,8 @@ public class Utils {
         return sb.toString();
     }
 
-    public static HashMap<String, String> fieldsStr2Map(String str){
-        HashMap<String, String> results = new HashMap<>();
+    public static Map<String, String> fieldsStr2Map(String str){
+        LinkedHashMap<String, String> results = new LinkedHashMap<>();
         String[] fields = str.split(FIELDS_SEPERATOR);
         int pairs = fields.length / 2;
         for(int i = 0; i < pairs; i ++){

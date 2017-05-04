@@ -161,7 +161,7 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary
         String defCn = cursor.getString(7).trim();
 
         //如果不是词组
-        if(!phrase.equals("")){
+        if(phrase.equals("")){
             eleMap.put(EXP_ELE_LIST[0], hwd);
         }
         else{

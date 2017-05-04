@@ -60,7 +60,6 @@ public class PlanEditorActivity extends AppCompatActivity {
     private Spinner modelSpinner;
     private RecyclerView fieldsSpinnersContainer;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -317,7 +316,7 @@ public class PlanEditorActivity extends AppCompatActivity {
         plan.setOutputDeckId(currentDeckId);
         plan.setOutputModelId(currentModelId);
 
-        HashMap<String, String> map = new HashMap<>();
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
         for(FieldsMapItem item: fieldsMapItemList){
             String k = item.getField();
             String v = item.getExportedElementNames()[item.getSelectedFieldPos()];

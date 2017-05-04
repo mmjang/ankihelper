@@ -34,6 +34,33 @@ public class TextSplitter {
         return sb.toString().trim();
     }
 
+    public String getBoldSentence(int state){
+        StringBuilder sb = new StringBuilder();
+        for(TextSegment ts : mSegmentList){
+            if(ts.getState() == state){
+                sb.append("<b>");
+                sb.append(ts.getText());
+                sb.append("</b>");
+                //sb.append(" ");
+            }else{
+                sb.append(ts.getText());
+            }
+        }
+        return sb.toString().trim();
+    }
+
+    public String getBlankSentence(int state){
+            StringBuilder sb = new StringBuilder();
+            for(TextSegment ts : mSegmentList){
+                if(ts.getState() == state){
+                    sb.append("{{c1::" + ts.getText() + "}}");
+                }else{
+                    sb.append(ts.getText());
+                }
+            }
+            return sb.toString().trim();
+    }
+
     private void process(){
         //this is a finite state machine to split sentence
 
@@ -94,7 +121,6 @@ public class TextSplitter {
                 ch == 'Ó' ||
                 ch == 'ó' ||
                 ch == 'Ú' ||
-                ch == 'ú' ||
                 ch == 'ú' ||
                 ch == 'Ü' ||
                 ch == 'ü'

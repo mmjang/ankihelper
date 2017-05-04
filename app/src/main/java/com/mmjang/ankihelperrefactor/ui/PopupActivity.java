@@ -3,8 +3,10 @@ package com.mmjang.ankihelperrefactor.ui;
 import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmjang.ankihelperrefactor.R;
@@ -30,7 +33,9 @@ import com.mmjang.ankihelperrefactor.app.OutputPlan;
 import com.mmjang.ankihelperrefactor.app.Settings;
 import com.mmjang.ankihelperrefactor.app.TextSegment;
 import com.mmjang.ankihelperrefactor.app.TextSplitter;
+import com.mmjang.ankihelperrefactor.app.Utils;
 
+import org.apmem.tools.layouts.FlowLayout;
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
@@ -49,11 +54,14 @@ public class PopupActivity extends Activity {
     OutputPlan currentOutputPlan;
     Settings settings;
     String mTextToProcess;
+    String mCurrentKeyWord;
+    TextSplitter mTextSplitter;
     //views
     AutoCompleteTextView act;
     Button btnSearch;
     Spinner planSpinner;
     RecyclerView recyclerViewDefinitionList;
+    FlowLayout wordSelectBox;
     //async event
     private static final int  PROCESS_DEFINITION_LIST = 1;
     //async
@@ -90,6 +98,7 @@ public class PopupActivity extends Activity {
         btnSearch = (Button) findViewById(R.id.btn_search);
         planSpinner = (Spinner) findViewById(R.id.plan_spinner);
         recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
+        wordSelectBox = (FlowLayout) findViewById(R.id.words_select_box);
     }
 
     private void loadData(){
@@ -115,6 +124,7 @@ public class PopupActivity extends Activity {
                 settings.setLastSelectedPlan(outputPlanList.get(0).getPlanName());
                 currentOutputPlan = outputPlanList.get(0);
                 currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
+                setActAdapter(currentDicitonary);
             }else{
                 //no outputplan available!!!
             }
@@ -127,6 +137,7 @@ public class PopupActivity extends Activity {
                 planSpinner.setSelection(i);
                 currentOutputPlan = outputPlanList.get(i);
                 currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
+                setActAdapter(currentDicitonary);
                 find = true;
                 break;
             }
@@ -139,6 +150,7 @@ public class PopupActivity extends Activity {
                 settings.setLastSelectedPlan(outputPlanList.get(0).getPlanName());
                 currentOutputPlan = outputPlanList.get(0);
                 currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
+                setActAdapter(currentDicitonary);
             }
         }else{
             //if find, then current plan and dictionary must have been set above.
@@ -153,8 +165,12 @@ public class PopupActivity extends Activity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         currentOutputPlan = outputPlanList.get(position);
                         currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
+                        setActAdapter(currentDicitonary);
                         //memorise last selected plan
                         settings.setLastSelectedPlan(currentOutputPlan.getPlanName());
+                        if(mCurrentKeyWord != null){
+                            asyncSearch(mCurrentKeyWord);
+                        }
                     }
 
                     @Override
@@ -170,25 +186,7 @@ public class PopupActivity extends Activity {
                     public void onClick(View v) {
                         final String word = act.getText().toString();
                         if(!word.isEmpty()){
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try  {
-                                        //Your code goes here
-                                        Log.d("clicked", "yes");
-                                        IDictionary es = new Esdict(PopupActivity.this);
-                                        List<Definition> d = currentDicitonary.wordLookup(word);
-                                        //     Log.d("async_test", d.get(0).getDisplayHtml());
-                                        Message message = mHandler.obtainMessage();
-                                        message.obj = d;
-                                        message.what = PROCESS_DEFINITION_LIST;
-                                        mHandler.sendMessage(message);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                            thread.start();
+                            asyncSearch(word);
                         }
                     }
                 }
@@ -231,14 +229,105 @@ public class PopupActivity extends Activity {
         }
         if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
-            if(mTextToProcess == null){
-                return ;
+        }
+        if(mTextToProcess == null){
+            return ;
+        }
+        mTextSplitter = new TextSplitter(mTextToProcess, STATE_NON_WORD, STATE_WORD);
+        populateWordSelectBox(mTextSplitter);
+    }
+
+    private void populateWordSelectBox(TextSplitter splitter){
+        //todo: this is dirty, be sure to reimplement later.
+        for(TextSegment ts : splitter.getSegmentList()){
+            wordSelectBox.addView(getWordSelectBoxItem(ts));
+        }
+    }
+
+    private TextView getWordSelectBoxItem(final TextSegment textSegment){
+        int pad1 = Utils.getPX(PopupActivity.this, 1);
+        final String text = textSegment.getText();
+        int state = textSegment.getState();
+        TextView tv = new TextView(this);
+        tv.setText(text);
+        FlowLayout.LayoutParams fllp = new FlowLayout.LayoutParams(
+                FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
+        int pad = Utils.getPX(PopupActivity.this, 2);
+        fllp.setMargins(0, 0, 0, pad);
+        tv.setLayoutParams(fllp);
+        switch(state) {
+            case STATE_NON_WORD:
+                tv.setTextColor(Color.BLACK);
+                tv.setBackground(ContextCompat.getDrawable(
+                        PopupActivity.this, R.drawable.word_select_box_item_trans));
+                tv.setPadding(pad1,pad,pad1,pad);
+                break;
+            case STATE_WORD:
+                tv.setBackground(ContextCompat.getDrawable(
+                        PopupActivity.this, R.drawable.word_select_box_item));
+                tv.setTextColor(Color.BLACK);
+                tv.setPadding(pad,pad,pad,pad);
+                break;
+        }
+
+        tv.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView textView = (TextView) v;
+                        if(textSegment.getState() == STATE_NON_WORD){
+                            return;
+                        }
+                        if(textSegment.getState() == STATE_WORD){
+                            textSegment.setState(STATE_SELECTED);
+                            textView.setBackground(ContextCompat.getDrawable(
+                                    PopupActivity.this, R.drawable.word_select_box_item_hl));
+                            textView.setTextColor(Color.WHITE);
+                            mCurrentKeyWord = mTextSplitter.getStringFromState(STATE_SELECTED);
+                            act.setText(mCurrentKeyWord);
+                            asyncSearch(mCurrentKeyWord);
+                            return ;
+                        }
+                        if(textSegment.getState() == STATE_SELECTED){
+                            textSegment.setState(STATE_WORD);
+                            textView.setBackground(ContextCompat.getDrawable(
+                                    PopupActivity.this, R.drawable.word_select_box_item));
+                            textView.setTextColor(Color.BLACK);
+                            act.setText(mTextSplitter.getStringFromState(STATE_SELECTED));
+                            return ;
+                        }
+                    }
+                }
+        );
+
+        return tv;
+    }
+
+    private void asyncSearch(final String word){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try  {
+                    //Your code goes here
+                    Log.d("clicked", "yes");
+                    List<Definition> d = currentDicitonary.wordLookup(word);
+                    Message message = mHandler.obtainMessage();
+                    message.obj = d;
+                    message.what = PROCESS_DEFINITION_LIST;
+                    mHandler.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            TextSplitter sp = new TextSplitter(mTextToProcess, 0, 1);
-            for(TextSegment ts : sp.getSegmentList()){
-                Log.d("test seg", ts.getText());
-                Log.d("test seg", "state is " + ts.getState());
-            }
+        });
+        thread.start();
+    }
+
+    private void setActAdapter(IDictionary dict){
+        SimpleCursorAdapter sca = (SimpleCursorAdapter) dict.getAutoCompleteAdapter(PopupActivity.this,
+                android.R.layout.simple_spinner_dropdown_item);
+        if(sca != null){
+            act.setAdapter(sca);
         }
     }
 }

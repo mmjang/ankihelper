@@ -1,6 +1,7 @@
 package com.mmjang.ankihelperrefactor.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 import com.mmjang.ankihelperrefactor.R;
@@ -93,6 +94,14 @@ public class Utils {
         System.arraycopy(b, 0, c, aLen, bLen);
 
         return c;
+    }
+
+    public static int getPX(Context context, int dp) {
+        // margin in dips
+        //int dpValue = 5; // margin in dips
+        float d = context.getResources().getDisplayMetrics().density;
+        int margin = (int) (dp * d);
+        return margin;
     }
 
 }

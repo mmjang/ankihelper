@@ -91,7 +91,7 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary
             }
         }
 
-        db.close();
+        //db.close();
         return re;
     }
 

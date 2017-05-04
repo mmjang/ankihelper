@@ -90,7 +90,7 @@ public class Collins extends SQLiteAssetHelper implements IDictionary
             }
         }
 
-        db.close();
+       // db.close();
         return re;
     }
 

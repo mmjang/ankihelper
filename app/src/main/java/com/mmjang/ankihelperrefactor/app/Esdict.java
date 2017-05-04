@@ -61,21 +61,21 @@ public class Esdict implements IDictionary{
                     .get();
             Elements word = doc.select("h2.word > span.word");
             if(word.size() == 1){
-                headWrod = word.get(0).text();
+                headWrod = word.get(0).text().trim();
             }
             Elements phonitic = doc.select("span.Phonitic");
             if(phonitic.size() == 1){
-                phonetics = phonitic.get(0).text();
+                phonetics = phonitic.get(0).text().trim();
             }
 
             Elements cnDiv = doc.select("#FCChild");
             if(cnDiv.size() == 1){
-                esCnDef = cnDiv.get(0).html();
+                esCnDef = cnDiv.get(0).html().trim();
             }
 
             Elements enDiv = doc.select("#FEChild");
             if(enDiv.size() == 1){
-                esEnDef = enDiv.get(0).html();
+                esEnDef = enDiv.get(0).html().trim();
             }
 
             HashMap<String, String> expele = new HashMap<>();

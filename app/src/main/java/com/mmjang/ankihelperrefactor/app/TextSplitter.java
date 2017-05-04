@@ -23,6 +23,17 @@ public class TextSplitter {
         return mSegmentList;
     }
 
+    public String getStringFromState(int state){
+        StringBuilder sb = new StringBuilder();
+        for(TextSegment ts : mSegmentList){
+            if(ts.getState() == state){
+                sb.append(ts.getText());
+                sb.append(" ");
+            }
+        }
+        return sb.toString().trim();
+    }
+
     private void process(){
         //this is a finite state machine to split sentence
 
@@ -70,7 +81,24 @@ public class TextSplitter {
     }
 
     private boolean isWordcharacter(char ch){
-        if(ch == '-' || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')){
+        //(Ó	ó)	P	p	Q	q	R	r	S	s	T	t	U	u	(Ú	ú)	(Ü	ü)
+        //V	v	W	w	X	x	Y	y	Z	z
+
+        if(ch == '-' || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')||
+                ch == 'Á' ||
+                ch == 'á' ||
+                ch == 'É' ||
+                ch == 'é' ||
+                ch == 'Í' ||
+                ch == 'í' ||
+                ch == 'Ó' ||
+                ch == 'ó' ||
+                ch == 'Ú' ||
+                ch == 'ú' ||
+                ch == 'ú' ||
+                ch == 'Ü' ||
+                ch == 'ü'
+                ){
             return true;
         }
         else{

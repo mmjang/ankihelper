@@ -1,6 +1,8 @@
 package com.mmjang.ankihelperrefactor.ui;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,6 +28,8 @@ import com.mmjang.ankihelperrefactor.app.Esdict;
 import com.mmjang.ankihelperrefactor.app.IDictionary;
 import com.mmjang.ankihelperrefactor.app.OutputPlan;
 import com.mmjang.ankihelperrefactor.app.Settings;
+import com.mmjang.ankihelperrefactor.app.TextSegment;
+import com.mmjang.ankihelperrefactor.app.TextSplitter;
 
 import org.litepal.crud.DataSupport;
 
@@ -33,11 +38,17 @@ import java.util.List;
 
 public class PopupActivity extends Activity {
 
+    //constant
+    private static final int STATE_NON_WORD = 0;
+    private static final int STATE_WORD = 1;
+    private static final int STATE_SELECTED = 2;
+
     List<IDictionary> dictionaryList;
     IDictionary currentDicitonary;
     List<OutputPlan> outputPlanList;
     OutputPlan currentOutputPlan;
     Settings settings;
+    String mTextToProcess;
     //views
     AutoCompleteTextView act;
     Button btnSearch;
@@ -71,6 +82,7 @@ public class PopupActivity extends Activity {
         loadData(); //dictionaryList;
         populatePlanSpinner();
         setEventListener();
+        handleIntent();
     }
 
     private void assignViews(){
@@ -200,5 +212,33 @@ public class PopupActivity extends Activity {
         recyclerViewDefinitionList.setLayoutManager(llm);
         recyclerViewDefinitionList.setNestedScrollingEnabled(false);
         recyclerViewDefinitionList.setAdapter(defAdapter);
+    }
+
+
+    private void handleIntent(){
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (intent == null) {
+            return ;
+        }
+        if (type == null) {
+            return ;
+        }
+        //getStringExtra() may return null
+        if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
+            mTextToProcess = intent.getStringExtra(Intent.EXTRA_TEXT);
+        }
+        if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
+            mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
+            if(mTextToProcess == null){
+                return ;
+            }
+            TextSplitter sp = new TextSplitter(mTextToProcess, 0, 1);
+            for(TextSegment ts : sp.getSegmentList()){
+                Log.d("test seg", ts.getText());
+                Log.d("test seg", "state is " + ts.getState());
+            }
+        }
     }
 }

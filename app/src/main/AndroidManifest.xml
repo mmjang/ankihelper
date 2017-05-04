@@ -16,8 +16,13 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/Theme.TransparentInfo"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            />
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.TestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

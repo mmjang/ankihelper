@@ -38,6 +38,12 @@
             android:label="@string/title_activity_plan_editor"
             android:windowSoftInputMode="stateAlwaysHidden"
             ></activity>
+        <service
+            android:name=".app.CBWatcherService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
+
+
 </manifest>

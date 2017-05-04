@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmjang.ankihelperrefactor.R;
+import com.mmjang.ankihelperrefactor.app.CBWatcherService;
 import com.mmjang.ankihelperrefactor.app.Definition;
 import com.mmjang.ankihelperrefactor.app.Esdict;
 import com.mmjang.ankihelperrefactor.app.IDictionary;
@@ -65,8 +66,8 @@ public class TestActivity extends Activity implements View.OnClickListener{
         view.setOnClickListener(this);
         findViewById(R.id.testAsync).setOnClickListener(this);
         findViewById(R.id.open_popup).setOnClickListener(this);
-
-
+        Intent intent = new Intent(this, CBWatcherService.class);
+        startService(intent);
 
 
     }

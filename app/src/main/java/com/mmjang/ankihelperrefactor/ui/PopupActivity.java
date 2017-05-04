@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -85,12 +86,23 @@ public class PopupActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStatusBarColor();
         setContentView(R.layout.activity_popup);
         assignViews();
         loadData(); //dictionaryList;
         populatePlanSpinner();
         setEventListener();
         handleIntent();
+    }
+
+    private void setStatusBarColor(){
+        int statusBarColor = 0;
+        if(Build.VERSION.SDK_INT >= 21){
+            statusBarColor = getWindow().getStatusBarColor();
+        }
+        if(Build.VERSION.SDK_INT >= 21){
+            getWindow().setStatusBarColor(statusBarColor);
+        }
     }
 
     private void assignViews(){
@@ -158,6 +170,26 @@ public class PopupActivity extends Activity {
     }
 
     private void setEventListener(){
+
+        //auto finish
+        Button btnCancelBlank = (Button) findViewById(R.id.btn_cancel_blank);
+        Button btnCancelBlankAboveCard = (Button) findViewById(R.id.btn_cancel_blank_above_card);
+        btnCancelBlank.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }
+        );
+        btnCancelBlankAboveCard.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                }
+        );
 
         planSpinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {

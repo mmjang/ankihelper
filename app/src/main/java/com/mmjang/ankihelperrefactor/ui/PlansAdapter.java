@@ -73,7 +73,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
                     public void onClick(View v) {
                         int pos = holder.getAdapterPosition();
                         String planName = mPlansList.get(pos).getPlanName();
-                        Intent intent = new Intent(MyApplication.getContext(), PlanEditorActivity.class);
+                        Intent intent = new Intent(mActivity, PlanEditorActivity.class);
                         intent.setAction(Intent.ACTION_SEND);
                         intent.putExtra(Intent.EXTRA_TEXT, planName);
                         MyApplication.getContext().startActivity(intent);

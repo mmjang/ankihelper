@@ -64,34 +64,27 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary
 
     public List<Definition> wordLookup(String key)
     {
-        //db = getReadableDatabase(); // according to stackoverflow, it's allright to let the database open
+        //db = getReadableDatabase(); // according to stackoverflow, it's alright to let the database open
         key = keyCleanup(key);
         List<Definition> re = queryDefinition(key);
-        if(re.size() > 0)
+        Log.d("", "单词需要查找变形表");
+        String[] deflectResult = getForms(key);
+        for(String s : deflectResult)
         {
-            //return re;
+            Log.d("","已变形单词" + s);
+        }
+        if(deflectResult.length == 0)
+        {
+            //
         }
         else
         {
-            Log.d("", "单词需要查找变形表");
-            String[] deflectResult = getForms(key);
-            for(String s : deflectResult)
-            {
-                Log.d("","已变形单词" + s);
-            }
-            if(deflectResult.length == 0)
-            {
-                //
-            }
-            else
-            {
-                for(String deflectedWord : deflectResult) {
-                    re.addAll(queryDefinition(deflectedWord));
-                }
+            for(String deflectedWord : deflectResult) {
+                re.addAll(queryDefinition(deflectedWord));
             }
         }
 
-        //db.close();
+        // db.close();
         return re;
     }
 

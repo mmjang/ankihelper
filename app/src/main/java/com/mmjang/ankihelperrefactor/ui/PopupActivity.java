@@ -221,6 +221,7 @@ public class PopupActivity extends Activity {
                         final String word = act.getText().toString();
                         if(!word.isEmpty()){
                             asyncSearch(word);
+                            Utils.hideSoftKeyboard(PopupActivity.this);
                         }
                     }
                 }

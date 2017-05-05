@@ -2,6 +2,7 @@ package com.mmjang.ankihelperrefactor.app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.mmjang.ankihelperrefactor.R;
@@ -102,6 +103,12 @@ public class Utils {
         float d = context.getResources().getDisplayMetrics().density;
         int margin = (int) (dp * d);
         return margin;
+    }
+
+    public static void hideSoftKeyboard(Activity context) {
+        //Hides the SoftKeyboard
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
     }
 
 }

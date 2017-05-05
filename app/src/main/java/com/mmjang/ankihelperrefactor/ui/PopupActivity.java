@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -237,12 +238,16 @@ public class PopupActivity extends Activity {
     }
 
     private void processDefinitionList(List<Definition> definitionList){
-        DefinitionAdapter defAdapter = new DefinitionAdapter(PopupActivity.this, definitionList, mTextSplitter, currentOutputPlan);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setAutoMeasureEnabled(true);
-        recyclerViewDefinitionList.setLayoutManager(llm);
-        recyclerViewDefinitionList.setNestedScrollingEnabled(false);
-        recyclerViewDefinitionList.setAdapter(defAdapter);
+        if(definitionList.isEmpty()){
+            Snackbar.make(recyclerViewDefinitionList, "没查到", Snackbar.LENGTH_SHORT).setAction("action", null).show();
+        }else {
+            DefinitionAdapter defAdapter = new DefinitionAdapter(PopupActivity.this, definitionList, mTextSplitter, currentOutputPlan);
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            llm.setAutoMeasureEnabled(true);
+            recyclerViewDefinitionList.setLayoutManager(llm);
+            //recyclerViewDefinitionList.setNestedScrollingEnabled(false);
+            recyclerViewDefinitionList.setAdapter(defAdapter);
+        }
     }
 
 

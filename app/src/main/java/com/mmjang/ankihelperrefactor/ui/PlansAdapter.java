@@ -1,7 +1,9 @@
 package com.mmjang.ankihelperrefactor.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.test.ActivityTestCase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import java.util.List;
 
 public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> {
     private List<OutputPlan> mPlansList;
+    private Activity mActivity;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView planName;
@@ -34,8 +37,11 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
         }
     }
 
-    public PlansAdapter(List<OutputPlan> planList){
+    public PlansAdapter(
+            Activity activity,
+            List<OutputPlan> planList){
         mPlansList = planList;
+        mActivity = activity;
     }
 
     @Override

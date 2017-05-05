@@ -51,7 +51,7 @@ public class PlansManagerActivity extends AppCompatActivity {
         RecyclerView planList = (RecyclerView) findViewById(R.id.plan_list);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         planList.setLayoutManager(llm);
-        PlansAdapter pa = new PlansAdapter(plans);
+        PlansAdapter pa = new PlansAdapter(PlansManagerActivity.this, plans);
         planList.setAdapter(pa);
     }
 

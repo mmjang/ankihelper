@@ -66,7 +66,7 @@ public class CBWatcherService extends Service {
         if (cb.hasPrimaryClip()) {
             if(cb.hasText()){
                 String text = cb.getText().toString();
-                if(isEnglish(text)){
+                if(/*isEnglish(text)*/true){
                     long[] vibList = new long[1];
                     vibList[0] = 10L;
                     Intent intent = new Intent(getApplicationContext(), PopupActivity.class);

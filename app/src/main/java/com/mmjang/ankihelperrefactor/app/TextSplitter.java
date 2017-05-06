@@ -92,18 +92,18 @@ public class TextSplitter {
                     if (state == sInit) {
                         mSegmentList.add(new TextSegment(Character.toString(ch), mStateText));
                         state = sInit;
-                    }
-                    if (state == sWord) {
-                        mSegmentList.add(new TextSegment(Character.toString(ch), mStateText));
-                        mSegmentList.add(new TextSegment(sb.toString(), mStateText));
-                        sb = new StringBuilder();
-                        state = sNonWord;
-                    }
-                    if (state == sNonWord) {
-                        mSegmentList.add(new TextSegment(Character.toString(ch), mStateText));
-                        mSegmentList.add(new TextSegment(sb.toString(), mStateNonText));
-                        sb = new StringBuilder();
-                        state = sNonWord;
+                    }else {
+                        if (state == sWord) {
+                            mSegmentList.add(new TextSegment(sb.toString(), mStateText));
+                            mSegmentList.add(new TextSegment(Character.toString(ch), mStateText));
+                            sb = new StringBuilder();
+                            state = sNonWord;
+                        } else {
+                            mSegmentList.add(new TextSegment(sb.toString(), mStateNonText));
+                            mSegmentList.add(new TextSegment(Character.toString(ch), mStateText));
+                            sb = new StringBuilder();
+                            state = sNonWord;
+                        }
                     }
                 } else {
                     if (state == sInit) {
@@ -147,6 +147,10 @@ public class TextSplitter {
                 ch == 'Ü' ||
                 ch == 'ü'
                 ){
+            return true;
+        }
+        if(ch >= '0' && ch <= '9')
+        {
             return true;
         }
         else{

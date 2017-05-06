@@ -38,6 +38,7 @@ public class Collins extends SQLiteAssetHelper implements IDictionary
 
     private SQLiteDatabase db;
 
+
     public Collins(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         db = getReadableDatabase();

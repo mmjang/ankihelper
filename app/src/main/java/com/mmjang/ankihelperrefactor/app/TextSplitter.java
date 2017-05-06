@@ -1,5 +1,7 @@
 package com.mmjang.ankihelperrefactor.app;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,41 +72,61 @@ public class TextSplitter {
 
         int state = sInit;
         StringBuilder sb = new StringBuilder();
-        for(char ch : mSentence.toCharArray()){
-            if(isWordcharacter(ch)) {
+        for(char ch : mSentence.toCharArray()) {
+
+            if (isWordcharacter(ch)) {
                 if (state == sInit) {
                     sb.append(ch);
                 }
-                if (state == sWord){
+                if (state == sWord) {
                     sb.append(ch);
                 }
-                if(state == sNonWord){
+                if (state == sNonWord) {
                     mSegmentList.add(new TextSegment(sb.toString(), mStateNonText));
                     sb = new StringBuilder();
                     sb.append(ch);
                 }
                 state = sWord;
-            }else{
-                if(state == sInit){
-                    sb.append(ch);
+            } else {
+                if (isChinese(ch)) {
+                    if (state == sInit) {
+                        mSegmentList.add(new TextSegment(Character.toString(ch), mStateText));
+                        state = sInit;
+                    }
+                    if (state == sWord) {
+                        mSegmentList.add(new TextSegment(Character.toString(ch), mStateText));
+                        mSegmentList.add(new TextSegment(sb.toString(), mStateText));
+                        sb = new StringBuilder();
+                        state = sNonWord;
+                    }
+                    if (state == sNonWord) {
+                        mSegmentList.add(new TextSegment(Character.toString(ch), mStateText));
+                        mSegmentList.add(new TextSegment(sb.toString(), mStateNonText));
+                        sb = new StringBuilder();
+                        state = sNonWord;
+                    }
+                } else {
+                    if (state == sInit) {
+                        sb.append(ch);
+                    }
+                    if (state == sWord) {
+                        mSegmentList.add(new TextSegment(sb.toString(), mStateText));
+                        sb = new StringBuilder();
+                        sb.append(ch);
+                    }
+                    if (state == sNonWord) {
+                        sb.append(ch);
+                    }
+                    state = sNonWord;
                 }
-                if(state == sWord){
-                    mSegmentList.add(new TextSegment(sb.toString(), mStateText));
-                    sb = new StringBuilder();
-                    sb.append(ch);
-                }
-                if(state == sNonWord){
-                    sb.append(ch);
-                }
-                state = sNonWord;
             }
         }
-        if(state == sWord){
-            mSegmentList.add(new TextSegment(sb.toString(), mStateText));
-        }
-        if(state == sNonWord){
-            mSegmentList.add(new TextSegment(sb.toString(), mStateNonText));
-        }
+            if (state == sWord) {
+                mSegmentList.add(new TextSegment(sb.toString(), mStateText));
+            }
+            if (state == sNonWord) {
+                mSegmentList.add(new TextSegment(sb.toString(), mStateNonText));
+            }
     }
 
     private boolean isWordcharacter(char ch){
@@ -125,6 +147,15 @@ public class TextSplitter {
                 ch == 'Ü' ||
                 ch == 'ü'
                 ){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    private boolean isChinese(char ch){
+        if(ch >= 0x4E00 && ch <= 0x9FBB){
             return true;
         }
         else{

@@ -16,7 +16,8 @@ public class DictionaryRegister {
     private static Class[] classList = new Class[]{
             Ode2.class,
             Collins.class,
-            Esdict.class
+            Esdict.class,
+            Cloze.class
     };
 
     private static List<IDictionary> dictList;

@@ -2,6 +2,7 @@ package com.mmjang.ankihelperrefactor.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.icu.util.Output;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -67,6 +68,7 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, final int position){
         final Definition def = mDefinitionList.get(position);
         holder.textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
+        holder.textVeiwDefinition.setTextColor(Color.BLACK);
         holder.btnAddDefinition.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

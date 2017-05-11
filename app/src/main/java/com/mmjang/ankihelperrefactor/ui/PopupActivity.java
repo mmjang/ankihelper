@@ -203,7 +203,7 @@ public class PopupActivity extends Activity {
                         //memorise last selected plan
                         settings.setLastSelectedPlan(currentOutputPlan.getPlanName());
                         if(mCurrentKeyWord != null){
-                            asyncSearch(mCurrentKeyWord);
+                            asyncSearch(act.getText().toString());
                         }
                     }
 
@@ -292,14 +292,14 @@ public class PopupActivity extends Activity {
         FlowLayout.LayoutParams fllp = new FlowLayout.LayoutParams(
                 FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
         int pad = Utils.getPX(PopupActivity.this, 2);
-        fllp.setMargins(0, 0, 0, pad);
+        fllp.setMargins(0, 0, 0, 0);
         tv.setLayoutParams(fllp);
         switch(state) {
             case STATE_NON_WORD:
                 tv.setTextColor(Color.BLACK);
                 tv.setBackground(ContextCompat.getDrawable(
                         PopupActivity.this, R.drawable.word_select_box_item_trans));
-                tv.setPadding(pad1,pad,pad1,pad);
+                tv.setPadding(0,pad,0,pad);
                 break;
             case STATE_WORD:
                 tv.setBackground(ContextCompat.getDrawable(
@@ -332,7 +332,9 @@ public class PopupActivity extends Activity {
                             textView.setBackground(ContextCompat.getDrawable(
                                     PopupActivity.this, R.drawable.word_select_box_item));
                             textView.setTextColor(Color.BLACK);
-                            act.setText(mTextSplitter.getStringFromState(STATE_SELECTED));
+                            mCurrentKeyWord = mTextSplitter.getStringFromState(STATE_SELECTED);
+                            act.setText(mCurrentKeyWord);
+                            asyncSearch(mCurrentKeyWord);
                             return ;
                         }
                     }
@@ -343,6 +345,9 @@ public class PopupActivity extends Activity {
     }
 
     private void asyncSearch(final String word){
+        if(word.length() == 0){
+            return ;
+        }
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

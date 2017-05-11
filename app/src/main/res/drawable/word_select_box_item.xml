@@ -4,7 +4,6 @@
     <!-- Bottom 2dp Shadow -->
     <item>
         <shape  android:shape="rectangle">
-
             <solid android:color="#d8d8d8" />
             <corners android:radius="3dp" />
             <padding
@@ -17,10 +16,8 @@
     </item>
 
     <!-- White Top color -->
-    <item android:right="0dp" android:left="0dp" android:bottom="2dp">
-
+    <item android:right="0dp" android:left="0dp" android:bottom="0dp">
         <shape  android:shape="rectangle">
-
             <solid android:color="#fdfdfd" />
             <corners android:radius="3dp" />
             <padding
@@ -29,10 +26,6 @@
                 android:top="0dp"
                 android:bottom="0dp"
                 />
-
         </shape>
-
     </item>
-
-
 </layer-list>

@@ -159,7 +159,7 @@ public class TextSplitter {
     }
 
     private boolean isChinese(char ch){
-        if(ch >= 0x4E00 && ch <= 0x9FBB){
+        if(ch >= 0x0800 && ch <= 0x9FBB){
             return true;
         }
         else{

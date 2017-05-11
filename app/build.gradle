@@ -34,6 +34,7 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'org.litepal.android:core:1.5.1'
     compile 'com.android.support:design:25.3.0'
+    compile 'me.everything:overscroll-decor-android:1.0.4'
     compile 'org.apmem.tools:layouts:1.10@aar'
     testCompile 'junit:junit:4.12'
     compile 'org.jsoup:jsoup:1.10.2'

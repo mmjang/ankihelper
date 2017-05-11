@@ -18,6 +18,7 @@
             android:id="@+id/textview_definition"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:textColor="#101010"
             android:layout_height="wrap_content" />
         <LinearLayout
             android:layout_width="wrap_content"

@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,6 +42,8 @@ import org.apmem.tools.layouts.FlowLayout;
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
+
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 
 public class PopupActivity extends Activity {
@@ -89,6 +92,11 @@ public class PopupActivity extends Activity {
         super.onCreate(savedInstanceState);
         setStatusBarColor();
         setContentView(R.layout.activity_popup);
+        //set animation
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+        //
         assignViews();
         loadData(); //dictionaryList;
         populatePlanSpinner();
@@ -243,10 +251,10 @@ public class PopupActivity extends Activity {
             Snackbar.make(recyclerViewDefinitionList, "没查到", Snackbar.LENGTH_SHORT).setAction("action", null).show();
         }else {
             DefinitionAdapter defAdapter = new DefinitionAdapter(PopupActivity.this, definitionList, mTextSplitter, currentOutputPlan);
-            LinearLayoutManager llm = new LinearLayoutManager(this);
-            llm.setAutoMeasureEnabled(true);
+            LinearLayoutManager llm = new FullyLinearLayoutManager(this);
+            //llm.setAutoMeasureEnabled(true);
             recyclerViewDefinitionList.setLayoutManager(llm);
-            //recyclerViewDefinitionList.setNestedScrollingEnabled(false);
+            recyclerViewDefinitionList.setNestedScrollingEnabled(false);
             recyclerViewDefinitionList.setAdapter(defAdapter);
         }
     }

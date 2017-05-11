@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -68,7 +69,8 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, final int position){
         final Definition def = mDefinitionList.get(position);
         holder.textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
-        holder.textVeiwDefinition.setTextColor(Color.BLACK);
+        holder.itemView.setAnimation(AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in));
+        //holder.textVeiwDefinition.setTextColor(Color.BLACK);
         holder.btnAddDefinition.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

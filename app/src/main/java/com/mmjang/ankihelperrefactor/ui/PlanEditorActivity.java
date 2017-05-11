@@ -125,7 +125,7 @@ public class PlanEditorActivity extends AppCompatActivity {
                     planForEdit = re.get(0);
                     //set plan name unable to edit
                     planNameEditText.setText(planNameToEdit);
-                    planNameEditText.setEnabled(false);
+                    //planNameEditText.setEnabled(false);
                 }
             }
         }
@@ -200,7 +200,8 @@ public class PlanEditorActivity extends AppCompatActivity {
             long savedModelId = planForEdit.getOutputModelId();
             //int i = 0;
             long[] deckIdList = Utils.getMapKeyArray(deckList);
-            int deckPos = Arrays.asList(deckIdList).indexOf(savedDeckId);
+            //int deckPos = Arrays.asList(deckIdList).indexOf(savedDeckId);
+            int deckPos = Utils.getArrayIndex(deckIdList, savedDeckId);
             if(deckPos == -1){
                 deckPos = 0;
             }
@@ -208,7 +209,8 @@ public class PlanEditorActivity extends AppCompatActivity {
             deckSpinner.setSelection(deckPos);
 
             long[] modelIdList = Utils.getMapKeyArray(modelList);
-            int modelPos = Arrays.asList(modelIdList).indexOf(savedModelId);
+            //int modelPos = Arrays.asList(modelIdList).indexOf(savedModelId);
+            int modelPos = Utils.getArrayIndex(modelIdList, savedModelId);
             if(modelPos == -1){
                 modelPos = 0;
             }
@@ -260,7 +262,7 @@ public class PlanEditorActivity extends AppCompatActivity {
         String[] allElements = Utils.concatenate(sharedElements, dictionaryElements);
         fieldsMapItemList = new ArrayList<>();
         //if edit, than set spinner initial position
-        if(planForEdit != null){
+        if(planForEdit != null && currentModelId == planForEdit.getOutputModelId()){
             for(String fld : fields) {
                 Map<String, String> fldMap = planForEdit.getFieldsMap();
                 if(fldMap.containsKey(fld)){
@@ -301,12 +303,22 @@ public class PlanEditorActivity extends AppCompatActivity {
         //DataSupport.findAll()
         OutputPlan plan;
         if(planForEdit != null){
+            //if when edit an exiting plan, and the user chang the plan name to another existing plan name
+            if(planName != planNameToEdit){
+                //if name conflicts, toast.
+                List<OutputPlan> rel = DataSupport.where("planName = ?", planName).find(OutputPlan.class);
+                if(!rel.isEmpty()){
+                    Toast.makeText(this, "方案名冲突，请修改！", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
             plan = planForEdit;
         }else{
             //if name conflicts, toast.
             List<OutputPlan> rel = DataSupport.where("planName = ?", planName).find(OutputPlan.class);
             if(!rel.isEmpty()){
                 Toast.makeText(this, "方案名冲突，请修改！", Toast.LENGTH_SHORT).show();
+                return false;
             }
             plan = new OutputPlan();
         }

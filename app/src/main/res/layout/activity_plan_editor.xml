@@ -84,7 +84,6 @@
                 android:layout_weight="1"
                 android:id="@+id/recycler_view_fields_map"
                 >
-
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
     </ScrollView>

@@ -69,7 +69,7 @@ public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, final int position){
         final Definition def = mDefinitionList.get(position);
         holder.textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
-        holder.itemView.setAnimation(AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in));
+        //holder.itemView.setAnimation(AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in));
         //holder.textVeiwDefinition.setTextColor(Color.BLACK);
         holder.btnAddDefinition.setOnClickListener(
                 new View.OnClickListener() {

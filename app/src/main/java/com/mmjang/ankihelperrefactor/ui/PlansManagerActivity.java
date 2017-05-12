@@ -52,6 +52,7 @@ public class PlansManagerActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         planList.setLayoutManager(llm);
         PlansAdapter pa = new PlansAdapter(PlansManagerActivity.this, plans);
+        planList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         planList.setAdapter(pa);
     }
 

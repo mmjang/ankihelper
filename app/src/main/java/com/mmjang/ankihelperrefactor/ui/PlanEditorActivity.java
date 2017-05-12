@@ -304,7 +304,7 @@ public class PlanEditorActivity extends AppCompatActivity {
         OutputPlan plan;
         if(planForEdit != null){
             //if when edit an exiting plan, and the user chang the plan name to another existing plan name
-            if(planName != planNameToEdit){
+            if(!planName.equals(planNameToEdit)){
                 //if name conflicts, toast.
                 List<OutputPlan> rel = DataSupport.where("planName = ?", planName).find(OutputPlan.class);
                 if(!rel.isEmpty()){

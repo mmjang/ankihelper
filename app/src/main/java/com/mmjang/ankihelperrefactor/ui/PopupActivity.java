@@ -11,28 +11,37 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ichi2.anki.FlashCardsContract;
 import com.mmjang.ankihelperrefactor.R;
+import com.mmjang.ankihelperrefactor.app.AnkiDroidHelper;
+import com.mmjang.ankihelperrefactor.app.Constant;
 import com.mmjang.ankihelperrefactor.app.Definition;
 import com.mmjang.ankihelperrefactor.app.DictionaryRegister;
 import com.mmjang.ankihelperrefactor.app.Esdict;
 import com.mmjang.ankihelperrefactor.app.IDictionary;
+import com.mmjang.ankihelperrefactor.app.MyApplication;
 import com.mmjang.ankihelperrefactor.app.OutputPlan;
+import com.mmjang.ankihelperrefactor.app.Popup;
 import com.mmjang.ankihelperrefactor.app.Settings;
 import com.mmjang.ankihelperrefactor.app.TextSegment;
 import com.mmjang.ankihelperrefactor.app.TextSplitter;
@@ -41,7 +50,9 @@ import com.mmjang.ankihelperrefactor.app.Utils;
 import org.apmem.tools.layouts.FlowLayout;
 import org.litepal.crud.DataSupport;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -67,6 +78,8 @@ public class PopupActivity extends Activity {
     Spinner planSpinner;
     RecyclerView recyclerViewDefinitionList;
     FlowLayout wordSelectBox;
+    //plan b
+    LinearLayout viewDefinitionList;
     //async event
     private static final int  PROCESS_DEFINITION_LIST = 1;
     //async
@@ -120,6 +133,7 @@ public class PopupActivity extends Activity {
         planSpinner = (Spinner) findViewById(R.id.plan_spinner);
         recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
         wordSelectBox = (FlowLayout) findViewById(R.id.words_select_box);
+        viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
     }
 
     private void loadData(){
@@ -250,12 +264,18 @@ public class PopupActivity extends Activity {
         if(definitionList.isEmpty()){
             Snackbar.make(recyclerViewDefinitionList, "没查到", Snackbar.LENGTH_SHORT).setAction("action", null).show();
         }else {
-            DefinitionAdapter defAdapter = new DefinitionAdapter(PopupActivity.this, definitionList, mTextSplitter, currentOutputPlan);
-            LinearLayoutManager llm = new FullyLinearLayoutManager(this);
-            //llm.setAutoMeasureEnabled(true);
-            recyclerViewDefinitionList.setLayoutManager(llm);
-            recyclerViewDefinitionList.setNestedScrollingEnabled(false);
-            recyclerViewDefinitionList.setAdapter(defAdapter);
+//            DefinitionAdapter defAdapter = new DefinitionAdapter(PopupActivity.this, definitionList, mTextSplitter, currentOutputPlan);
+//            LinearLayoutManager llm = new LinearLayoutManager(this);
+//            //llm.setAutoMeasureEnabled(true);
+//            recyclerViewDefinitionList.setLayoutManager(llm);
+//            //recyclerViewDefinitionList.getRecycledViewPool().setMaxRecycledViews(0,0);
+//            //recyclerViewDefinitionList.setHasFixedSize(true);
+//            //recyclerViewDefinitionList.setNestedScrollingEnabled(false);
+//            recyclerViewDefinitionList.setAdapter(defAdapter);
+              viewDefinitionList.removeAllViewsInLayout();
+              for(Definition def : definitionList){
+                  viewDefinitionList.addView(getCardFromDefinition(def));
+              }
         }
     }
 
@@ -381,5 +401,63 @@ public class PopupActivity extends Activity {
         if(sca != null){
             act.setAdapter(sca);
         }
+    }
+
+    //plan B
+    private View getCardFromDefinition(final Definition def){
+        View view = LayoutInflater.from(PopupActivity.this)
+                .inflate(R.layout.definition_item, null);
+        final TextView textVeiwDefinition = (TextView) view.findViewById(R.id.textview_definition);
+        final ImageButton btnAddDefinition = (ImageButton) view.findViewById(R.id.btn_add_definition);
+        //final Definition def = mDefinitionList.get(position);
+        textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
+        //holder.itemView.setAnimation(AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in));
+        //holder.textVeiwDefinition.setTextColor(Color.BLACK);
+        btnAddDefinition.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid(PopupActivity.this);
+                        String[] sharedExportElements = Constant.getSharedExportElements();
+                        String[] flds = new String[currentOutputPlan.getFieldsMap().size()];
+                        int i = 0;
+                        Map<String, String> map = currentOutputPlan.getFieldsMap();
+                        for(String key : currentOutputPlan.getFieldsMap().values()){
+                            if(key.equals(sharedExportElements[0])){
+                                flds[i] = "";
+                                i ++;
+                                continue;
+                            }
+                            if(key.equals(sharedExportElements[1])){
+                                flds[i] = mTextSplitter.getBoldSentence(2);
+                                i ++;
+                                continue;
+                            }
+                            if(key.equals(sharedExportElements[2])){
+                                flds[i] = mTextSplitter.getBlankSentence(2);
+                                i ++;
+                                continue;
+                            }
+                            if(def.hasElement(key)){
+                                flds[i] = def.getExportElement(key);
+                                i ++;
+                                continue;
+                            }
+                            flds[i] = "";
+                            i ++;
+                        }
+                        long deckId = currentOutputPlan.getOutputDeckId();
+                        long modelId = currentOutputPlan.getOutputModelId();
+                        long result = mAnkiDroid.getApi().addNote(modelId, deckId, flds, new HashSet<String>());
+                        if(result > 0){
+                            Toast.makeText(PopupActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                            btnAddDefinition.setBackground(ContextCompat.getDrawable(
+                                    PopupActivity.this, R.drawable.ic_add_grey));
+                        }else{
+                            Toast.makeText(PopupActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+        return view;
     }
 }

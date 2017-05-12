@@ -1,7 +1,9 @@
 package com.mmjang.ankihelperrefactor.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipboardManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -23,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -72,12 +75,14 @@ public class PopupActivity extends Activity {
     String mTextToProcess;
     String mCurrentKeyWord;
     TextSplitter mTextSplitter;
+    String mNoteEditedByUser = "";
     //views
     AutoCompleteTextView act;
     Button btnSearch;
     Spinner planSpinner;
     RecyclerView recyclerViewDefinitionList;
     FlowLayout wordSelectBox;
+    ImageButton mBtnEditNote;
     //plan b
     LinearLayout viewDefinitionList;
     //async event
@@ -134,6 +139,7 @@ public class PopupActivity extends Activity {
         recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
         wordSelectBox = (FlowLayout) findViewById(R.id.words_select_box);
         viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
+        mBtnEditNote = (ImageButton) findViewById(R.id.btn_edit_note);
     }
 
     private void loadData(){
@@ -245,6 +251,35 @@ public class PopupActivity extends Activity {
                             asyncSearch(word);
                             Utils.hideSoftKeyboard(PopupActivity.this);
                         }
+                    }
+                }
+        );
+
+        mBtnEditNote.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PopupActivity.this);
+                        LayoutInflater inflater = PopupActivity.this.getLayoutInflater();
+                        final View dialogView = inflater.inflate(R.layout.dialog_edit_note, null);
+                        dialogBuilder.setView(dialogView);
+
+                        final EditText edt = (EditText) dialogView.findViewById(R.id.edit_note);
+                        edt.setText(mNoteEditedByUser);
+                        dialogBuilder.setTitle("笔记");
+                        //dialogBuilder.setMessage("输入笔记");
+                        dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                mNoteEditedByUser = edt.getText().toString();
+                            }
+                        });
+//                        dialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int whichButton) {
+//                                //pass
+//                            }
+//                        });
+                        AlertDialog b = dialogBuilder.create();
+                        b.show();
                     }
                 }
         );
@@ -435,6 +470,11 @@ public class PopupActivity extends Activity {
                             }
                             if(key.equals(sharedExportElements[2])){
                                 flds[i] = mTextSplitter.getBlankSentence(2);
+                                i ++;
+                                continue;
+                            }
+                            if(key.equals(sharedExportElements[3])){
+                                flds[i] = mNoteEditedByUser;
                                 i ++;
                                 continue;
                             }

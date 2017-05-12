@@ -71,6 +71,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <ImageButton
+                                    android:id="@+id/btn_edit_note"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:layout_marginRight="4dp"

@@ -106,7 +106,7 @@ public class PopupActivity extends Activity {
         setStatusBarColor();
         setContentView(R.layout.activity_popup);
         //set animation
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         //

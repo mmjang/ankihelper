@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mmjang.ankihelperrefactor.ui.PlanEditorActivity">
+    tools:context="com.mmjang.ankihelper.ui.PlanEditorActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -31,7 +31,8 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_edit_plan_name"
-
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
                     />
             </LinearLayout>
             <LinearLayout
@@ -77,6 +78,8 @@
                 android:id="@+id/model_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></Spinner>
+
+            <View style="@style/Divider"/>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"

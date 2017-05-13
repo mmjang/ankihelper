@@ -22,10 +22,10 @@
     <version value="2" />
 
     <list>
-        <mapping class="com.mmjang.ankihelperrefactor.app.OutputPlan"></mapping>
+        <mapping class="com.mmjang.ankihelper.app.OutputPlan"></mapping>
     </list>
     <list>
-        <mapping class="com.mmjang.ankihelperrefactor.app.UserTag"></mapping>
+        <mapping class="com.mmjang.ankihelper.app.UserTag"></mapping>
     </list>
 
     <!--

@@ -12,4 +12,15 @@
     <string name="cancel_after_add">添加后退出弹窗</string>
     <string name="monite_clipboard">剪切板查词</string>
     <string name="plan_manager_str">划词方案管理</string>
+    <string name="str_added">添加成功</string>
+    <string name="plan_already_exists">方案名冲突，请修改！</string>
+    <string name="dialog_note">笔记</string>
+    <string name="dialog_ok">确定</string>
+    <string name="dialog_tag">标签</string>
+    <string name="tag_cant_be_blank">标签不能为空！</string>
+    <string name="definition_not_found">没查到</string>
+    <string name="str_failed_add">出错！</string>
+    <string name="str_plan_name_should_not_be_blank">方案名不能为空</string>
+    <string name="str_about">About</string>
+    <string name="about_message">本项目在 MIT 协议下开源。 <a href="https://github.com/mmjang/ankihelper">GitHub 地址</a></string>
 </resources>

@@ -11,4 +11,15 @@
     <string name="cancel_after_add">Close popup after adding</string>
     <string name="monite_clipboard">Monitor Clipboard</string>
     <string name="plan_manager_str">Plans Manager</string>
+    <string name="str_added">Added</string>
+    <string name="str_failed_add">Error!</string>
+    <string name="str_plan_name_should_not_be_blank">Plan name can\'t be blank!</string>
+    <string name="plan_already_exists">Plan name already exists!</string>
+    <string name="dialog_note">Note</string>
+    <string name="dialog_ok">Ok</string>
+    <string name="dialog_tag">Tag</string>
+    <string name="tag_cant_be_blank">Tag can\'t be blank!</string>
+    <string name="definition_not_found">Definition not found</string>
+    <string name="str_about">About</string>
+    <string name="about_message">I\'m Zha Maomiao(aka mmjang), this project is open-sourced. <a href="https://github.com/mmjang/ankihelper">Check it out on github.</a></string>
 </resources>

@@ -20,8 +20,13 @@
             android:theme="@style/Theme.TransparentInfo"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
-
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 

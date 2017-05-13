@@ -22,4 +22,5 @@
     <string name="definition_not_found">Definition not found</string>
     <string name="str_about">About</string>
     <string name="about_message">I\'m Zha Maomiao(aka mmjang), this project is open-sourced. <a href="https://github.com/mmjang/ankihelper">Check it out on github.</a></string>
+    <string name="confirm_deletion">Delete?</string>
 </resources>

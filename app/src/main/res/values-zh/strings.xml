@@ -23,4 +23,5 @@
     <string name="str_plan_name_should_not_be_blank">方案名不能为空</string>
     <string name="str_about">About</string>
     <string name="about_message">本项目在 MIT 协议下开源。 <a href="https://github.com/mmjang/ankihelper">GitHub 地址</a></string>
+    <string name="confirm_deletion">确认删除？</string>
 </resources>

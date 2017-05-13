@@ -1,6 +1,8 @@
 package com.mmjang.ankihelper.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.app.MyApplication;
@@ -58,10 +61,19 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int pos = holder.getAdapterPosition();
-                        mPlansList.get(pos).delete();
-                        mPlansList.remove(pos);
-                        notifyItemRemoved(pos);
+                        new AlertDialog.Builder(mActivity)
+                                .setTitle(R.string.confirm_deletion)
+                                //.setMessage("Do you really want to whatever?")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        int pos = holder.getAdapterPosition();
+                                        mPlansList.get(pos).delete();
+                                        mPlansList.remove(pos);
+                                        notifyItemRemoved(pos);
+                                    }})
+                                .setNegativeButton(android.R.string.no, null).show();
+
                     }
                 }
         );

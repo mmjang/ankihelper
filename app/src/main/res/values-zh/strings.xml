@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">划词助手_开发</string>
+    <string name="app_name">Anki 划词助手</string>
     <string name="title_activity_plans_manager">划词方案管理</string>
     <string name="tv_plan_name">方案名称:</string>
     <string name="title_activity_plan_editor">方案编辑器</string>
@@ -9,4 +9,7 @@
     <string name="tv_choose_dictionary">选择词典：</string>
     <string name="api_not_available_message">Api 不可访问</string>
     <string name="permission_denied">未获得授权！</string>
+    <string name="cancel_after_add">添加后退出弹窗</string>
+    <string name="monite_clipboard">剪切板查词</string>
+    <string name="plan_manager_str">划词方案管理</string>
 </resources>

@@ -285,6 +285,7 @@ public class PlanEditorActivity extends AppCompatActivity {
         fieldsSpinnersContainer.setAdapter(new FieldMapSpinnerListAdapter(PlanEditorActivity.this, fieldsMapItemList));
     }
 
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

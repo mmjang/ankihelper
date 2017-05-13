@@ -8,4 +8,7 @@
     <string name="tv_choose_dictionary">Dictionary:</string>
     <string name="api_not_available_message">Api not available!</string>
     <string name="permission_denied">Permission Denied！</string>
+    <string name="cancel_after_add">Close popup after adding</string>
+    <string name="monite_clipboard">Monitor Clipboard</string>
+    <string name="plan_manager_str">Plans Manager</string>
 </resources>

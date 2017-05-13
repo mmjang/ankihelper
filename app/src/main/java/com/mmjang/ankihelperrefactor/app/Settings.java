@@ -87,21 +87,21 @@ public class Settings {
     }
     /**************/
 
-    boolean getMoniteClipboardQ(){
-        return sp.getBoolean(MONITE_CLIPBOARD_Q, true);
+    public boolean getMoniteClipboardQ(){
+        return sp.getBoolean(MONITE_CLIPBOARD_Q, false);
     }
 
-    void setMoniteClipboardQ(boolean moniteClipboardQ){
+    public void setMoniteClipboardQ(boolean moniteClipboardQ){
         editor.putBoolean(MONITE_CLIPBOARD_Q, moniteClipboardQ);
         editor.commit();
     }
     /**************/
 
-    boolean getAutoCancelPopupQ(){
-        return sp.getBoolean(AUTO_CANCEL_POPUP_Q, true);
+    public boolean getAutoCancelPopupQ(){
+        return sp.getBoolean(AUTO_CANCEL_POPUP_Q, false);
     }
 
-    void setAutoCancelPopupQ(boolean autoCancelPopupQ){
+    public void setAutoCancelPopupQ(boolean autoCancelPopupQ){
         editor.putBoolean(AUTO_CANCEL_POPUP_Q, autoCancelPopupQ);
         editor.commit();
     }

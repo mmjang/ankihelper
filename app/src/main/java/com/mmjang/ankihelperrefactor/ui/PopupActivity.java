@@ -497,6 +497,9 @@ public class PopupActivity extends Activity {
                             Toast.makeText(PopupActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                             btnAddDefinition.setBackground(ContextCompat.getDrawable(
                                     PopupActivity.this, R.drawable.ic_add_grey));
+                            if(settings.getAutoCancelPopupQ()){
+                                finish();
+                            }
                         }else{
                             Toast.makeText(PopupActivity.this, "Error!", Toast.LENGTH_SHORT).show();
                         }
@@ -594,6 +597,7 @@ public class PopupActivity extends Activity {
     }
 
     //cancel auto completetextview focus
+    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         View v = getCurrentFocus();
         boolean ret = super.dispatchTouchEvent(event);

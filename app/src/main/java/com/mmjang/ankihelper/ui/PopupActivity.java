@@ -399,6 +399,39 @@ public class PopupActivity extends Activity {
                 }
         );
 
+        tv.setOnLongClickListener(
+                new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        TextView textView = (TextView) v;
+                        if(textSegment.getState() == STATE_NON_WORD){
+                            return false;
+                        }
+                        if(textSegment.getState() == STATE_WORD){
+                            for(int i = 0; i < wordSelectBox.getChildCount();i++){
+                                TextView child = (TextView) wordSelectBox.getChildAt(i);
+                                child.setBackground(ContextCompat.getDrawable(
+                                        PopupActivity.this, R.drawable.word_select_box_item));
+                                child.setTextColor(Color.BLACK);
+                                mTextSplitter.getSegmentList().get(i).setState(STATE_WORD);
+                            }
+                            textSegment.setState(STATE_SELECTED);
+                            textView.setBackground(ContextCompat.getDrawable(
+                                    PopupActivity.this, R.drawable.word_select_box_item_hl));
+                            textView.setTextColor(Color.WHITE);
+                            mCurrentKeyWord = mTextSplitter.getStringFromState(STATE_SELECTED);
+                            act.setText(mCurrentKeyWord);
+                            asyncSearch(mCurrentKeyWord);
+                            return true;
+                        }
+                        if(textSegment.getState() == STATE_SELECTED){
+                            return false;
+                        }
+                        return false;
+                    }
+                }
+        );
+
         return tv;
     }
 

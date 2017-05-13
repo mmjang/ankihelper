@@ -63,6 +63,7 @@
                             android:layout_marginLeft="12dp"
                             android:layout_marginRight="12dp"
                             android:layout_marginTop="5dp"
+                            android:layout_marginBottom="3dp"
                             >
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -70,20 +71,24 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 >
+
+                                <ImageButton
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:background="@drawable/ic_tag_black"
+                                    android:id="@+id/btn_edit_tag"
+                                    android:layout_marginRight="10dp"
+                                    android:elevation="8dp"
+                                    />
                                 <ImageButton
                                     android:id="@+id/btn_edit_note"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
-                                    android:layout_marginRight="4dp"
-                                    android:background="@drawable/ic_note"
+                                    android:layout_marginRight="0dp"
+                                    android:background="@drawable/ic_note_black"
                                     android:elevation="8dp"
                                     />
-                                <ImageButton
-                                    android:layout_width="23dp"
-                                    android:layout_height="23dp"
-                                    android:background="@drawable/ic_tag"
-                                    android:elevation="8dp"
-                                    />
+
                             </LinearLayout>
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -94,6 +99,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="#000000"
+                                    android:visibility="gone"
                                     android:id="@+id/checkbox_set_default"
                                     />
                                 <Spinner

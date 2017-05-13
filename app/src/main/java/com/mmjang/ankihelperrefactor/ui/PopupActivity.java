@@ -3,6 +3,7 @@ package com.mmjang.ankihelperrefactor.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,11 +21,16 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -48,6 +54,7 @@ import com.mmjang.ankihelperrefactor.app.Popup;
 import com.mmjang.ankihelperrefactor.app.Settings;
 import com.mmjang.ankihelperrefactor.app.TextSegment;
 import com.mmjang.ankihelperrefactor.app.TextSplitter;
+import com.mmjang.ankihelperrefactor.app.UserTag;
 import com.mmjang.ankihelperrefactor.app.Utils;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -76,6 +83,7 @@ public class PopupActivity extends Activity {
     String mCurrentKeyWord;
     TextSplitter mTextSplitter;
     String mNoteEditedByUser = "";
+    HashSet<String> mTagEditedByUser = new HashSet<>();
     //views
     AutoCompleteTextView act;
     Button btnSearch;
@@ -83,6 +91,7 @@ public class PopupActivity extends Activity {
     RecyclerView recyclerViewDefinitionList;
     FlowLayout wordSelectBox;
     ImageButton mBtnEditNote;
+    ImageButton mBtnEditTag;
     //plan b
     LinearLayout viewDefinitionList;
     //async event
@@ -140,12 +149,18 @@ public class PopupActivity extends Activity {
         wordSelectBox = (FlowLayout) findViewById(R.id.words_select_box);
         viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
         mBtnEditNote = (ImageButton) findViewById(R.id.btn_edit_note);
+        mBtnEditTag = (ImageButton) findViewById(R.id.btn_edit_tag);
     }
 
     private void loadData(){
         dictionaryList = DictionaryRegister.getDictionaryObjectList();
         outputPlanList = DataSupport.findAll(OutputPlan.class);
         settings = Settings.getInstance(this);
+        //load tag
+        boolean loadQ = settings.getSetAsDefaultTag();
+        if(loadQ){
+            mTagEditedByUser.add(settings.getDefaulTag());
+        }
 
     }
 
@@ -259,27 +274,16 @@ public class PopupActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PopupActivity.this);
-                        LayoutInflater inflater = PopupActivity.this.getLayoutInflater();
-                        final View dialogView = inflater.inflate(R.layout.dialog_edit_note, null);
-                        dialogBuilder.setView(dialogView);
+                        setupEditNoteDialog();
+                    }
+                }
+        );
 
-                        final EditText edt = (EditText) dialogView.findViewById(R.id.edit_note);
-                        edt.setText(mNoteEditedByUser);
-                        dialogBuilder.setTitle("笔记");
-                        //dialogBuilder.setMessage("输入笔记");
-                        dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                mNoteEditedByUser = edt.getText().toString();
-                            }
-                        });
-//                        dialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int whichButton) {
-//                                //pass
-//                            }
-//                        });
-                        AlertDialog b = dialogBuilder.create();
-                        b.show();
+        mBtnEditTag.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setupEditTagDialog();
                     }
                 }
         );
@@ -488,7 +492,7 @@ public class PopupActivity extends Activity {
                         }
                         long deckId = currentOutputPlan.getOutputDeckId();
                         long modelId = currentOutputPlan.getOutputModelId();
-                        long result = mAnkiDroid.getApi().addNote(modelId, deckId, flds, new HashSet<String>());
+                        long result = mAnkiDroid.getApi().addNote(modelId, deckId, flds, mTagEditedByUser);
                         if(result > 0){
                             Toast.makeText(PopupActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                             btnAddDefinition.setBackground(ContextCompat.getDrawable(
@@ -499,5 +503,119 @@ public class PopupActivity extends Activity {
                     }
                 });
         return view;
+    }
+
+    private void setupEditNoteDialog(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PopupActivity.this);
+        LayoutInflater inflater = PopupActivity.this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_edit_note, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText edt = (EditText) dialogView.findViewById(R.id.edit_note);
+        edt.setHorizontallyScrolling(false);
+        edt.setMaxLines(4);
+        edt.setText(mNoteEditedByUser);
+        edt.setSelection(mNoteEditedByUser.length());
+        dialogBuilder.setTitle("笔记");
+        //dialogBuilder.setMessage("输入笔记");
+        dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                mNoteEditedByUser = edt.getText().toString();
+            }
+        });
+//                        dialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int whichButton) {
+//                                //pass
+//                            }
+//                        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+    private void setupEditTagDialog(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PopupActivity.this);
+        LayoutInflater inflater = PopupActivity.this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_edit_tag, null);
+        dialogBuilder.setView(dialogView);
+        final AutoCompleteTextView editTag = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_tag);
+        final CheckBox checkBoxSetAsDefaultTag = (CheckBox) dialogView.findViewById(R.id.checkbox_as_default_tag);
+        editTag.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        if(mTagEditedByUser.size() == 1) {
+            String text = (String) mTagEditedByUser.toArray()[0];
+            editTag.setText(text);
+            editTag.setSelection(text.length());
+        }
+        List<UserTag> userTags = DataSupport.findAll(UserTag.class);
+        String[] arr = new String[userTags.size()];
+        for(int i = 0; i < userTags.size(); i++){
+            arr[i] = userTags.get(i).getTag();
+        }
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(PopupActivity.this,
+                R.layout.support_simple_spinner_dropdown_item, arr);
+        editTag.setAdapter(arrayAdapter);
+        editTag.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event){
+                if(editTag.getText().toString().isEmpty()) {
+                    editTag.showDropDown();
+                }
+                return false;
+            }
+        });
+        boolean setDefaultQ = settings.getSetAsDefaultTag();
+        checkBoxSetAsDefaultTag.setChecked(setDefaultQ);
+        dialogBuilder.setTitle("标签");
+        //dialogBuilder.setMessage("输入笔记");
+        dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String tag = editTag.getText().toString().trim();
+                if(tag.isEmpty()){
+                    if(checkBoxSetAsDefaultTag.isChecked()) {
+                        mTagEditedByUser.clear();
+                        Toast.makeText(PopupActivity.this, "标签不能为空！", Toast.LENGTH_LONG).show();
+                    }else{
+                        settings.setSetAsDefaultTag(false);
+                        mTagEditedByUser.clear();
+                    }
+                    return;
+                }else{
+                    mTagEditedByUser.clear();
+                    mTagEditedByUser.add(tag);
+                    settings.setSetAsDefaultTag(checkBoxSetAsDefaultTag.isChecked());
+                    settings.setDefaultTag(tag);
+                    UserTag userTag = new UserTag(tag);
+                    userTag.save();
+                }
+
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+    //cancel auto completetextview focus
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        View v = getCurrentFocus();
+        boolean ret = super.dispatchTouchEvent(event);
+
+        if (v instanceof AutoCompleteTextView) {
+            View currentFocus = getCurrentFocus();
+            int screenCoords[] = new int[2];
+            currentFocus.getLocationOnScreen(screenCoords);
+            float x = event.getRawX() + currentFocus.getLeft() - screenCoords[0];
+            float y = event.getRawY() + currentFocus.getTop() - screenCoords[1];
+
+            if (event.getAction() == MotionEvent.ACTION_UP
+                    && (x < currentFocus.getLeft() ||
+                    x >= currentFocus.getRight() ||
+                    y < currentFocus.getTop() ||
+                    y > currentFocus.getBottom())) {
+                InputMethodManager imm =
+                        (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+                v.clearFocus();
+            }
+        }
+        return ret;
     }
 }

@@ -19,10 +19,13 @@
 			For example:
     	<version value="1" />
     -->
-    <version value="1" />
+    <version value="2" />
 
     <list>
         <mapping class="com.mmjang.ankihelperrefactor.app.OutputPlan"></mapping>
+    </list>
+    <list>
+        <mapping class="com.mmjang.ankihelperrefactor.app.UserTag"></mapping>
     </list>
 
     <!--

@@ -23,6 +23,8 @@ public class Settings {
     private final static String AUTO_CANCEL_POPUP_Q = "auto_cancel_popup";              //点加号后是否退出
     private final static String DEFAULT_PLAN = "default_plan";
     private final static String LAST_SELECTED_PLAN = "last_selected_plan";
+    private final static String DEFAULT_TAG = "default_tag";
+    private final static String SET_AS_DEFAULT_TAG = "set_as_default_tag";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -112,6 +114,7 @@ public class Settings {
         editor.putString(DEFAULT_PLAN, defaultPlan);
         editor.commit();
     }
+    /******************/
 
     public String getLastSelectedPlan(){
         return sp.getString(LAST_SELECTED_PLAN, "");
@@ -119,6 +122,19 @@ public class Settings {
 
     public void setLastSelectedPlan(String lastSelectedPlan){
         editor.putString(LAST_SELECTED_PLAN, lastSelectedPlan);
+        editor.commit();
+    }
+
+    /*****************/
+    public String getDefaulTag(){return sp.getString(DEFAULT_TAG, "");}
+    public void setDefaultTag(String defaultTag){
+        editor.putString(DEFAULT_TAG, defaultTag);
+        editor.commit();
+    }
+    /****************/
+    public boolean getSetAsDefaultTag(){return sp.getBoolean(SET_AS_DEFAULT_TAG, false);}
+    public void setSetAsDefaultTag(boolean setAsDefaultTag){
+        editor.putBoolean(SET_AS_DEFAULT_TAG, setAsDefaultTag);
         editor.commit();
     }
 

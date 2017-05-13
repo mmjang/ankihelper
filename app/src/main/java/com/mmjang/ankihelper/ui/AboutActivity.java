@@ -28,7 +28,7 @@ public class AboutActivity extends AppCompatActivity {
                         Intent intent = new Intent();
                         intent.setAction("android.intent.action.VIEW");
                         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        String payUrl = "HTTPS://QR.ALIPAY.COM/FKX07507MEX6F7W8541C56";  ￥5
+                        String payUrl = "HTTPS://QR.ALIPAY.COM/FKX07507MEX6F7W8541C56";  //￥5
                         //String payUrl = "HTTPS://QR.ALIPAY.COM/A6X00376AFOZWZUHWTDNDF4"; //any
                         intent.setData(Uri.parse("alipayqr://platformapi/startapp?saId=10000007&clientVersion=3.7.0.0718&qrcode=" + payUrl));
                         if (intent.resolveActivity(getPackageManager()) != null) {

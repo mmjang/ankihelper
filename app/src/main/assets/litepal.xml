@@ -23,10 +23,9 @@
 
     <list>
         <mapping class="com.mmjang.ankihelper.app.OutputPlan"></mapping>
-    </list>
-    <list>
         <mapping class="com.mmjang.ankihelper.app.UserTag"></mapping>
     </list>
+
 
     <!--
     	Define your models in the list with mapping tag, LitePal will
@@ -38,8 +37,6 @@
     		<mapping class="com.test.model.Magazine" />
     	</list>
     -->
-    <list>
-    </list>
 
     <!--
         Define where the .db file should be. "internal" means the .db file

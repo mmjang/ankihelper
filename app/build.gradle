@@ -7,7 +7,7 @@ android {
         applicationId "com.mmjang.ankihelper"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 34
+        versionCode 36
         versionName "2.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

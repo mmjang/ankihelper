@@ -45,7 +45,9 @@
         <service
             android:name=".app.CBWatcherService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:process=":CBService"
+            />
 
         <activity android:name=".ui.LauncherActivity">
             <intent-filter>

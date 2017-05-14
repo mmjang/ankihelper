@@ -646,4 +646,10 @@ public class PopupActivity extends Activity {
         }
         return ret;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

@@ -17,6 +17,7 @@ public class DictionaryRegister {
             Collins.class,
             Esdict.class,
             Frdict.class,
+            Dedict.class,
             Cloze.class
     };
 

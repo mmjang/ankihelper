@@ -525,6 +525,7 @@ public class PopupActivity extends Activity {
                             Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
                             btnAddDefinition.setBackground(ContextCompat.getDrawable(
                                     PopupActivity.this, R.drawable.ic_add_grey));
+                            btnAddDefinition.setEnabled(false);
                             if(settings.getAutoCancelPopupQ()){
                                 finish();
                             }

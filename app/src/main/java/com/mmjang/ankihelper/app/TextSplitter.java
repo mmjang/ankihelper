@@ -130,7 +130,12 @@ public class TextSplitter {
     private boolean isWordcharacter(char ch){
         //(Ó	ó)	P	p	Q	q	R	r	S	s	T	t	U	u	(Ú	ú)	(Ü	ü)
         //V	v	W	w	X	x	Y	y	Z	z
-
+        char[] frSpecial =  "àaçèéêëîïôùûœ".toCharArray();
+        for(char c : frSpecial){
+            if(ch == c){
+                return true;
+            }
+        }
         if(ch == '-' || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')||
                 ch == 'Á' ||
                 ch == 'á' ||

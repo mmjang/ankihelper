@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.app.AnkiDroidHelper;
+import com.mmjang.ankihelper.app.CBWatcherService;
 import com.mmjang.ankihelper.app.Constant;
 import com.mmjang.ankihelper.app.Definition;
 import com.mmjang.ankihelper.app.DictionaryRegister;
@@ -120,6 +121,9 @@ public class PopupActivity extends Activity {
         populatePlanSpinner();
         setEventListener();
         handleIntent();
+        if(settings.getMoniteClipboardQ()){
+            startCBService();
+        }
     }
 
     private void setStatusBarColor(){
@@ -651,5 +655,10 @@ public class PopupActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         Runtime.getRuntime().gc();
+    }
+
+    private void startCBService(){
+        Intent intent = new Intent(this, CBWatcherService.class);
+        startService(intent);
     }
 }

@@ -12,7 +12,7 @@
     <string name="monite_clipboard">Monitor Clipboard</string>
     <string name="plan_manager_str">Plans Manager</string>
     <string name="str_added">Added</string>
-    <string name="str_failed_add">Error!</string>
+    <string name="str_failed_add">Failed! Please check plan settings.</string>
     <string name="str_plan_name_should_not_be_blank">Plan name can\'t be blank!</string>
     <string name="plan_already_exists">Plan name already exists!</string>
     <string name="dialog_note">Note</string>
@@ -23,4 +23,5 @@
     <string name="str_about">About</string>
     <string name="about_message">I\'m Zha Maomiao(aka mmjang), this project is open-sourced. <a href="https://github.com/mmjang/ankihelper">Check it out on github.</a></string>
     <string name="confirm_deletion">Delete?</string>
+    <string name="save_plan_error_all_blank">Failed to save. All fields are empty!</string>
 </resources>

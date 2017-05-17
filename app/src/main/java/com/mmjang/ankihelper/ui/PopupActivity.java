@@ -76,6 +76,8 @@ public class PopupActivity extends Activity {
     TextSplitter mTextSplitter;
     String mNoteEditedByUser = "";
     HashSet<String> mTagEditedByUser = new HashSet<>();
+    //posiblle pre set target word
+    String mTargetWord;
     //views
     AutoCompleteTextView act;
     Button btnSearch;
@@ -123,6 +125,14 @@ public class PopupActivity extends Activity {
         handleIntent();
         if(settings.getMoniteClipboardQ()){
             startCBService();
+        }
+
+        for(int i = 0; i < wordSelectBox.getChildCount();i++){
+            TextView child = (TextView) wordSelectBox.getChildAt(i);
+            if(mTargetWord != null && child.getText().toString().equals(mTargetWord)){
+                child.performClick();
+                return;
+            }
         }
     }
 
@@ -327,6 +337,7 @@ public class PopupActivity extends Activity {
         //getStringExtra() may return null
         if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_TEXT);
+            mTargetWord = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_WORD);
         }
         if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
@@ -520,8 +531,8 @@ public class PopupActivity extends Activity {
                         }
                         long deckId = currentOutputPlan.getOutputDeckId();
                         long modelId = currentOutputPlan.getOutputModelId();
-                        long result = mAnkiDroid.getApi().addNote(modelId, deckId, flds, mTagEditedByUser);
-                        if(result > 0){
+                        Long result = mAnkiDroid.getApi().addNote(modelId, deckId, flds, mTagEditedByUser);
+                        if(result != null){
                             Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
                             btnAddDefinition.setBackground(ContextCompat.getDrawable(
                                     PopupActivity.this, R.drawable.ic_add_grey));

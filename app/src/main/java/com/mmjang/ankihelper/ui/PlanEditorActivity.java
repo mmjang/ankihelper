@@ -327,10 +327,18 @@ public class PlanEditorActivity extends AppCompatActivity {
         plan.setOutputModelId(currentModelId);
 
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        boolean allFieldsAreEmpty = true;
         for(FieldsMapItem item: fieldsMapItemList){
             String k = item.getField();
             String v = item.getExportedElementNames()[item.getSelectedFieldPos()];
+            if(!v.equals(Constant.getSharedExportElements()[0])){
+                allFieldsAreEmpty = false;
+            }
             map.put(k,v);
+        }
+        if(allFieldsAreEmpty){
+            Toast.makeText(this, R.string.save_plan_error_all_blank, Toast.LENGTH_SHORT).show();
+            return false;
         }
         plan.setFieldsMap(map);
         plan.save();

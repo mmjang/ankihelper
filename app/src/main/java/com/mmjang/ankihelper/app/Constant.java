@@ -15,4 +15,7 @@ public class Constant {
     public static String[] getSharedExportElements(){
         return SHARED_EXPORT_ELEMENTS;
     }
+
+    public static final String INTENT_ANKIHELPER_TARGET_WORD = "com.mmjang.ankihelper.target_word";
+
 }

@@ -135,10 +135,4 @@ public class LauncherActivity extends AppCompatActivity{
         stopService(intent);
     }
 
-    @Override
-    protected void onStop(){
-        super.onStop();
-        finish();
-    }
-
 }

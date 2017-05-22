@@ -24,5 +24,5 @@
     <string name="str_about">About</string>
     <string name="about_message">本项目在 GPL-3.0 协议下开源。 <a href="https://github.com/mmjang/ankihelper">GitHub 主页</a></string>
     <string name="confirm_deletion">确认删除？</string>
-    <string name="save_plan_error_all_blank">保存失败，输出字段不能全部为空！</string>
+    <string name="save_plan_error_all_blank">保存失败。输出字段不能全部为空！</string>
 </resources>

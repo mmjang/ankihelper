@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mmjang.ankihelper.ui.PopupActivity">
+    tools:context="com.mmjang.ankihelper.ui.popup.PopupActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,9 +99,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:buttonTint="#000000"
-                                    android:visibility="gone"
-                                    android:id="@+id/checkbox_set_default"
-                                    />
+                                    android:visibility="gone" />
                                 <Spinner
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -145,7 +143,6 @@
                             android:layout_marginRight="12dp"
                             android:layout_marginTop="0dp"
                             android:elevation="2dp"
-                            android:id="@+id/act_card"
                             app:cardCornerRadius="4dp"
                             >
                             <LinearLayout

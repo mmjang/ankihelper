@@ -22,8 +22,8 @@
     <version value="2" />
 
     <list>
-        <mapping class="com.mmjang.ankihelper.app.OutputPlan"></mapping>
-        <mapping class="com.mmjang.ankihelper.app.UserTag"></mapping>
+        <mapping class="com.mmjang.ankihelper.data.plan.OutputPlan"></mapping>
+        <mapping class="com.mmjang.ankihelper.data.model.UserTag"></mapping>
     </list>
 
 

@@ -15,12 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmjang.ankihelper.R;
-import com.mmjang.ankihelper.app.AnkiDroidHelper;
-import com.mmjang.ankihelper.app.CBWatcherService;
-import com.mmjang.ankihelper.app.MyApplication;
-import com.mmjang.ankihelper.app.Settings;
+import com.mmjang.ankihelper.anki.AnkiDroidHelper;
+import com.mmjang.ankihelper.domain.CBWatcherService;
+import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.data.Settings;
+import com.mmjang.ankihelper.ui.about.AboutActivity;
+import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 
-public class LauncherActivity extends AppCompatActivity{
+public class LauncherActivity extends AppCompatActivity {
 
     AnkiDroidHelper mAnkiDroid;
     Settings settings;
@@ -28,6 +30,7 @@ public class LauncherActivity extends AppCompatActivity{
     Switch switchMoniteClipboard;
     Switch switchCancelAfterAdd;
     TextView textViewOpenPlanManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +55,9 @@ public class LauncherActivity extends AppCompatActivity{
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         settings.setMoniteClipboardQ(isChecked);
-                        if(isChecked){
+                        if (isChecked) {
                             startCBService();
-                        }else{
+                        } else {
                             stopCBService();
                         }
                     }
@@ -79,16 +82,16 @@ public class LauncherActivity extends AppCompatActivity{
                     }
                 }
         );
-        if(settings.getMoniteClipboardQ()){
+        if (settings.getMoniteClipboardQ()) {
             startCBService();
         }
     }
 
-    private void initAnkiApi(){
-        if(mAnkiDroid == null){
+    private void initAnkiApi() {
+        if (mAnkiDroid == null) {
             mAnkiDroid = new AnkiDroidHelper(this);
         }
-        if (!mAnkiDroid.isApiAvailable(MyApplication.getContext())) {
+        if (!AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
             Toast.makeText(this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
         }
 
@@ -125,14 +128,18 @@ public class LauncherActivity extends AppCompatActivity{
         }
     }
 
-    private void startCBService(){
+    private void startCBService() {
         Intent intent = new Intent(this, CBWatcherService.class);
         startService(intent);
     }
 
-    private void stopCBService(){
+    private void stopCBService() {
         Intent intent = new Intent(this, CBWatcherService.class);
         stopService(intent);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }

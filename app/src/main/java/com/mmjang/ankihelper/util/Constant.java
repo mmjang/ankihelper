@@ -9,7 +9,8 @@ public class Constant {
             "空",
             "加粗的例句",
             "挖空的例句",
-            "笔记"
+            "笔记",
+            "URL"
     };
 
     public static String[] getSharedExportElements() {
@@ -17,6 +18,7 @@ public class Constant {
     }
 
     public static final String INTENT_ANKIHELPER_TARGET_WORD = "com.mmjang.ankihelper.target_word";
+    public static final String INTENT_ANKIHELPER_TARGET_URL = "com.mmjang.ankihelper.url";
 
     public static final String ANKI_PACKAGE_NAME = "com.ichi2.anki";
 }

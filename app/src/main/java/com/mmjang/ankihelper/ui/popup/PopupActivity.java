@@ -28,6 +28,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -78,6 +79,8 @@ public class PopupActivity extends Activity {
     HashSet<String> mTagEditedByUser = new HashSet<>();
     //posiblle pre set target word
     String mTargetWord;
+    //possible url from dedicated borwser
+    String mUrl = "";
     //views
     AutoCompleteTextView act;
     Button btnSearch;
@@ -86,6 +89,7 @@ public class PopupActivity extends Activity {
     FlowLayout wordSelectBox;
     ImageButton mBtnEditNote;
     ImageButton mBtnEditTag;
+    ProgressBar progressBar;
     //plan b
     LinearLayout viewDefinitionList;
     //async event
@@ -96,6 +100,7 @@ public class PopupActivity extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PROCESS_DEFINITION_LIST:
+                    showSearchButton();
                     List<Definition> definitionList = (List<Definition>) msg.obj;
                     processDefinitionList(definitionList);
                     break;
@@ -155,6 +160,7 @@ public class PopupActivity extends Activity {
         viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
         mBtnEditNote = (ImageButton) findViewById(R.id.btn_edit_note);
         mBtnEditTag = (ImageButton) findViewById(R.id.btn_edit_tag);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     }
 
     private void loadData() {
@@ -338,6 +344,7 @@ public class PopupActivity extends Activity {
         if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_TEXT);
             mTargetWord = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_WORD);
+            mUrl = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_URL);
         }
         if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
@@ -454,6 +461,7 @@ public class PopupActivity extends Activity {
         if (word.length() == 0) {
             return;
         }
+        showProgressBar();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -521,7 +529,12 @@ public class PopupActivity extends Activity {
                                 i++;
                                 continue;
                             }
-                            if (def.hasElement(key)) {
+                            if(key.equals(sharedExportElements[4])){
+                                flds[i] = mUrl;
+                                i ++;
+                                continue;
+                            }
+                            if(def.hasElement(key)) {
                                 flds[i] = def.getExportElement(key);
                                 i++;
                                 continue;
@@ -672,5 +685,14 @@ public class PopupActivity extends Activity {
     private void startCBService() {
         Intent intent = new Intent(this, CBWatcherService.class);
         startService(intent);
+    }
+
+    private void showProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+        btnSearch.setVisibility(View.GONE);
+    }
+    private void showSearchButton(){
+        progressBar.setVisibility(View.GONE);
+        btnSearch.setVisibility(View.VISIBLE);
     }
 }

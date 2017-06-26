@@ -495,7 +495,7 @@ public class PopupActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid(PopupActivity.this);
+                        AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid();
                         String[] sharedExportElements = Constant.getSharedExportElements();
                         String[] flds = new String[currentOutputPlan.getFieldsMap().size()];
                         int i = 0;

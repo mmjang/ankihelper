@@ -2,6 +2,7 @@ package com.mmjang.ankihelper.anki;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.util.SparseArray;
 
 import com.ichi2.anki.api.AddContentApi;
 import com.ichi2.anki.api.NoteInfo;
+import com.mmjang.ankihelper.util.Constant;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -35,6 +37,22 @@ public class AnkiDroidHelper {
 
     public AddContentApi getApi() {
         return mApi;
+    }
+
+    public boolean isAnkiDroidRunning() {
+        return mApi.getDeckList() != null;
+    }
+
+    public boolean startAnkiDroid() {
+        PackageManager manager = mContext.getPackageManager();
+        Intent i = manager.getLaunchIntentForPackage(Constant.ANKI_PACKAGE_NAME);
+        if (i == null) {
+            return false;
+        }
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+        mContext.startActivity(i);
+        return true;
     }
 
     /**

@@ -9,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.util.DialogUtil;
 
 import org.litepal.crud.DataSupport;
 
@@ -29,8 +31,12 @@ public class PlansManagerActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PlansManagerActivity.this, PlanEditorActivity.class);
-                startActivity(intent);
+                if (MyApplication.getAnkiDroid().isAnkiDroidRunning()) {
+                    Intent intent = new Intent(PlansManagerActivity.this, PlanEditorActivity.class);
+                    startActivity(intent);
+                } else {
+                    DialogUtil.showStartAnkiDialog(PlansManagerActivity.this);
+                }
             }
         });
 

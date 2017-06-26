@@ -18,4 +18,5 @@ public class Constant {
 
     public static final String INTENT_ANKIHELPER_TARGET_WORD = "com.mmjang.ankihelper.target_word";
 
+    public static final String ANKI_PACKAGE_NAME = "com.ichi2.anki";
 }

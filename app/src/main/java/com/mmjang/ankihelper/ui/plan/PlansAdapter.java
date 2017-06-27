@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.util.DialogUtil;
 
 import java.util.List;
 
@@ -82,13 +83,17 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int pos = holder.getAdapterPosition();
-                        String planName = mPlansList.get(pos).getPlanName();
-                        Intent intent = new Intent(mActivity, PlanEditorActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setAction(Intent.ACTION_SEND);
-                        intent.putExtra(Intent.EXTRA_TEXT, planName);
-                        MyApplication.getContext().startActivity(intent);
+                        if (MyApplication.getAnkiDroid().isAnkiDroidRunning()) {
+                            int pos = holder.getAdapterPosition();
+                            String planName = mPlansList.get(pos).getPlanName();
+                            Intent intent = new Intent(mActivity, PlanEditorActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setAction(Intent.ACTION_SEND);
+                            intent.putExtra(Intent.EXTRA_TEXT, planName);
+                            MyApplication.getContext().startActivity(intent);
+                        } else {
+                            DialogUtil.showStartAnkiDialog(mActivity);
+                        }
                     }
                 }
         );

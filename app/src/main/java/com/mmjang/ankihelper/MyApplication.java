@@ -14,12 +14,14 @@ import org.litepal.LitePalApplication;
 
 public class MyApplication extends Application {
     private static Context context;
+    private static Application application;
     private static AnkiDroidHelper mAnkiDroid;
 
     @Override
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        application = this;
         LitePalApplication.initialize(context);
     }
 
@@ -27,9 +29,13 @@ public class MyApplication extends Application {
         return context;
     }
 
-    public static AnkiDroidHelper getAnkiDroid(Activity activity) {
+    public static Application getApplication(){
+        return application;
+    }
+
+    public static AnkiDroidHelper getAnkiDroid() {
         if (mAnkiDroid == null) {
-            mAnkiDroid = new AnkiDroidHelper(activity);
+            mAnkiDroid = new AnkiDroidHelper(getApplication());
         }
         return mAnkiDroid;
     }

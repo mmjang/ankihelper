@@ -7,8 +7,11 @@
     <!--<color name="colorAccent">#FF4081</color>-->
     <color name="colorAccent">#2D6D4B</color>
 
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
 
     <color name="transparent">#00000000</color>
     <color name="popup_background">#E0E0E0</color>
 
+    <color name="divider">#cee9e9e9</color>
 </resources>

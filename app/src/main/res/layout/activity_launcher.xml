@@ -1,87 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mmjang.ankihelper.ui.LauncherActivity">
-    <LinearLayout
-        android:layout_width="368dp"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp">
-        <android.support.v7.widget.CardView
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
+        android:elevation="8dp"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:elevation="8dp"
-            app:cardCornerRadius="4dp"
-            >
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.balysv.materialripple.MaterialRippleLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_height="48dp">
+
+                <TextView
+                    android:id="@+id/btn_open_plan_manager"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:id="@+id/btn_open_plan_manager"
-                        android:text="@string/plan_manager_str"
-                        android:textColor="#000000"
-                        android:textSize="18sp"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="6dp"
-                        />
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/plan_manager_str"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
 
-                </com.balysv.materialripple.MaterialRippleLayout>
+            </com.balysv.materialripple.MaterialRippleLayout>
 
-                <View style="@style/Divider"/>
+            <View style="@style/Divider" />
 
-                <com.balysv.materialripple.MaterialRippleLayout
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <Switch
+                    android:duplicateParentState="false"
+                    android:id="@+id/switch_monite_clipboard"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/monite_clipboard"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+            </com.balysv.materialripple.MaterialRippleLayout>
 
-                    <Switch
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:id="@+id/switch_monite_clipboard"
-                        android:text="@string/monite_clipboard"
-                        android:textSize="18sp"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="6dp"
-                        />
-                </com.balysv.materialripple.MaterialRippleLayout>
+            <View style="@style/Divider" />
 
-                <View style="@style/Divider"/>
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
 
-                <com.balysv.materialripple.MaterialRippleLayout
+                <Switch
+                    android:duplicateParentState="false"
+                    android:id="@+id/switch_cancel_after_add"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <Switch
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:id="@+id/switch_cancel_after_add"
-                        android:text="@string/cancel_after_add"
-                        android:textSize="18sp"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="6dp"
-                        />
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/cancel_after_add"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
 
-                </com.balysv.materialripple.MaterialRippleLayout>
+            </com.balysv.materialripple.MaterialRippleLayout>
 
-            </LinearLayout>
+        </LinearLayout>
 
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

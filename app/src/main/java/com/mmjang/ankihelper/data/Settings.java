@@ -7,6 +7,8 @@ package com.mmjang.ankihelper.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.mmjang.ankihelper.domain.PronounceManager;
+
 /**
  * 单例，getInstance()得到实例
  */
@@ -25,6 +27,7 @@ public class Settings {
     private final static String LAST_SELECTED_PLAN = "last_selected_plan";
     private final static String DEFAULT_TAG = "default_tag";
     private final static String SET_AS_DEFAULT_TAG = "set_as_default_tag";
+    private final static String LAST_PRONOUNCE_LANGUAGE = "last_pronounce_language";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -153,10 +156,20 @@ public class Settings {
         editor.commit();
     }
 
+    public int getLastPronounceLanguage() {
+        return sp.getInt(LAST_PRONOUNCE_LANGUAGE, PronounceManager.LANGUAGE_ENGLISH_INDEX);
+    }
+
+    public void setLastPronounceLanguage(int lastPronounceLanguageIndex) {
+        editor.putInt(LAST_PRONOUNCE_LANGUAGE, lastPronounceLanguageIndex);
+        editor.commit();
+    }
+
     /**************/
     boolean hasKey(String key) {
         return sp.contains(key);
     }
+
 
 
 }

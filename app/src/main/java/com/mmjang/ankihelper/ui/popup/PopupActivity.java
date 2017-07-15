@@ -7,11 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -35,19 +34,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
-import com.mmjang.ankihelper.domain.CBWatcherService;
-import com.mmjang.ankihelper.util.Constant;
+import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
-import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.data.model.UserTag;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
-import com.mmjang.ankihelper.data.Settings;
+import com.mmjang.ankihelper.domain.CBWatcherService;
+import com.mmjang.ankihelper.domain.PlayAudioManager;
+import com.mmjang.ankihelper.domain.PronounceManager;
+import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.util.TextSegment;
 import com.mmjang.ankihelper.util.TextSplitter;
-import com.mmjang.ankihelper.data.model.UserTag;
 import com.mmjang.ankihelper.util.Utils;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -70,6 +71,7 @@ public class PopupActivity extends Activity {
     List<IDictionary> dictionaryList;
     IDictionary currentDicitonary;
     List<OutputPlan> outputPlanList;
+    List<String> languageList;
     OutputPlan currentOutputPlan;
     Settings settings;
     String mTextToProcess;
@@ -84,7 +86,9 @@ public class PopupActivity extends Activity {
     //views
     AutoCompleteTextView act;
     Button btnSearch;
+    Button btnPronounce;
     Spinner planSpinner;
+    Spinner pronounceLanguageSpinner;
     RecyclerView recyclerViewDefinitionList;
     FlowLayout wordSelectBox;
     ImageButton mBtnEditNote;
@@ -126,6 +130,7 @@ public class PopupActivity extends Activity {
         assignViews();
         loadData(); //dictionaryList;
         populatePlanSpinner();
+        populateLanguageSpinner();
         setEventListener();
         handleIntent();
         if (settings.getMoniteClipboardQ()) {
@@ -154,7 +159,9 @@ public class PopupActivity extends Activity {
     private void assignViews() {
         act = (AutoCompleteTextView) findViewById(R.id.edit_text_hwd);
         btnSearch = (Button) findViewById(R.id.btn_search);
+        btnPronounce = ((Button) findViewById(R.id.btn_pronounce));
         planSpinner = (Spinner) findViewById(R.id.plan_spinner);
+        pronounceLanguageSpinner = (Spinner) findViewById(R.id.language_spinner);
         recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
         wordSelectBox = (FlowLayout) findViewById(R.id.words_select_box);
         viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
@@ -225,6 +232,18 @@ public class PopupActivity extends Activity {
         }
     }
 
+    private void populateLanguageSpinner(){
+
+        String[] languages = PronounceManager.getAvailablePronounceLanguage();
+        ArrayAdapter<String> languagesSpinnerAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, languages);
+        languagesSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pronounceLanguageSpinner.setAdapter(languagesSpinnerAdapter);
+        int lastPronounceLanguageIndex = settings.getLastPronounceLanguage();
+        pronounceLanguageSpinner.setSelection(lastPronounceLanguageIndex);
+
+    }
+
     private void setEventListener() {
 
         //auto finish
@@ -268,6 +287,18 @@ public class PopupActivity extends Activity {
                 }
         );
 
+        pronounceLanguageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                settings.setLastPronounceLanguage(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         btnSearch.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -280,6 +311,14 @@ public class PopupActivity extends Activity {
                     }
                 }
         );
+
+        btnPronounce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String word = act.getText().toString();
+                PlayAudioManager.playPronounceVoice(PopupActivity.this, word);
+            }
+        });
 
         mBtnEditNote.setOnClickListener(
                 new View.OnClickListener() {
@@ -312,7 +351,7 @@ public class PopupActivity extends Activity {
 
     private void processDefinitionList(List<Definition> definitionList) {
         if (definitionList.isEmpty()) {
-            Snackbar.make(recyclerViewDefinitionList, R.string.definition_not_found, Snackbar.LENGTH_SHORT).setAction("action", null).show();
+            Toast.makeText(this, R.string.definition_not_found, Toast.LENGTH_SHORT).show();
         } else {
 //            DefinitionAdapter defAdapter = new DefinitionAdapter(PopupActivity.this, definitionList, mTextSplitter, currentOutputPlan);
 //            LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -459,9 +498,11 @@ public class PopupActivity extends Activity {
 
     private void asyncSearch(final String word) {
         if (word.length() == 0) {
+            showPronounce(false);
             return;
         }
         showProgressBar();
+        showPronounce(true);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -529,12 +570,12 @@ public class PopupActivity extends Activity {
                                 i++;
                                 continue;
                             }
-                            if(key.equals(sharedExportElements[4])){
+                            if (key.equals(sharedExportElements[4])) {
                                 flds[i] = mUrl;
-                                i ++;
+                                i++;
                                 continue;
                             }
-                            if(def.hasElement(key)) {
+                            if (def.hasElement(key)) {
                                 flds[i] = def.getExportElement(key);
                                 i++;
                                 continue;
@@ -687,12 +728,17 @@ public class PopupActivity extends Activity {
         startService(intent);
     }
 
-    private void showProgressBar(){
+    private void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
         btnSearch.setVisibility(View.GONE);
     }
-    private void showSearchButton(){
+
+    private void showSearchButton() {
         progressBar.setVisibility(View.GONE);
         btnSearch.setVisibility(View.VISIBLE);
+    }
+
+    private void showPronounce(boolean shouldShow) {
+        btnPronounce.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
     }
 }

@@ -24,4 +24,5 @@
     <string name="about_message">I\'m Zha Maomiao(aka mmjang), this project is open-sourced. <a href="https://github.com/mmjang/ankihelper">Check it out on github.</a></string>
     <string name="confirm_deletion">Delete?</string>
     <string name="save_plan_error_all_blank">Failed to save. All fields are empty!</string>
+    <string name="plan_anki_not_started">please start ankidroid first!</string>
 </resources>

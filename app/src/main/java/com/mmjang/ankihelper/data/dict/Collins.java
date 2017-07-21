@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Collins extends SQLiteAssetHelper implements IDictionary {
     //private static final String DATABASE_NAME = ".db";
-    private static final String DATABASE_NAME = "collins.db";
+    private static final String DATABASE_NAME = "collins_v2.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_DICT = "dict";
     private static final String FIELD_HWD = "hwd";

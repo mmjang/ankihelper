@@ -9,6 +9,7 @@ import com.mmjang.ankihelper.MyApplication;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -67,9 +68,14 @@ public class Dedict implements IDictionary {
                 phonetics = phonitic.get(0).text().trim();
             }
 
+            ArrayList<String> cnDefSplitted = new ArrayList<>();
+
             Elements cnDiv = doc.select("#FCChild");
             if (cnDiv.size() == 1) {
                 frCnDef = cnDiv.get(0).html().trim();
+                for(Element cnDef : cnDiv.get(0).select("span.exp")){
+                    cnDefSplitted.add(cnDef.text().trim().replace("\n","").replace("\t",""));
+                }
             }
 
             Elements frDiv = doc.select("#FFChild");
@@ -82,19 +88,18 @@ public class Dedict implements IDictionary {
                 frEnDef = enDiv.get(0).html().trim();
             }
 
-            HashMap<String, String> expele = new HashMap<>();
-            expele.put(EXP_ELE[0], headWrod);
-            expele.put(EXP_ELE[1], phonetics);
-            expele.put(EXP_ELE[2], frCnDef);
-            expele.put(EXP_ELE[3], frFrDef);
-            expele.put(EXP_ELE[4], frEnDef);
-
-            String exportedHtml = headWrod + "</br>" + phonetics + "</br>" + frCnDef + "</br>" + frEnDef;
-
-            Definition d = new Definition(expele, exportedHtml);
-
             ArrayList<Definition> defList = new ArrayList<>();
-            defList.add(d);
+            for(String cnDef : cnDefSplitted){
+                HashMap<String, String> expele = new HashMap<>();
+                expele.put(EXP_ELE[0], headWrod);
+                expele.put(EXP_ELE[1], phonetics);
+                expele.put(EXP_ELE[2], cnDef);
+                expele.put(EXP_ELE[3], frFrDef);
+                expele.put(EXP_ELE[4], frEnDef);
+                String exportedHtml = headWrod + " " + phonetics + "<br/>" + cnDef;
+                Definition d = new Definition(expele, exportedHtml);
+                defList.add(d);
+            }
             return defList;
         } catch (IOException ioe) {
             //Log.d("time out", Log.getStackTraceString(ioe));

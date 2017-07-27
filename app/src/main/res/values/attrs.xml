@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BigBangLayout">
+        <attr name="itemSpace" format="dimension"/>
+        <attr name="lineSpace" format="dimension"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="textColor" format="reference"/>
+        <attr name="textBackground" format="reference"/>
+        <attr name="sectionTextBackground" format="reference"/>
+        <attr name="symbolTextBackground" format="reference"/>
+    </declare-styleable>
+</resources>

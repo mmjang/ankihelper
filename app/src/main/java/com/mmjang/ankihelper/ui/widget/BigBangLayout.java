@@ -1096,7 +1096,7 @@ boolean autoAddBlanks = false;
         }
 
        public boolean isSymbol(){
-           return RegexUtil.isSymbol(((TextView) view).getText().toString());
+           return RegexUtil.isSymbol(((TextView) view).getText().toString()) || StringUtil.isSpace(((TextView) view).getText().toString());
        }
 
        public boolean isSelected() {

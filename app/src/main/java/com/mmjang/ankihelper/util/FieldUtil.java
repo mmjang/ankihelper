@@ -19,7 +19,7 @@ public class FieldUtil {
             BigBangLayout.Item item = selectedItems.get(i);
             if (item.isSelected()) {
                 sb.append(item.getText());
-                if (item.getText().toString().matches("[a-zA-Z0-9]*")) {
+                if (RegexUtil.isEnglish(item.getText().toString()) || RegexUtil.isSpecialWord(item.getText().toString())) {
                     if (i + 1 < selectedItems.size() && !RegexUtil.isSymbol(selectedItems.get(i + 1).getText().toString())) {
                         sb.append(" ");
                     }
@@ -54,7 +54,7 @@ public class FieldUtil {
                 } else {
                     sb.append(item.getText());
                 }
-                if (item.getText().toString().matches("[a-zA-Z0-9]*")) {
+                if (RegexUtil.isEnglish(item.getText().toString()) || RegexUtil.isSpecialWord(item.getText().toString())) {
                     if (i + 1 < items.size() && !RegexUtil.isSymbol(items.get(i + 1).getText().toString())) {
                         sb.append(" ");
                     }
@@ -75,7 +75,7 @@ public class FieldUtil {
                 } else {
                     sb.append(item.getText());
                 }
-                if (item.getText().toString().matches("[a-zA-Z0-9]*")) {
+                if (RegexUtil.isEnglish(item.getText().toString()) || RegexUtil.isSpecialWord(item.getText().toString())) {
                     if (i + 1 < items.size() && !RegexUtil.isSymbol(items.get(i + 1).getText().toString())) {
                         sb.append(" ");
                     }

@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.util.ViewUtil;
 
-class BigBangHeader extends ViewGroup implements View.OnClickListener {
+public class BigBangHeader extends ViewGroup implements View.OnClickListener {
 
     ImageView mSearch;
     ImageView mShare;

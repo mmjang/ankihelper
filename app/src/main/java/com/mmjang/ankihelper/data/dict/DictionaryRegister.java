@@ -20,7 +20,8 @@ public class DictionaryRegister {
             Esdict.class,
             Frdict.class,
             Dedict.class,
-            Cloze.class
+            Cloze.class,
+            JiSho.class
     };
 
     private static List<IDictionary> dictList;

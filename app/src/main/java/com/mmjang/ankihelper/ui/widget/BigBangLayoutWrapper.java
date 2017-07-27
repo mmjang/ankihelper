@@ -62,7 +62,9 @@ public class BigBangLayoutWrapper extends FrameLayout {
 
         mBigBangLayout= (BigBangLayout) findViewById(R.id.bigbang);
         mBottom= (BigBangBottom) findViewById(R.id.bottom);
+        mBottom.setVisibility(GONE);
         mHeader= (BigBangHeader) findViewById(R.id.header);
+        mHeader.setVisibility(GONE);
         mScrollView = (ScrollView) findViewById(R.id.bigbang_scroll);
 
         mBigBangLayout.setActionListener(new BigBangLayout.ActionListener() {
@@ -215,9 +217,9 @@ public class BigBangLayoutWrapper extends FrameLayout {
         mBigBangLayout.setStickHeader(stickHeader);
         mHeader.setStickHeader(stickHeader);
         if (stickHeader){
-            mHeader.setVisibility(VISIBLE);
+//            mHeader.setVisibility(VISIBLE);
         }else {
-            mHeader.setVisibility(GONE);
+//            mHeader.setVisibility(GONE);
         }
     }
 
@@ -227,7 +229,8 @@ public class BigBangLayoutWrapper extends FrameLayout {
         int height = MeasureSpec.getSize(heightMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mHeader.measure(widthMeasureSpec,MeasureSpec.makeMeasureSpec(0,MeasureSpec.EXACTLY));
-        int childHeight= (int) (mBottom.getMeasuredHeight()+mBigBangLayout.getMeasuredHeight() + (stickHeader?mHeader.getMeasuredHeight()*4.0/3:0));
+//        int childHeight= (int) (mBottom.getMeasuredHeight()+mBigBangLayout.getMeasuredHeight() + (stickHeader?mHeader.getMeasuredHeight()*4.0/3:0));
+        int childHeight= (int) (mBottom.getMeasuredHeight()+mBigBangLayout.getMeasuredHeight() );
         if (fullScreenMode){
             setMeasuredDimension(MeasureSpec.makeMeasureSpec(width,MeasureSpec.AT_MOST),MeasureSpec.makeMeasureSpec(getRootView().getHeight(),MeasureSpec.AT_MOST));
         }else {
@@ -248,8 +251,8 @@ public class BigBangLayoutWrapper extends FrameLayout {
             if (fullScreenMode){
                 topPadding += mHeader.getMeasuredHeight()*2.0/3+ViewUtil.getNavigationBarHeight((Activity) getContext());
             }
-            mHeader.layout(left,top+topPadding,right,top+topPadding+mHeader.getMeasuredHeight());
-            top = top + topPadding + mHeader.getMeasuredHeight();
+//            mHeader.layout(left,top+topPadding,right,top+topPadding+mHeader.getMeasuredHeight());
+//            top = top + topPadding + mHeader.getMeasuredHeight();
         }else {
             if (fullScreenMode) {
                 topPadding += (int) (mHeader.getMeasuredHeight() * 2.0 / 3)+ViewUtil.getNavigationBarHeight((Activity) getContext());

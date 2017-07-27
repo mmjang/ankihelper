@@ -8,5 +8,6 @@
         <attr name="textColor" format="reference"/>
         <attr name="textBackground" format="reference"/>
         <attr name="sectionTextBackground" format="reference"/>
+        <attr name="symbolTextBackground" format="reference"/>
     </declare-styleable>
 </resources>

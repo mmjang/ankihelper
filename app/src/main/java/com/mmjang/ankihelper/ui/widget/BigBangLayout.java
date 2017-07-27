@@ -52,12 +52,15 @@ public class BigBangLayout extends ViewGroup implements BigBangHeader.ActionList
     private static final int DEFAULT_TEXT_COLOR_RES = R.color.bigbang_item_text;
     private static final int DEFAULT_TEXT_BG_RES = R.drawable.item_background;
     private static final int DEFAULT_SECTION_TEXT_BG_RES = R.drawable.item_background_section;
+    private static final int DEFAULT_SYMBOL_TEXT_BG_RES = R.drawable.item_background_symbol;
     private int mLineSpace;
     private int mItemSpace;
     private int mTextColorRes;
     private int mSectionTextBgRes;
+    private int mSymbolTextBgRes;
     private int mTextSize;
     private int mTextPadding = (int) ViewUtil.dp2px(ConstantUtil.DEFAULT_ITEM_PADDING);
+    private int mSymbolTextPadding = (int) ViewUtil.dp2px(0);
     private int mTextPaddingPort = (int) ViewUtil.dp2px(5);
     private int mTextBgRes;
 
@@ -100,6 +103,7 @@ boolean autoAddBlanks = false;
     private boolean showSymbol = false;
     private boolean showSection = false;
     private boolean showSpace = false;
+    private boolean symbolSelectable = false;
 
     private Rect mDragSelectRect;
     private Paint mDragSelectPaint;
@@ -140,6 +144,7 @@ boolean autoAddBlanks = false;
             mTextSize = (int) ViewUtil.px2sp(typedArray.getDimension(R.styleable.BigBangLayout_textSize, ViewUtil.sp2px(DEFAULT_TEXT_SIZE)));
             mTextBgRes = typedArray.getResourceId(R.styleable.BigBangLayout_textBackground, DEFAULT_TEXT_BG_RES);
             mSectionTextBgRes = typedArray.getResourceId(R.styleable.BigBangLayout_sectionTextBackground, DEFAULT_SECTION_TEXT_BG_RES);
+            mSymbolTextBgRes = typedArray.getResourceId(R.styleable.BigBangLayout_symbolTextBackground, DEFAULT_SYMBOL_TEXT_BG_RES);
             typedArray.recycle();
             mActionBarBottomHeight = mLineSpace;
             mActionBarTopHeight = getResources().getDimensionPixelSize(R.dimen.big_bang_action_bar_height);
@@ -272,7 +277,26 @@ boolean autoAddBlanks = false;
                 List<Item> items = line.getItems();
                 for (Item item : items) {
                     ((TextView) item.view).setTextSize(mTextSize);
-                    (item.view).setPadding(mTextPadding, mTextPaddingPort,mTextPadding, mTextPaddingPort);
+                    if (!item.isSymbol()) {
+                        (item.view).setPadding(mTextPadding, mTextPaddingPort, mTextPadding, mTextPaddingPort);
+                    } else {
+                        (item.view).setPadding(mSymbolTextPadding, mTextPaddingPort, mSymbolTextPadding, mTextPaddingPort);
+                    }
+                }
+            }
+        }
+    }
+
+    public void setSymbolTextPadding(int padding){
+        mSymbolTextPadding=padding;
+        mNeedReDetectInMeasure=true;
+        if (mLines != null) {
+            for (Line line : mLines) {
+                List<Item> items = line.getItems();
+                for (Item item : items) {
+                    if(item.isSymbol()){
+                        (item.view).setPadding(mSymbolTextPadding, mTextPaddingPort,mSymbolTextPadding, mTextPaddingPort);
+                    }
                 }
             }
         }
@@ -285,7 +309,9 @@ boolean autoAddBlanks = false;
             for (Line line : mLines) {
                 List<Item> items = line.getItems();
                 for (Item item : items) {
-                    (item.view).setPadding(mTextPadding, mTextPaddingPort,mTextPadding, mTextPaddingPort);
+                    if(!item.isSymbol()){
+                        (item.view).setPadding(mTextPadding, mTextPaddingPort,mTextPadding, mTextPaddingPort);
+                    }
                 }
             }
         }
@@ -298,7 +324,9 @@ boolean autoAddBlanks = false;
             for (Line line : mLines) {
                 List<Item> items = line.getItems();
                 for (Item item : items) {
-                    (item.view).setPadding(mTextPadding, mTextPaddingPort,mTextPadding, mTextPaddingPort);
+                    if(!item.isSymbol()){
+                        (item.view).setPadding(mTextPadding, mTextPaddingPort,mTextPadding, mTextPaddingPort);
+                    }
                 }
             }
         }
@@ -331,7 +359,11 @@ boolean autoAddBlanks = false;
             view.setTextColor(mColorStateList);
         }
         view.setTextSize(mTextSize);
-        view.setPadding(mTextPadding, mTextPaddingPort,mTextPadding, mTextPaddingPort);
+        if (RegexUtil.isSymbol(text)) {
+            view.setPadding(mSymbolTextPadding, mTextPaddingPort,mSymbolTextPadding, mTextPaddingPort);
+        } else {
+            view.setPadding(mTextPadding, mTextPaddingPort,mTextPadding, mTextPaddingPort);
+        }
         view.setGravity(Gravity.CENTER);
         addView(view);
     }
@@ -367,6 +399,14 @@ boolean autoAddBlanks = false;
         this.showSpace = showSpace;
         mNeedReDetectInMeasure=true;
         requestLayout();
+    }
+
+    public boolean isSymbolSelectable() {
+        return symbolSelectable;
+    }
+
+    public void setSymbolSelectable(boolean symbolSelectable) {
+        this.symbolSelectable = symbolSelectable;
     }
 
     public boolean isShowSection() {
@@ -453,7 +493,10 @@ boolean autoAddBlanks = false;
                     int padding = child.getPaddingLeft();
                     child.setBackgroundResource(mSectionTextBgRes);
                     child.setPadding(padding, mTextPaddingPort, padding, mTextPaddingPort);
-                } else {
+                } else if(item.isSymbol()){
+                    child.setBackgroundResource(mSymbolTextBgRes);
+                    child.setPadding(mSymbolTextPadding, mTextPaddingPort, mSymbolTextPadding, mTextPaddingPort);
+                }else {
                     int padding = child.getPaddingLeft();
                     child.setBackgroundResource(mTextBgRes);
                     child.setPadding(padding, mTextPaddingPort, padding, mTextPaddingPort);
@@ -1052,12 +1095,18 @@ boolean autoAddBlanks = false;
             return rect;
         }
 
-        public boolean isSelected() {
+       public boolean isSymbol(){
+           return RegexUtil.isSymbol(((TextView) view).getText().toString());
+       }
+
+       public boolean isSelected() {
             return view.isSelected();
         }
 
         public void setSelected(boolean selected) {
-            view.setSelected(selected);
+            if (symbolSelectable || !isSymbol()) {
+                view.setSelected(selected);
+            }
         }
 
         void triggerSelected() {

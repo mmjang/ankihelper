@@ -35,6 +35,9 @@ public class TextSplitter {
                 s = s + first + DEVIDER;
             } else if (RegexUtil.isSymbol(first)) {
                 s = s + DEVIDER + first + DEVIDER;
+            } else if (StringUtil.isSpace(first)) {
+                // do nothing
+                // seperate space from word
             } else {
                 s = s + first;
             }

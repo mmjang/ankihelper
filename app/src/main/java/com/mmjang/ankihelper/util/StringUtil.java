@@ -20,4 +20,8 @@ public class StringUtil {
         }
         return true;
     }
+
+    public static boolean isSpace(char c) {
+        return Character.isSpaceChar(c) || Character.isWhitespace(c);
+    }
 }

@@ -1027,7 +1027,7 @@ boolean autoAddBlanks = false;
 
    public class Item {
         Line line;
-        int index;
+        public int index;
         int height;
         int width;
         View view;

@@ -43,10 +43,11 @@ public class FieldUtil {
 
     public static String getBoldSentence(List<BigBangLayout.Line> lines) {
         StringBuilder sb = new StringBuilder();
-        for (BigBangLayout.Line line : lines) {
+        for (int lineIndex = 0; lineIndex < lines.size(); lineIndex++) {
+            BigBangLayout.Line line = lines.get(lineIndex);
             List<BigBangLayout.Item> items = line.getItems();
-            for (int i = 0; i < items.size(); i++) {
-                BigBangLayout.Item item = items.get(i);
+            for (int itemIndex = 0; itemIndex < items.size(); itemIndex++) {
+                BigBangLayout.Item item = items.get(itemIndex);
                 if (item.isSelected()) {
                     sb.append("<b>");
                     sb.append(item.getText());
@@ -54,9 +55,19 @@ public class FieldUtil {
                 } else {
                     sb.append(item.getText());
                 }
-                if (RegexUtil.isEnglish(item.getText().toString()) || RegexUtil.isSpecialWord(item.getText().toString())) {
-                    if (i + 1 < items.size() && !RegexUtil.isSymbol(items.get(i + 1).getText().toString())) {
-                        sb.append(" ");
+                String current = item.getText().toString();
+                if (RegexUtil.isEnglish(current) || RegexUtil.isSpecialWord(current) || RegexUtil.isSymbol(current)) {
+                    if (itemIndex + 1 == items.size()) {
+                        //当前行最后item
+                        if (lineIndex + 1 < lines.size() && !RegexUtil.isSymbol(lines.get(lineIndex + 1).getItems().get(0).getText().toString())) {
+                            //当前行不是最后一行，下一行第一个不是符号，则加空格
+                            sb.append(" ");
+                        }
+                    } else {
+                        //当前行非最后item, 且该item之后的不是符号，则加空格
+                        if (!RegexUtil.isSymbol(items.get(itemIndex + 1).getText().toString())) {
+                            sb.append(" ");
+                        }
                     }
                 }
             }
@@ -66,18 +77,29 @@ public class FieldUtil {
 
     public static String getBlankSentence(List<BigBangLayout.Line> lines) {
         StringBuilder sb = new StringBuilder();
-        for (BigBangLayout.Line line : lines) {
+        for (int lineIndex = 0; lineIndex < lines.size(); lineIndex++) {
+            BigBangLayout.Line line = lines.get(lineIndex);
             List<BigBangLayout.Item> items = line.getItems();
-            for (int i = 0; i < items.size(); i++) {
-                BigBangLayout.Item item = items.get(i);
+            for (int itemIndex = 0; itemIndex < items.size(); itemIndex++) {
+                BigBangLayout.Item item = items.get(itemIndex);
                 if (item.isSelected()) {
                     sb.append("{{c1::" + item.getText() + "}}");
                 } else {
                     sb.append(item.getText());
                 }
-                if (RegexUtil.isEnglish(item.getText().toString()) || RegexUtil.isSpecialWord(item.getText().toString())) {
-                    if (i + 1 < items.size() && !RegexUtil.isSymbol(items.get(i + 1).getText().toString())) {
-                        sb.append(" ");
+                String current = item.getText().toString();
+                if (RegexUtil.isEnglish(current) || RegexUtil.isSpecialWord(current) || RegexUtil.isSymbol(current)) {
+                    if (itemIndex + 1 == items.size()) {
+                        //当前行最后item
+                        if (lineIndex + 1 < lines.size() && !RegexUtil.isSymbol(lines.get(lineIndex + 1).getItems().get(0).getText().toString())) {
+                            //当前行不是最后一行，下一行第一个不是符号，则加空格
+                            sb.append(" ");
+                        }
+                    } else {
+                        //当前行非最后item, 且该item之后的不是符号，则加空格
+                        if (!RegexUtil.isSymbol(items.get(itemIndex + 1).getText().toString())) {
+                            sb.append(" ");
+                        }
                     }
                 }
             }

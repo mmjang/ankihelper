@@ -673,6 +673,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     public void onSelected(String text) {
         String currentWord = FieldUtil.getSelectedText(bigBangLayout.getLines());
         if (!currentWord.equals(act.getText().toString())) {
+            mCurrentKeyWord = currentWord;
             act.setText(currentWord);
             asyncSearch(currentWord);
         }

@@ -7,8 +7,9 @@ public class RegexUtil {
 
     public static final String SYMBOL_REX_WITH_BLANK = "[ ,\\./:\"\\\\\\[\\]\\|`~!@#\\$%\\^&\\*\\(\\)_\\+=<\\->\\?;'，。、；：‘’“”【】《》？\\{\\}！￥…（）—=]";
     public static final String SYMBOL_REX_WITHOUT_BLANK = "[,\\./:\"\\\\\\[\\]\\|`~!! @#\\$%\\^&\\*\\(\\)_\\+=<\\->\\?;'，。、；：‘’“”【】《》？\\{\\}！￥…（）—=]";
+    public static final String SYMBOL_REX_WITHOUT_BLANK_WITH_ENTER = "[\\n,\\./:\"\\\\\\[\\]\\|`~!! @#\\$%\\^&\\*\\(\\)_\\+=<\\->\\?;'，。、；：‘’“”【】《》？\\{\\}！￥…（）—=]";
 
-    public static String SYMBOL_REX = SYMBOL_REX_WITHOUT_BLANK;
+    public static String SYMBOL_REX = SYMBOL_REX_WITHOUT_BLANK_WITH_ENTER;
 
 //    public static void refreshSymbolSelection(){
 //        boolean b = SPHelper.getBoolean(ConstantUtil.TREAT_BLANKS_AS_SYMBOL, true);

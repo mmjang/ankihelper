@@ -6,9 +6,9 @@ import java.util.regex.Pattern;
 public class RegexUtil {
 
     public static final String SYMBOL_REX_WITH_BLANK = "[ ,\\./:\"\\\\\\[\\]\\|`~!@#\\$%\\^&\\*\\(\\)_\\+=<\\->\\?;'，。、；：‘’“”【】《》？\\{\\}！￥…（）—=]";
-    public static final String SYMBOL_REX_WITHOUT_BLANK = "[,\\./:\"\\\\\\[\\]\\|`~!@#\\$%\\^&\\*\\(\\)_\\+=<\\->\\?;'，。、；：‘’“”【】《》？\\{\\}！￥…（）—=]";
+    public static final String SYMBOL_REX_WITHOUT_BLANK = "[,\\./:\"\\\\\\[\\]\\|`~!! @#\\$%\\^&\\*\\(\\)_\\+=<\\->\\?;'，。、；：‘’“”【】《》？\\{\\}！￥…（）—=]";
 
-    public static String SYMBOL_REX = SYMBOL_REX_WITH_BLANK;
+    public static String SYMBOL_REX = SYMBOL_REX_WITHOUT_BLANK;
 
 //    public static void refreshSymbolSelection(){
 //        boolean b = SPHelper.getBoolean(ConstantUtil.TREAT_BLANKS_AS_SYMBOL, true);
@@ -20,6 +20,14 @@ public class RegexUtil {
 //    }
     public static boolean isEnglish(String charaString){
         return charaString.matches("^[a-zA-Z]*-*[a-zA-Z]*");
+    }
+
+    public static boolean isSpecialWord(String charaString){
+        return charaString.matches("^[a-zA-ZÀ-ÿ]*-*[a-zA-ZÀ-ÿ]*");
+    }
+
+    public static boolean isKorean(char ch){
+        return ch>='가' && ch<='힣';
     }
 
     public static boolean isPositiveInteger(String orginal) {

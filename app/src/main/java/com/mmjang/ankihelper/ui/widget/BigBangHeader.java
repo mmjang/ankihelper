@@ -22,7 +22,7 @@ class BigBangHeader extends ViewGroup implements View.OnClickListener {
     ImageView mSearch;
     ImageView mShare;
     ImageView mCopy;
-//    ImageView mDrag;
+    //    ImageView mDrag;
     ImageView mTrans;
     ImageView mClose;
 
@@ -34,8 +34,8 @@ class BigBangHeader extends ViewGroup implements View.OnClickListener {
     private int mActionGap;
     private int mContentPadding;
     private ActionListener mActionListener;
-    private boolean dragMode=false;
-    private boolean stickHeader=false;
+    private boolean dragMode = false;
+    private boolean stickHeader = false;
 
     public BigBangHeader(Context context) {
         this(context, null);
@@ -79,7 +79,7 @@ class BigBangHeader extends ViewGroup implements View.OnClickListener {
 //        mDrag.setImageResource(R.drawable.ic_sort_white_36dp);
 //        mDrag.setOnClickListener(this);
 
-        mTrans=new ImageView(context);
+        mTrans = new ImageView(context);
         mTrans.setImageResource(R.drawable.ic_compare_arrows_white_36dp);
         mTrans.setOnClickListener(this);
         mTrans.setContentDescription(getContext().getString(R.string.app_name));
@@ -93,7 +93,7 @@ class BigBangHeader extends ViewGroup implements View.OnClickListener {
 //        mSelectOther.setOnClickListener(this);
 
 
-        mClose=new ImageView(context);
+        mClose = new ImageView(context);
         mClose.setImageResource(R.drawable.ic_close_capture);
         mClose.setOnClickListener(this);
         mClose.setContentDescription(getContext().getString(R.string.app_name));
@@ -151,8 +151,8 @@ class BigBangHeader extends ViewGroup implements View.OnClickListener {
         int height = getMeasuredHeight();
 
         layoutSubView(mSearch, mActionGap, 0);
-        layoutSubView(mShare, 2 * mActionGap + mSearch.getMeasuredWidth() , 0);
-        layoutSubView(mTrans, 3 * mActionGap + mTrans.getMeasuredWidth()+ mShare.getMeasuredWidth() , 0);
+        layoutSubView(mShare, 2 * mActionGap + mSearch.getMeasuredWidth(), 0);
+        layoutSubView(mTrans, 3 * mActionGap + mTrans.getMeasuredWidth() + mShare.getMeasuredWidth(), 0);
 
 //        layoutSubView(mSelectAll, 2 * mActionGap + mSearch.getMeasuredWidth() , 0);
 //        layoutSubView(mSelectOther, 3 * mActionGap + mTrans.getMeasuredWidth()+ mShare.getMeasuredWidth() , 0);
@@ -169,14 +169,17 @@ class BigBangHeader extends ViewGroup implements View.OnClickListener {
         }
     }
 
-    private class BoundWrapper{
+    private class BoundWrapper {
         Rect bound;
-        public BoundWrapper(Rect bound){
-            this.bound=bound;
+
+        public BoundWrapper(Rect bound) {
+            this.bound = bound;
         }
+
         public Rect getBound() {
             return bound;
         }
+
         public void setBound(Rect bound) {
             this.bound = bound;
             mBorder.setBounds(bound);
@@ -225,8 +228,10 @@ class BigBangHeader extends ViewGroup implements View.OnClickListener {
             mActionListener.onShare();
         } else if (v == mCopy) {
             mActionListener.onCopy();
-        }else if (v==mTrans){
+        } else if (v == mTrans) {
             mActionListener.onTrans();
+        } else if (v == mClose) {
+            mActionListener.onCancel();
 //        }else if (v==mDrag){
 //            dragMode=!dragMode;
 //            if (dragMode) {
@@ -254,9 +259,13 @@ class BigBangHeader extends ViewGroup implements View.OnClickListener {
 
     interface ActionListener {
         void onSearch();
+
         void onShare();
+
         void onCopy();
+
         void onTrans();
+
         void onCancel();
     }
 }

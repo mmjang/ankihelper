@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +12,7 @@ import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -46,12 +46,13 @@ import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.domain.PlayAudioManager;
 import com.mmjang.ankihelper.domain.PronounceManager;
+import com.mmjang.ankihelper.ui.widget.BigBangLayout;
+import com.mmjang.ankihelper.ui.widget.BigBangLayoutWrapper;
 import com.mmjang.ankihelper.util.Constant;
-import com.mmjang.ankihelper.util.TextSegment;
+import com.mmjang.ankihelper.util.FieldUtil;
 import com.mmjang.ankihelper.util.TextSplitter;
 import com.mmjang.ankihelper.util.Utils;
 
-import org.apmem.tools.layouts.FlowLayout;
 import org.litepal.crud.DataSupport;
 
 import java.util.HashSet;
@@ -60,13 +61,11 @@ import java.util.Map;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
+import static com.mmjang.ankihelper.util.FieldUtil.getBlankSentence;
+import static com.mmjang.ankihelper.util.FieldUtil.getBoldSentence;
 
-public class PopupActivity extends Activity {
 
-    //constant
-    private static final int STATE_NON_WORD = 0;
-    private static final int STATE_WORD = 1;
-    private static final int STATE_SELECTED = 2;
+public class PopupActivity extends Activity implements BigBangLayoutWrapper.ActionListener{
 
     List<IDictionary> dictionaryList;
     IDictionary currentDicitonary;
@@ -90,7 +89,6 @@ public class PopupActivity extends Activity {
     Spinner planSpinner;
     Spinner pronounceLanguageSpinner;
     RecyclerView recyclerViewDefinitionList;
-    FlowLayout wordSelectBox;
     ImageButton mBtnEditNote;
     ImageButton mBtnEditTag;
     ProgressBar progressBar;
@@ -116,6 +114,8 @@ public class PopupActivity extends Activity {
             }
         }
     };
+    private BigBangLayout bigBangLayout;
+    private BigBangLayoutWrapper bigBangLayoutWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +128,7 @@ public class PopupActivity extends Activity {
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         //
         assignViews();
+        initBigBangLayout();
         loadData(); //dictionaryList;
         populatePlanSpinner();
         populateLanguageSpinner();
@@ -137,11 +138,18 @@ public class PopupActivity extends Activity {
             startCBService();
         }
 
-        for (int i = 0; i < wordSelectBox.getChildCount(); i++) {
-            TextView child = (TextView) wordSelectBox.getChildAt(i);
-            if (mTargetWord != null && child.getText().toString().equals(mTargetWord)) {
-                child.performClick();
-                return;
+        setTargetWord();
+    }
+
+    private void setTargetWord(){
+        if (!TextUtils.isEmpty(mTargetWord)) {
+            for (BigBangLayout.Line line : bigBangLayout.getLines()) {
+                List<BigBangLayout.Item> items = line.getItems();
+                for (BigBangLayout.Item item : items) {
+                    if (item.getText().equals(mTargetWord)) {
+                        item.setSelected(true);
+                    }
+                }
             }
         }
     }
@@ -163,11 +171,12 @@ public class PopupActivity extends Activity {
         planSpinner = (Spinner) findViewById(R.id.plan_spinner);
         pronounceLanguageSpinner = (Spinner) findViewById(R.id.language_spinner);
         recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
-        wordSelectBox = (FlowLayout) findViewById(R.id.words_select_box);
         viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
         mBtnEditNote = (ImageButton) findViewById(R.id.btn_edit_note);
         mBtnEditTag = (ImageButton) findViewById(R.id.btn_edit_tag);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        bigBangLayout = (BigBangLayout) findViewById(R.id.bigbang);
+        bigBangLayoutWrapper = (BigBangLayoutWrapper) findViewById(R.id.bigbang_wrapper);
     }
 
     private void loadData() {
@@ -232,7 +241,7 @@ public class PopupActivity extends Activity {
         }
     }
 
-    private void populateLanguageSpinner(){
+    private void populateLanguageSpinner() {
 
         String[] languages = PronounceManager.getAvailablePronounceLanguage();
         ArrayAdapter<String> languagesSpinnerAdapter = new ArrayAdapter<>(
@@ -241,6 +250,18 @@ public class PopupActivity extends Activity {
         pronounceLanguageSpinner.setAdapter(languagesSpinnerAdapter);
         int lastPronounceLanguageIndex = settings.getLastPronounceLanguage();
         pronounceLanguageSpinner.setSelection(lastPronounceLanguageIndex);
+
+    }
+
+    private void initBigBangLayout(){
+        bigBangLayout.setShowSymbol(true);
+        bigBangLayout.setShowSpace(false);
+        bigBangLayout.setItemSpace(0);
+        bigBangLayout.setLineSpace(0);
+        bigBangLayout.setTextPadding(5);
+        bigBangLayout.setTextPaddingPort(5);
+        bigBangLayoutWrapper.setStickHeader(true);
+        bigBangLayoutWrapper.setActionListener(this);
 
     }
 
@@ -391,110 +412,16 @@ public class PopupActivity extends Activity {
         if (mTextToProcess == null) {
             return;
         }
-        mTextSplitter = new TextSplitter(mTextToProcess, STATE_NON_WORD, STATE_WORD);
-        populateWordSelectBox(mTextSplitter);
+        populateWordSelectBox();
     }
 
-    private void populateWordSelectBox(TextSplitter splitter) {
-        //todo: this is dirty, be sure to reimplement later.
-        for (TextSegment ts : splitter.getSegmentList()) {
-            wordSelectBox.addView(getWordSelectBoxItem(ts));
+    private void populateWordSelectBox() {
+        List<String> localSegments = TextSplitter.getLocalSegments(mTextToProcess);
+        for (String localSegment : localSegments) {
+            bigBangLayout.addTextItem(localSegment);
         }
     }
 
-    private TextView getWordSelectBoxItem(final TextSegment textSegment) {
-        int pad1 = Utils.getPX(PopupActivity.this, 1);
-        final String text = textSegment.getText();
-        int state = textSegment.getState();
-        TextView tv = new TextView(this);
-        tv.setText(text);
-        FlowLayout.LayoutParams fllp = new FlowLayout.LayoutParams(
-                FlowLayout.LayoutParams.WRAP_CONTENT, FlowLayout.LayoutParams.WRAP_CONTENT);
-        int pad = Utils.getPX(PopupActivity.this, 2);
-        fllp.setMargins(0, 0, 0, 0);
-        tv.setLayoutParams(fllp);
-        switch (state) {
-            case STATE_NON_WORD:
-                tv.setTextColor(Color.BLACK);
-                tv.setBackground(ContextCompat.getDrawable(
-                        PopupActivity.this, R.drawable.word_select_box_item_trans));
-                tv.setPadding(0, pad, 0, pad);
-                break;
-            case STATE_WORD:
-                tv.setBackground(ContextCompat.getDrawable(
-                        PopupActivity.this, R.drawable.word_select_box_item));
-                tv.setTextColor(Color.BLACK);
-                tv.setPadding(pad, pad, pad, pad);
-                break;
-        }
-
-        tv.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        TextView textView = (TextView) v;
-                        if (textSegment.getState() == STATE_NON_WORD) {
-                            return;
-                        }
-                        if (textSegment.getState() == STATE_WORD) {
-                            textSegment.setState(STATE_SELECTED);
-                            textView.setBackground(ContextCompat.getDrawable(
-                                    PopupActivity.this, R.drawable.word_select_box_item_hl));
-                            textView.setTextColor(Color.WHITE);
-                            mCurrentKeyWord = mTextSplitter.getStringFromState(STATE_SELECTED);
-                            act.setText(mCurrentKeyWord);
-                            asyncSearch(mCurrentKeyWord);
-                            return;
-                        }
-                        if (textSegment.getState() == STATE_SELECTED) {
-                            textSegment.setState(STATE_WORD);
-                            textView.setBackground(ContextCompat.getDrawable(
-                                    PopupActivity.this, R.drawable.word_select_box_item));
-                            textView.setTextColor(Color.BLACK);
-                            mCurrentKeyWord = mTextSplitter.getStringFromState(STATE_SELECTED);
-                            act.setText(mCurrentKeyWord);
-                            asyncSearch(mCurrentKeyWord);
-                            return;
-                        }
-                    }
-                }
-        );
-
-        tv.setOnLongClickListener(
-                new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        TextView textView = (TextView) v;
-                        if (textSegment.getState() == STATE_NON_WORD) {
-                            return false;
-                        }
-                        if (textSegment.getState() == STATE_WORD) {
-                            for (int i = 0; i < wordSelectBox.getChildCount(); i++) {
-                                TextView child = (TextView) wordSelectBox.getChildAt(i);
-                                child.setBackground(ContextCompat.getDrawable(
-                                        PopupActivity.this, R.drawable.word_select_box_item));
-                                child.setTextColor(Color.BLACK);
-                                mTextSplitter.getSegmentList().get(i).setState(STATE_WORD);
-                            }
-                            textSegment.setState(STATE_SELECTED);
-                            textView.setBackground(ContextCompat.getDrawable(
-                                    PopupActivity.this, R.drawable.word_select_box_item_hl));
-                            textView.setTextColor(Color.WHITE);
-                            mCurrentKeyWord = mTextSplitter.getStringFromState(STATE_SELECTED);
-                            act.setText(mCurrentKeyWord);
-                            asyncSearch(mCurrentKeyWord);
-                            return true;
-                        }
-                        if (textSegment.getState() == STATE_SELECTED) {
-                            return false;
-                        }
-                        return false;
-                    }
-                }
-        );
-
-        return tv;
-    }
 
     private void asyncSearch(final String word) {
         if (word.length() == 0) {
@@ -546,46 +473,46 @@ public class PopupActivity extends Activity {
                     public void onClick(View v) {
                         AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid();
                         String[] sharedExportElements = Constant.getSharedExportElements();
-                        String[] flds = new String[currentOutputPlan.getFieldsMap().size()];
+                        String[] exportFields = new String[currentOutputPlan.getFieldsMap().size()];
                         int i = 0;
                         Map<String, String> map = currentOutputPlan.getFieldsMap();
-                        for (String key : currentOutputPlan.getFieldsMap().values()) {
-                            if (key.equals(sharedExportElements[0])) {
-                                flds[i] = "";
+                        for (String exportedFieldKey : currentOutputPlan.getFieldsMap().values()) {
+                            if (exportedFieldKey.equals(sharedExportElements[0])) {
+                                exportFields[i] = "";
                                 i++;
                                 continue;
                             }
-                            if (key.equals(sharedExportElements[1])) {
-                                flds[i] = mTextSplitter.getBoldSentence(2);
+                            if (exportedFieldKey.equals(sharedExportElements[1])) {
+                                exportFields[i] = getBoldSentence(bigBangLayout.getLines());
                                 i++;
                                 continue;
                             }
-                            if (key.equals(sharedExportElements[2])) {
-                                flds[i] = mTextSplitter.getBlankSentence(2);
+                            if (exportedFieldKey.equals(sharedExportElements[2])) {
+                                exportFields[i] = getBlankSentence(bigBangLayout.getLines());
                                 i++;
                                 continue;
                             }
-                            if (key.equals(sharedExportElements[3])) {
-                                flds[i] = mNoteEditedByUser;
+                            if (exportedFieldKey.equals(sharedExportElements[3])) {
+                                exportFields[i] = mNoteEditedByUser;
                                 i++;
                                 continue;
                             }
-                            if (key.equals(sharedExportElements[4])) {
-                                flds[i] = mUrl;
+                            if (exportedFieldKey.equals(sharedExportElements[4])) {
+                                exportFields[i] = mUrl;
                                 i++;
                                 continue;
                             }
-                            if (def.hasElement(key)) {
-                                flds[i] = def.getExportElement(key);
+                            if (def.hasElement(exportedFieldKey)) {
+                                exportFields[i] = def.getExportElement(exportedFieldKey);
                                 i++;
                                 continue;
                             }
-                            flds[i] = "";
+                            exportFields[i] = "";
                             i++;
                         }
                         long deckId = currentOutputPlan.getOutputDeckId();
                         long modelId = currentOutputPlan.getOutputModelId();
-                        Long result = mAnkiDroid.getApi().addNote(modelId, deckId, flds, mTagEditedByUser);
+                        Long result = mAnkiDroid.getApi().addNote(modelId, deckId, exportFields, mTagEditedByUser);
                         if (result != null) {
                             Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
                             btnAddDefinition.setBackground(ContextCompat.getDrawable(
@@ -740,5 +667,64 @@ public class PopupActivity extends Activity {
 
     private void showPronounce(boolean shouldShow) {
         btnPronounce.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onSelected(String text) {
+        String currentWord = FieldUtil.getSelectedText(bigBangLayout.getLines());
+        if (!currentWord.equals(act.getText().toString())) {
+            act.setText(currentWord);
+            asyncSearch(currentWord);
+        }
+    }
+
+    @Override
+    public void onSearch(String text) {
+
+    }
+
+    @Override
+    public void onShare(String text) {
+
+    }
+
+    @Override
+    public void onCopy(String text) {
+
+    }
+
+    @Override
+    public void onTrans(String text) {
+
+    }
+
+    @Override
+    public void onDrag() {
+
+    }
+
+    @Override
+    public void onSwitchType(boolean isLocal) {
+
+    }
+
+    @Override
+    public void onSwitchSymbol(boolean isShow) {
+
+    }
+
+    @Override
+    public void onSwitchSection(boolean isShow) {
+
+    }
+
+    @Override
+    public void onDragSelection() {
+
+    }
+
+    @Override
+    public void onCancel() {
+
     }
 }

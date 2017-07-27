@@ -33,9 +33,11 @@ import android.widget.TextView;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.util.ConstantUtil;
 import com.mmjang.ankihelper.util.RegexUtil;
+import com.mmjang.ankihelper.util.StringUtil;
 import com.mmjang.ankihelper.util.ViewUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -97,6 +99,7 @@ boolean autoAddBlanks = false;
 
     private boolean showSymbol = false;
     private boolean showSection = false;
+    private boolean showSpace = false;
 
     private Rect mDragSelectRect;
     private Paint mDragSelectPaint;
@@ -288,6 +291,19 @@ boolean autoAddBlanks = false;
         }
     }
 
+    public void setTextPaddingPort(int padding){
+        mTextPaddingPort=padding;
+        mNeedReDetectInMeasure=true;
+        if (mLines != null) {
+            for (Line line : mLines) {
+                List<Item> items = line.getItems();
+                for (Item item : items) {
+                    (item.view).setPadding(mTextPadding, mTextPaddingPort,mTextPadding, mTextPaddingPort);
+                }
+            }
+        }
+    }
+
     public int getTextBgRes() {
         return mTextBgRes;
     }
@@ -343,6 +359,16 @@ boolean autoAddBlanks = false;
         requestLayout();
     }
 
+    public boolean isShowSpace() {
+        return showSpace;
+    }
+
+    public void setShowSpace(boolean showSpace) {
+        this.showSpace = showSpace;
+        mNeedReDetectInMeasure=true;
+        requestLayout();
+    }
+
     public boolean isShowSection() {
         return showSection;
     }
@@ -390,6 +416,12 @@ boolean autoAddBlanks = false;
                 child.setVisibility(VISIBLE);
                 if (!showSymbol) {
                     if (RegexUtil.isSymbol(content)) {
+                        child.setVisibility(GONE);
+                        continue;
+                    }
+                }
+                if (!showSpace) {
+                    if (StringUtil.isSpace(content)) {
                         child.setVisibility(GONE);
                         continue;
                     }
@@ -929,7 +961,11 @@ boolean autoAddBlanks = false;
         mActionListener = actionListener;
     }
 
-    class Line {
+    public List<Line> getLines(){
+        return Collections.unmodifiableList(mLines);
+    }
+
+    public class Line {
         int maxIndex;
         List<Item> items;
 
@@ -944,7 +980,7 @@ boolean autoAddBlanks = false;
             items.add(item);
         }
 
-        List<Item> getItems() {
+        public List<Item> getItems() {
             return items;
         }
 
@@ -1016,7 +1052,7 @@ boolean autoAddBlanks = false;
             return rect;
         }
 
-        boolean isSelected() {
+        public boolean isSelected() {
             return view.isSelected();
         }
 
@@ -1028,7 +1064,7 @@ boolean autoAddBlanks = false;
             view.setSelected(!view.isSelected());
         }
 
-        CharSequence getText() {
+        public CharSequence getText() {
             return ((TextView)view).getText().toString();
         }
 
@@ -1068,6 +1104,7 @@ boolean autoAddBlanks = false;
      * Action Listener
      */
     public interface ActionListener {
+
         void onSelected(String text);
 
         void onSearch(String text);

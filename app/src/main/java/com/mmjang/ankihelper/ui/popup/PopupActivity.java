@@ -725,6 +725,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     @Override
     public void onCancel() {
-
+        act.setText("");
+        asyncSearch("");
     }
 }

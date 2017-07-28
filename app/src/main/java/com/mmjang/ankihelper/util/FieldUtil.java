@@ -72,6 +72,6 @@ public class FieldUtil {
                 }
             }
         }
-        return sb.toString().trim();
+        return sb.toString().replace("}}{{c1::","").trim(); //combine adjacent cloze
     }
 }

@@ -23,9 +23,10 @@ import java.util.List;
 
 public class JiSho implements IDictionary {
 
+    private static final String AUDIO_TAG = "MP3";
     private static final String DICT_NAME = "Japenese (jisho.org)";
     private static final String DICT_INTRO = "数据来自 jisho.org. audio项是形如 [sound:xxx.mp3] 的发音，使用之前默认模版的用户需要编辑模版并在里面加入{{audio}}";
-    private static final String[] EXP_ELE = new String[] {"word", "reading", "audio", "meaning_tag", "definition"};
+    private static final String[] EXP_ELE = new String[] {"word", "reading", "audio", "definition"};
 
     private static final String wordUrl = "http://jisho.org/search/";
     private static final String autoCompleteUrl = "https://www.esdict.cn/dicts/prefix/";
@@ -83,13 +84,17 @@ public class JiSho implements IDictionary {
                         if(word_def_soup != null){
                             for(Element defSoup : word_def_soup.select("div.meaning-definition > span.meaning-meaning")){
                                 HashMap<String, String> defMap = new HashMap<>();
-                                String definition = defSoup.text().trim();
+                                String definition = "<i><font color='grey'>" + meaning_tag + "</font></i> " + defSoup.text().trim();
                                 defMap.put(EXP_ELE[0], writing);
                                 defMap.put(EXP_ELE[1], furigana);
                                 defMap.put(EXP_ELE[2], mp3_url);
-                                defMap.put(EXP_ELE[3], meaning_tag);
-                                defMap.put(EXP_ELE[4], definition);
-                                String export_html = writing + " (" + furigana + ") " + meaning_tag + "<br/>" + definition;
+                                //defMap.put(EXP_ELE[3], meaning_tag);
+                                defMap.put(EXP_ELE[3], definition);
+                                String audioIndicator = "";
+                                if(!mp3_url.isEmpty()){
+                                    audioIndicator = "<font color='#227D51' >"+AUDIO_TAG + "</font>";
+                                }
+                                String export_html = "<b>" + writing + "</b> <font color='grey'>" + furigana + "</font> " + audioIndicator + "<br/>" + definition;
                                 defList.add(new Definition(defMap, export_html));
                             }
                         }

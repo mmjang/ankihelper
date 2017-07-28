@@ -189,7 +189,6 @@
                                 android:id="@+id/btn_pronounce"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:layout_margin="0dp"
                                 android:background="@drawable/ic_pronounce"
                                 android:visibility="gone" />
                         </LinearLayout>

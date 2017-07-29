@@ -82,6 +82,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     String mTargetWord;
     //possible url from dedicated borwser
     String mUrl = "";
+    //possible specific note id to update
+    Long mUpdateNoteId = 0L;
     //views
     AutoCompleteTextView act;
     Button btnSearch;
@@ -405,6 +407,16 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_TEXT);
             mTargetWord = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_WORD);
             mUrl = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_URL);
+            String updateId = intent.getStringExtra(Constant.INTENT_ANKIHELPER_NOTE_ID);
+            if(updateId != null && !updateId.isEmpty())
+            {
+                try{
+                    mUpdateNoteId = Long.parseLong(updateId);
+                }
+                catch(Exception e){
+
+            }
+            }
         }
         if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
@@ -512,18 +524,46 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         }
                         long deckId = currentOutputPlan.getOutputDeckId();
                         long modelId = currentOutputPlan.getOutputModelId();
-                        Long result = mAnkiDroid.getApi().addNote(modelId, deckId, exportFields, mTagEditedByUser);
-                        if (result != null) {
-                            Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
-                            btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                    PopupActivity.this, R.drawable.ic_add_grey));
-                            btnAddDefinition.setEnabled(false);
-                            if (settings.getAutoCancelPopupQ()) {
-                                finish();
+                        if(mUpdateNoteId == 0){
+                            Long result = mAnkiDroid.getApi().addNote(modelId, deckId, exportFields, mTagEditedByUser);
+                            if (result != null) {
+                                Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
+                                btnAddDefinition.setBackground(ContextCompat.getDrawable(
+                                        PopupActivity.this, R.drawable.ic_add_grey));
+                                btnAddDefinition.setEnabled(false);
+                                if (settings.getAutoCancelPopupQ()) {
+                                    finish();
+                                }
+                            } else {
+                                Toast.makeText(PopupActivity.this, R.string.str_failed_add, Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(PopupActivity.this, R.string.str_failed_add, Toast.LENGTH_SHORT).show();
                         }
+                        else{
+                            String[] original = mAnkiDroid.getApi().getNote(mUpdateNoteId).getFields();
+                            if(original == null || original.length != exportFields.length){
+                                Toast.makeText(PopupActivity.this, "note failed to update. Note type not compatible", Toast.LENGTH_SHORT).show();
+                                return ;
+                            }
+                            for(int j = 0; j < original.length; j++){
+                                if(exportFields[j].isEmpty()){
+                                    exportFields[j] = original[j];
+                                }
+                            }
+                            boolean success = mAnkiDroid.getApi().updateNoteFields(mUpdateNoteId, exportFields);
+                            boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, mTagEditedByUser);
+                            if (success && successTag) {
+                                Toast.makeText(PopupActivity.this, "note updated!", Toast.LENGTH_SHORT).show();
+                                btnAddDefinition.setBackground(ContextCompat.getDrawable(
+                                        PopupActivity.this, R.drawable.ic_add_grey));
+                                btnAddDefinition.setEnabled(false);
+                                if(settings.getAutoCancelPopupQ()) {
+                                    finish();
+                                }
+                            } else {
+                                Toast.makeText(PopupActivity.this, "note failed to update!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
                     }
                 });
         return view;

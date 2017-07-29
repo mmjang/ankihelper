@@ -9,8 +9,8 @@ import java.io.InputStream;
  * Created by liao on 2017/3/19.
  */
 
-public class DefaultModelData {
-    private final String MODEL_FILE = "default_model_v3.html";
+public class VocabularyCardModel {
+    private final String MODEL_FILE = "vocabulary_card_model.html";
     private final String MODEL_SPLITTER = "@@@";
     private final String CODING = "UTF-8";
     private final int NUMBER_OF_MODEL_STRING = 3;
@@ -34,7 +34,7 @@ public class DefaultModelData {
     };
 
 
-    DefaultModelData(Context ct){
+    VocabularyCardModel(Context ct){
 
         try {
             InputStream ips = ct.getResources().getAssets().open(MODEL_FILE);

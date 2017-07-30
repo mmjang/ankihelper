@@ -140,7 +140,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             startCBService();
         }
 
-        setTargetWord();
+        bigBangLayout.post( new Runnable() {
+            @Override
+            public void run() {
+                setTargetWord();
+            }
+        });
+
     }
 
     private void setTargetWord(){
@@ -153,6 +159,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     }
                 }
             }
+            act.setText(mTargetWord);
+            asyncSearch(mTargetWord);
         }
     }
 
@@ -432,6 +440,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         for (String localSegment : localSegments) {
             bigBangLayout.addTextItem(localSegment);
         }
+        ;
     }
 
 

@@ -3,8 +3,10 @@ package com.mmjang.ankihelper.ui;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,11 +18,16 @@ import android.widget.Toast;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
+import com.mmjang.ankihelper.data.dict.Definition;
+import com.mmjang.ankihelper.data.dict.YoudaoOnline;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.ui.about.AboutActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
+
+import java.io.IOException;
+import java.util.List;
 
 public class LauncherActivity extends AppCompatActivity {
 
@@ -85,6 +92,20 @@ public class LauncherActivity extends AppCompatActivity {
         if (settings.getMoniteClipboardQ()) {
             startCBService();
         }
+
+        //debug new feature
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    YoudaoOnline.getDefinition("dedicate");
+//                }
+//                catch (IOException e){
+//
+//                }
+//            }
+//        });
+//        thread.start();
     }
 
     private void initAnkiApi() {

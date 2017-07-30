@@ -7,12 +7,15 @@ import android.util.Log;
 import android.widget.FilterQueryProvider;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liao on 2017/3/15.
@@ -36,10 +39,12 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
 
     private SQLiteDatabase db;
 
+    private Context mContext;
 
     public Collins(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         db = getReadableDatabase();
+        mContext = context;
     }
 
     private static final String[] EXP_ELE_LIST = new String[]{
@@ -74,6 +79,15 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
         } else {
             for (String deflectedWord : deflectResult) {
                 re.addAll(queryDefinition(deflectedWord));
+            }
+        }
+
+        if(re.isEmpty()){
+            try{
+                re.add(toDefinition(YoudaoOnline.getDefinition(key)));
+            }
+            catch (IOException e){
+                Toast.makeText(mContext, "本地词典未查到，有道词典在线查询失败，请检查网络连接", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -220,28 +234,27 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
         return key.trim().replaceAll("[,.!?()\"'“”’？]", "").toLowerCase();
     }
 
-    /*    String[] gethwds()
-    {
-        //SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(true, "dict", new String[] {"hwd"}, null, null, null, null, null,null);
-        ArrayList<String> re = new ArrayList<>();
-        int n = -1;
-        while(cursor.moveToNext())
-        {
-            //n ++;
-            String current = cursor.getString(0);
-            //if(n > 0)
-            //{
-            //    if(current.equals(re.get(n - 1))) {
-            //        continue;
-            //    }
-            //}
-            re.add(current);
+    private Definition toDefinition(YoudaoResult youdaoResult){
+        String notiString = "<font color='gray'>本地词典未查到，以下是有道在线释义</font><br/>";
+        String definition = "<b>" + youdaoResult.returnPhrase + "</b><br/>";
+        for(String def : youdaoResult.translation){
+            definition += def + "<br/>";
         }
-        String[] hwds = new String[re.size()];
-        for(int i = 0; i < re.size(); i ++){
-            hwds[i] = re.get(i);
+
+        definition += "<font color='gray'>网络释义</font><br/>";
+        for(String key : youdaoResult.webTranslation.keySet()){
+            String joined = "";
+            for(String value : youdaoResult.webTranslation.get(key)){
+                joined += value + "; ";
+            }
+            definition += "<b>" + key + "</b>: " + joined + "<br/>";
         }
-        return  hwds;
-    }*/
+
+        Map<String, String> exp = new HashMap<>();
+        exp.put(EXP_ELE_LIST[0], youdaoResult.returnPhrase);
+        exp.put(EXP_ELE_LIST[1], youdaoResult.phonetic);
+        exp.put(EXP_ELE_LIST[2], definition);
+
+        return new Definition(exp, notiString + definition);
+    }
 }

@@ -84,6 +84,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     String mUrl = "";
     //possible specific note id to update
     Long mUpdateNoteId = 0L;
+    //possible bookmark id from fbreader
+    String mFbReaderBookmarkId;
     //views
     AutoCompleteTextView act;
     Button btnSearch;
@@ -415,6 +417,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_TEXT);
             mTargetWord = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_WORD);
             mUrl = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_URL);
+            //mFbReaderBookmarkId = intent.getStringExtra(Constant.INTENT_ANKIHELPER_FBREADER_BOOKMARK_ID);
+            mNoteEditedByUser = intent.getStringExtra(Constant.INTENT_ANKIHELPER_NOTE);
             String updateId = intent.getStringExtra(Constant.INTENT_ANKIHELPER_NOTE_ID);
             if(updateId != null && !updateId.isEmpty())
             {
@@ -523,6 +527,15 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 i++;
                                 continue;
                             }
+//                            if(exportedFieldKey.equals(sharedExportElements[5])){
+//                                if(mFbReaderBookmarkId != null){
+//                                    exportFields[i] = String.format(Constant.FBREADER_URL_TMPL, mFbReaderBookmarkId);
+//                                }else{
+//                                    exportFields[i]="";
+//                                }
+//                                i++;
+//                                continue;
+//                            }
                             if (def.hasElement(exportedFieldKey)) {
                                 exportFields[i] = def.getExportElement(exportedFieldKey);
                                 i++;
@@ -537,8 +550,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             Long result = mAnkiDroid.getApi().addNote(modelId, deckId, exportFields, mTagEditedByUser);
                             if (result != null) {
                                 Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
-                                btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                        PopupActivity.this, R.drawable.ic_add_grey));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    btnAddDefinition.setBackground(ContextCompat.getDrawable(
+                                            PopupActivity.this, R.drawable.ic_add_grey));
+                                }
                                 btnAddDefinition.setEnabled(false);
                                 if (settings.getAutoCancelPopupQ()) {
                                     finish();
@@ -562,8 +577,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, mTagEditedByUser);
                             if (success && successTag) {
                                 Toast.makeText(PopupActivity.this, "note updated!", Toast.LENGTH_SHORT).show();
-                                btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                        PopupActivity.this, R.drawable.ic_add_grey));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    btnAddDefinition.setBackground(ContextCompat.getDrawable(
+                                            PopupActivity.this, R.drawable.ic_add_grey));
+                                }
                                 btnAddDefinition.setEnabled(false);
                                 if(settings.getAutoCancelPopupQ()) {
                                     finish();

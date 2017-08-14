@@ -25,4 +25,7 @@
     <string name="confirm_deletion">Delete?</string>
     <string name="save_plan_error_all_blank">Failed to save. All fields are empty!</string>
     <string name="plan_anki_not_started">please start ankidroid first!</string>
+    <string name="btn_open_custom_dicitonary_str">Custom Dictionaries</string>
+    <string name="add_custom_dictionary_str">导入自定义字典</string>
+    <string name="delete_all_custom_dictionary">清空已导入词典</string>
 </resources>

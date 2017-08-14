@@ -28,5 +28,8 @@
 
     <!--Plan-->
     <string name="plan_anki_not_started">修改配置需要先打开AnkiDroid，点击确定将为你自动打开!</string>
+    <string name="btn_open_custom_dicitonary_str">自定义词典(实验)</string>
+    <string name="add_custom_dictionary_str">导入自定义字典</string>
+    <string name="delete_all_custom_dictionary">清空已导入词典</string>
 
 </resources>

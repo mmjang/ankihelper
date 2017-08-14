@@ -26,13 +26,13 @@
                 android:layout_height="48dp">
 
                 <TextView
-                    android:id="@+id/btn_open_plan_manager"
+                    android:id="@+id/btn_import_custom_dictionary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/plan_manager_str"
+                    android:text="@string/add_custom_dictionary_str"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
@@ -42,60 +42,27 @@
             <com.balysv.materialripple.MaterialRippleLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp">
-
                 <TextView
-                    android:id="@+id/btn_open_custom_dictionary"
+                    android:id="@+id/btn_remove_all_custom_dictionaries"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/btn_open_custom_dicitonary_str"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
-
-            </com.balysv.materialripple.MaterialRippleLayout>
-
-            <View style="@style/Divider" />
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
-
-                <Switch
-                    android:duplicateParentState="false"
-                    android:id="@+id/switch_monite_clipboard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/monite_clipboard"
+                    android:text="@string/delete_all_custom_dictionary"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
             </com.balysv.materialripple.MaterialRippleLayout>
-
-            <View style="@style/Divider" />
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
-
-                <Switch
-                    android:duplicateParentState="false"
-                    android:id="@+id/switch_cancel_after_add"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/cancel_after_add"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
-
-            </com.balysv.materialripple.MaterialRippleLayout>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
 </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <ProgressBar
+        android:layout_marginTop="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:id="@+id/progress_bar_import_custom_dictionary"
+        android:visibility="gone"
+        />
+</LinearLayout>
+

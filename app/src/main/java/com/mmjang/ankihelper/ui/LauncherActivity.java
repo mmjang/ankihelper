@@ -18,12 +18,14 @@ import android.widget.Toast;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
+import com.mmjang.ankihelper.data.dict.CustomDictionary;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.dict.YoudaoOnline;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.ui.about.AboutActivity;
+import com.mmjang.ankihelper.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 
 import java.io.IOException;
@@ -37,6 +39,7 @@ public class LauncherActivity extends AppCompatActivity {
     Switch switchMoniteClipboard;
     Switch switchCancelAfterAdd;
     TextView textViewOpenPlanManager;
+    TextView textViewCustomDictionary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class LauncherActivity extends AppCompatActivity {
         switchMoniteClipboard = (Switch) findViewById(R.id.switch_monite_clipboard);
         switchCancelAfterAdd = (Switch) findViewById(R.id.switch_cancel_after_add);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
+        textViewCustomDictionary = (TextView) findViewById(R.id.btn_open_custom_dictionary);
 
         switchMoniteClipboard.setChecked(
                 settings.getMoniteClipboardQ()
@@ -89,6 +93,17 @@ public class LauncherActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        textViewCustomDictionary.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(LauncherActivity.this, CustomDictionaryActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
         if (settings.getMoniteClipboardQ()) {
             startCBService();
         }

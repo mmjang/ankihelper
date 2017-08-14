@@ -31,7 +31,7 @@ public class DictionaryRegister {
     }
 
     public static List<IDictionary> getDictionaryObjectList() {
-        if (dictList == null) {
+        //if (dictList == null) {
             dictList = new ArrayList<>();
             for (Class c : classList) {
                 try {
@@ -44,7 +44,9 @@ public class DictionaryRegister {
                 } catch (InvocationTargetException ite) {
                 }
             }
-        }
+            List<IDictionary> customDictionaries = (new CustomDictionaryManager(MyApplication.getContext(), "")).getDictionaryList();
+            dictList.addAll(customDictionaries);
+        //}
         return dictList;
     }
 }

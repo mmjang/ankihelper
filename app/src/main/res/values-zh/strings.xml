@@ -8,7 +8,7 @@
     <string name="tv_select_model">模板</string>
     <string name="tv_choose_dictionary">选择词典：</string>
     <string name="api_not_available_message">Api 不可访问！可能原因为未安装Ankidroid，或Ankidroid高级设置中API选项未打开</string>
-    <string name="permission_denied">未获得授权！请在应用设置中打开Anki划词助手“读写Ankidroid数据库”这个权限</string>
+    <string name="permission_denied">本应用需要取得读写Ankidroid数据库的权限才能正常工作！请在本应用权限设置中打开“读写Ankidroid数据库”这个选项。点击确定立即跳转到应用设置界面。</string>
     <string name="cancel_after_add">添加后退出弹窗</string>
     <string name="monite_clipboard">剪切板查词</string>
     <string name="plan_manager_str">划词方案管理</string>
@@ -25,7 +25,6 @@
     <string name="about_message">本项目在 GPL-3.0 协议下开源。 <a href="https://github.com/mmjang/ankihelper">GitHub 主页</a>\n如果你喜欢这款应用，并且愿意支持我们，可以点击下方按钮打赏。谢谢！</string>
     <string name="confirm_deletion">确认删除？</string>
     <string name="save_plan_error_all_blank">保存失败，输出字段不能全部为空！</string>
-
     <!--Plan-->
     <string name="plan_anki_not_started">修改配置需要先打开AnkiDroid，点击确定将为你自动打开!</string>
     <string name="btn_open_custom_dicitonary_str">自定义词典(实验功能)</string>

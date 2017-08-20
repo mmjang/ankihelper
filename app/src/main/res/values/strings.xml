@@ -33,7 +33,7 @@
     <string name="btn_help_str">❓Help</string>
     <string name="btn_about_and_support_str">Donate</string>
     <string name="confirm_add_default_plan_when_exists_already">已存在方案，确认添加默认方案（柯林斯词典）？</string>
-    <string name="btn_add_default_plan_str">添加默认方案</string>
+    <string name="btn_add_default_plan_str">add default plan</string>
     <string name="duplicate_plan_name_complain">已存在默认方案，不得重复添加。可在方案管理器中删除后再添加。</string>
     <string name="toast_no_available_plan">没有任何可用划词方案，无法正常使用，请前往Anki划词助手主界面设置</string>
 </resources>

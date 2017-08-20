@@ -104,6 +104,21 @@ public class LauncherActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (mAnkiDroid == null) {
+                            mAnkiDroid = new AnkiDroidHelper(LauncherActivity.this);
+                        }
+                        if (!AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
+                            Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        if (mAnkiDroid.shouldRequestPermission()) {
+                            mAnkiDroid.requestPermission(LauncherActivity.this, 0);
+                            return;
+                        }
+                        else{
+
+                        }
                         Intent intent = new Intent(LauncherActivity.this, PlansManagerActivity.class);
                         startActivity(intent);
                     }
@@ -146,6 +161,21 @@ public class LauncherActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (mAnkiDroid == null) {
+                            mAnkiDroid = new AnkiDroidHelper(LauncherActivity.this);
+                        }
+                        if (!AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
+                            Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        if (mAnkiDroid.shouldRequestPermission()) {
+                            mAnkiDroid.requestPermission(LauncherActivity.this, 0);
+                            return;
+                        }
+                        else{
+
+                        }
                         askIfAddDefaultPlan();
                     }
                 }
@@ -212,7 +242,15 @@ public class LauncherActivity extends AppCompatActivity {
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             askIfAddDefaultPlan();
         } else {
-            Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(LauncherActivity.this)
+                    .setMessage(R.string.permission_denied)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            openSettingsPage();
+                        }
+                    }).show();
         }
     }
 
@@ -273,5 +311,13 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    private void openSettingsPage(){
+        Intent intent = new Intent();
+        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
     }
 }

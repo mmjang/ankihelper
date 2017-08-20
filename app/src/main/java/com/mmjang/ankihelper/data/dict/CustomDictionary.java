@@ -2,10 +2,11 @@ package com.mmjang.ankihelper.data.dict;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.widget.FilterQueryProvider;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
+
+import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

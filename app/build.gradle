@@ -7,8 +7,8 @@ android {
         applicationId "com.mmjang.ankihelper"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 49
-        versionName "2.4.2"
+        versionCode 56
+        versionName "2.5.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -39,5 +39,6 @@ dependencies {
     compile 'com.balysv:material-ripple:1.0.2'
     compile 'com.nononsenseapps:filepicker:4.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
     testCompile 'junit:junit:4.12'
 }

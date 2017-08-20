@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.litepal.LitePalApplication;
 
@@ -23,6 +24,7 @@ public class MyApplication extends Application {
         context = getApplicationContext();
         application = this;
         LitePalApplication.initialize(context);
+        CrashReport.initCrashReport(getApplicationContext(), "398dc6145b", false);
     }
 
     public static Context getContext() {

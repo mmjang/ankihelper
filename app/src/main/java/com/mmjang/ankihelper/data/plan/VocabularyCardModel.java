@@ -1,4 +1,4 @@
-package com.mmjang.ankihelper.data;
+package com.mmjang.ankihelper.data.plan;
 
 import android.content.Context;
 
@@ -24,13 +24,13 @@ public class VocabularyCardModel {
     String[] Cards = {"card1"};
     String CSS;
     String [] FILEDS = {
-            "expression",
-            "reading",
-            "glossary",
-            "notes",
-            "sentence",
+            "单词",
+            "音标",
+            "释义",
+            "笔记",
+            "例句",
             "url",
-            "audio"
+            "发音"
     };
 
 

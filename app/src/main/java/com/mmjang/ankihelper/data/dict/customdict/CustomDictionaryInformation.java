@@ -1,4 +1,4 @@
-package com.mmjang.ankihelper.data.dict;
+package com.mmjang.ankihelper.data.dict.customdict;
 
 /**
  * Created by liao on 2017/8/12.

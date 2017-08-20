@@ -26,6 +26,14 @@
     <string name="save_plan_error_all_blank">Failed to save. All fields are empty!</string>
     <string name="plan_anki_not_started">please start ankidroid first!</string>
     <string name="btn_open_custom_dicitonary_str">Custom Dictionaries</string>
-    <string name="add_custom_dictionary_str">导入自定义字典</string>
-    <string name="delete_all_custom_dictionary">清空已导入词典</string>
+    <string name="add_custom_dictionary_str">Import custom dictionary</string>
+    <string name="delete_all_custom_dictionary">Clear imported dictionaries</string>
+    <string name="confirm_add_default_plan">No plans found, add default?</string>
+    <string name="default_plan_added">Default plan added, check out at plans manager</string>
+    <string name="btn_help_str">❓Help</string>
+    <string name="btn_about_and_support_str">Donate</string>
+    <string name="confirm_add_default_plan_when_exists_already">已存在方案，确认添加默认方案（柯林斯词典）？</string>
+    <string name="btn_add_default_plan_str">添加默认方案</string>
+    <string name="duplicate_plan_name_complain">已存在默认方案，不得重复添加。可在方案管理器中删除后再添加。</string>
+    <string name="toast_no_available_plan">没有任何可用划词方案，无法正常使用，请前往Anki划词助手主界面设置</string>
 </resources>

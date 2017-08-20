@@ -9,19 +9,19 @@
 <!-- front section -->
 <div class="section">
 <div id="front" class="items">
-<span>{{expression}}</span>
+<span>{{单词}}</span>
 </div>
 <hr>
 <div id="phonetic" class="items">
-<span>{{reading}} {{audio}}</span>
+<span>{{音标}} {{发音}}</span>
 </div>
 
-{{#sentence}}
+{{#例句}}
 <div class="section">
 <div class="bar sentence" onclick="toggle('sentence')">Sentence</div>
-<div id="sentence" class="backlist items">{{sentence}}</div>
+<div id="sentence" class="backlist items">{{例句}}</div>
 </div>
-{{/sentence}}
+{{/例句}}
 </div>
 
 @@@
@@ -294,18 +294,18 @@ function highlightTag(){
 {{FrontSide}}
 
 <!-- back section -->
-{{#glossary}}
+{{#释义}}
 <div class="section">
-<div id="back" class="items">{{glossary}}</div>
+<div id="back" class="items">{{释义}}</div>
 </div>
-{{/glossary}}
+{{/释义}}
 
-{{#notes}}
+{{#笔记}}
 <div class="section">
 <div class="bar note" onclick="toggle('note')">Notes</div>
-<div id="note" class="items">{{notes}}</div>
+<div id="note" class="items">{{笔记}}</div>
 </div>
-{{/notes}}
+{{/笔记}}
 
 <!-- foot section -->
 <div class="bar foot">

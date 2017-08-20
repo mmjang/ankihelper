@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -199,6 +200,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         boolean loadQ = settings.getSetAsDefaultTag();
         if (loadQ) {
             mTagEditedByUser.add(settings.getDefaulTag());
+        }
+        //check if outputPlanList is empty
+        if(outputPlanList.size() == 0){
+            Toast.makeText(this, R.string.toast_no_available_plan, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -418,7 +423,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             mTargetWord = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_WORD);
             mUrl = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_URL);
             //mFbReaderBookmarkId = intent.getStringExtra(Constant.INTENT_ANKIHELPER_FBREADER_BOOKMARK_ID);
-            mNoteEditedByUser = intent.getStringExtra(Constant.INTENT_ANKIHELPER_NOTE);
+            String noteEditedByUser = intent.getStringExtra(Constant.INTENT_ANKIHELPER_NOTE);
+            if(noteEditedByUser != null){
+                mNoteEditedByUser = noteEditedByUser;
+            }
             String updateId = intent.getStringExtra(Constant.INTENT_ANKIHELPER_NOTE_ID);
             if(updateId != null && !updateId.isEmpty())
             {
@@ -427,13 +435,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 }
                 catch(Exception e){
 
-            }
-            }
         }
+    }
+}
         if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
-            mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
-        }
-        if (mTextToProcess == null) {
+                mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
+                }
+                if (mTextToProcess == null) {
             return;
         }
         populateWordSelectBox();
@@ -488,6 +496,15 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 .inflate(R.layout.definition_item, null);
         final TextView textVeiwDefinition = (TextView) view.findViewById(R.id.textview_definition);
         final ImageButton btnAddDefinition = (ImageButton) view.findViewById(R.id.btn_add_definition);
+        final LinearLayout btnAddDefinitionLarge = (LinearLayout) view.findViewById(R.id.btn_add_definition_large);
+        btnAddDefinitionLarge.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        btnAddDefinition.callOnClick();
+                    }
+                }
+        );
         //final Definition def = mDefinitionList.get(position);
         textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
         //holder.itemView.setAnimation(AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in));
@@ -496,6 +513,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        vibarate(Constant.VIBRATE_DURATION);
                         AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid();
                         String[] sharedExportElements = Constant.getSharedExportElements();
                         String[] exportFields = new String[currentOutputPlan.getFieldsMap().size()];
@@ -794,5 +812,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     public void onCancel() {
         act.setText("");
         asyncSearch("");
+    }
+
+    void vibarate(int ms) {
+        ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(ms);
     }
 }

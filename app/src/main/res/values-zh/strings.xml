@@ -7,8 +7,8 @@
     <string name="tv_select_deck">牌组</string>
     <string name="tv_select_model">模板</string>
     <string name="tv_choose_dictionary">选择词典：</string>
-    <string name="api_not_available_message">Api 不可访问</string>
-    <string name="permission_denied">未获得授权！</string>
+    <string name="api_not_available_message">Api 不可访问！可能原因为未安装Ankidroid，或Ankidroid高级设置中API选项未打开</string>
+    <string name="permission_denied">未获得授权！请在应用设置中打开Anki划词助手“读写Ankidroid数据库”这个权限</string>
     <string name="cancel_after_add">添加后退出弹窗</string>
     <string name="monite_clipboard">剪切板查词</string>
     <string name="plan_manager_str">划词方案管理</string>
@@ -22,14 +22,22 @@
     <string name="str_failed_add">出错！请检查方案设置，输出字段不能全部为“空”.</string>
     <string name="str_plan_name_should_not_be_blank">方案名不能为空</string>
     <string name="str_about">About</string>
-    <string name="about_message">本项目在 GPL-3.0 协议下开源。 <a href="https://github.com/mmjang/ankihelper">GitHub 主页</a></string>
+    <string name="about_message">本项目在 GPL-3.0 协议下开源。 <a href="https://github.com/mmjang/ankihelper">GitHub 主页</a>\n如果你喜欢这款应用，并且愿意支持我们，可以点击下方按钮打赏。谢谢！</string>
     <string name="confirm_deletion">确认删除？</string>
     <string name="save_plan_error_all_blank">保存失败，输出字段不能全部为空！</string>
 
     <!--Plan-->
     <string name="plan_anki_not_started">修改配置需要先打开AnkiDroid，点击确定将为你自动打开!</string>
-    <string name="btn_open_custom_dicitonary_str">自定义词典(实验)</string>
+    <string name="btn_open_custom_dicitonary_str">自定义词典(实验功能)</string>
     <string name="add_custom_dictionary_str">导入自定义字典</string>
     <string name="delete_all_custom_dictionary">清空已导入词典</string>
+    <string name="confirm_add_default_plan">您还没有任何划词方案，是否写入默认方案(柯林斯词典)？</string>
+    <string name="default_plan_added">默认方案已添加，可在方案管理器中查看</string>
+    <string name="btn_help_str">❓帮助</string>
+    <string name="btn_about_and_support_str">打赏</string>
+    <string name="confirm_add_default_plan_when_exists_already">已存在划词方案，确认添加默认方案（柯林斯词典）？</string>
+    <string name="btn_add_default_plan_str">添加默认方案</string>
+    <string name="duplicate_plan_name_complain">已存在默认方案，不得重复添加。可在方案管理器中删除后再添加。</string>
+    <string name="toast_no_available_plan">没有任何可用划词方案，无法正常使用，请前往Anki划词助手主界面设置</string>
 
 </resources>

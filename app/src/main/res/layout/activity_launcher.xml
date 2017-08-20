@@ -38,19 +38,20 @@
 
             </com.balysv.materialripple.MaterialRippleLayout>
 
+
             <View style="@style/Divider" />
             <com.balysv.materialripple.MaterialRippleLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp">
 
                 <TextView
-                    android:id="@+id/btn_open_custom_dictionary"
+                    android:id="@+id/btn_add_default_plan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/btn_open_custom_dicitonary_str"
+                    android:text="@string/btn_add_default_plan_str"
                     android:textColor="@color/primary_text"
                     android:textSize="16sp" />
 
@@ -94,6 +95,94 @@
                     android:textSize="16sp" />
 
             </com.balysv.materialripple.MaterialRippleLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
+        android:elevation="8dp"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <TextView
+                    android:id="@+id/btn_help"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/btn_help_str"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <View style="@style/Divider" />
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+                <TextView
+                    android:id="@+id/btn_about_and_support"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/btn_about_and_support_str"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
+        android:elevation="8dp"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <TextView
+                    android:id="@+id/btn_open_custom_dictionary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/btn_open_custom_dicitonary_str"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+
 
         </LinearLayout>
 

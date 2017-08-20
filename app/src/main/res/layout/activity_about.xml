@@ -13,17 +13,37 @@
         android:text="@string/about_message"
         android:textSize="24dp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/btn_support"
+         <ImageButton
+            android:id="@+id/alipay10"
+             android:layout_gravity="center_horizontal"
             android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerHorizontal="true"
+            android:layout_height="65dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/donate2"></ImageButton>
+             android:scaleType="centerInside"
+            android:background="@drawable/alipay10"
+             android:elevation="10dp"
+            />
+         <ImageButton
+            android:id="@+id/alipay20"
+             android:layout_gravity="center_horizontal"
+            android:layout_width="200dp"
+             android:scaleType="centerInside"
+            android:layout_height="65dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/alipay20"
+             android:elevation="10dp"
+            />
+          <ImageButton
+            android:id="@+id/alipayany"
+             android:layout_gravity="center_horizontal"
+            android:layout_width="200dp"
+             android:scaleType="centerInside"
+            android:layout_height="65dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/alipayany"
+              android:elevation="10dp"
+            />
 
-    </RelativeLayout>
+
+
 </LinearLayout>

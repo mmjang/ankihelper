@@ -1,18 +1,14 @@
 package com.mmjang.ankihelper.ui.customdict;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,15 +21,11 @@ import android.widget.Toast;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.dict.CustomDictionary;
-import com.mmjang.ankihelper.data.dict.CustomDictionaryInformation;
 import com.mmjang.ankihelper.data.dict.CustomDictionaryManager;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
-import com.mmjang.ankihelper.data.dict.FormsUtil;
 import com.mmjang.ankihelper.data.dict.IDictionary;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.nononsenseapps.filepicker.Utils;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -211,28 +203,28 @@ public class CustomDictionaryActivity extends AppCompatActivity {
             List<Uri> files = Utils.getSelectedFilesFromResult(intent);
             if(files.size() > 0){
                 final File file = Utils.getFileForUri(files.get(0));
-                setProgressBar(true);
-                  Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    CustomDictionaryManager cm = new CustomDictionaryManager(MyApplication.getContext(), "");
-                    if(cm.processOneDictionaryFile(mMaxId + 1, file)){
-                        Message message = mHandler.obtainMessage();
-                        message.what = DICT_ADDED;
-                        mHandler.sendMessage(message);
-                    }
-                    else{
-                        Message message = mHandler.obtainMessage();
-                        message.what = DICT_ADD_FAILED;
-                        mHandler.sendMessage(message);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                    try {
+                        CustomDictionaryManager cm = new CustomDictionaryManager(MyApplication.getContext(), "");
+                        if(cm.processOneDictionaryFile(mMaxId + 1, file)){
+                            Message message = mHandler.obtainMessage();
+                            message.what = DICT_ADDED;
+                            mHandler.sendMessage(message);
+                        }
+                        else{
+                            Message message = mHandler.obtainMessage();
+                            message.what = DICT_ADD_FAILED;
+                            mHandler.sendMessage(message);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
             }
         });
         thread.start();
+                setProgressBar(true);
             }
             //long id = System.currentTimeMillis();
 //            List<Uri> files = Utils.getSelectedFilesFromResult(intent);

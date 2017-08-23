@@ -101,6 +101,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     LinearLayout viewDefinitionList;
     //async event
     private static final int PROCESS_DEFINITION_LIST = 1;
+    private static final int ASYNC_SEARCH_FAILED = 2;
     //async
     final Handler mHandler = new Handler() {
         @Override
@@ -111,8 +112,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     List<Definition> definitionList = (List<Definition>) msg.obj;
                     processDefinitionList(definitionList);
                     break;
-                case 2:
-                    // ...
+                case ASYNC_SEARCH_FAILED:
+                    showSearchButton();
+                    Toast.makeText(PopupActivity.this, (String) msg.obj, Toast.LENGTH_LONG).show();
                     break;
                 default:
                     break;
@@ -475,7 +477,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     message.what = PROCESS_DEFINITION_LIST;
                     mHandler.sendMessage(message);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    String error = e.getMessage();
+                    Message message = mHandler.obtainMessage();
+                    message.obj = error;
+                    message.what = ASYNC_SEARCH_FAILED;
+                    mHandler.sendMessage(message);
                 }
             }
         });

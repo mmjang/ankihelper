@@ -22,7 +22,8 @@ public class DictionaryRegister {
             Dedict.class,
             Cloze.class,
             JiSho.class,
-            VocabCom.class
+            VocabCom.class,
+            Mnemonic.class
     };
 
     private static List<IDictionary> dictList;

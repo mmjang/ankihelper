@@ -75,6 +75,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     OutputPlan currentOutputPlan;
     Settings settings;
     String mTextToProcess;
+    String mPlanNameFromIntent;
     String mCurrentKeyWord;
     TextSplitter mTextSplitter;
     String mNoteEditedByUser = "";
@@ -207,7 +208,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         if(outputPlanList.size() == 0){
             Toast.makeText(this, R.string.toast_no_available_plan, Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void populatePlanSpinner() {
@@ -233,6 +233,12 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             }
         }
 
+        ///////////////if user add intent parameter to control which plan to use
+        mPlanNameFromIntent = getIntent().getStringExtra(Constant.INTENT_ANKIHELPER_PLAN_NAME);
+        if(mPlanNameFromIntent != null){
+            lastSelectedPlan = mPlanNameFromIntent;
+        }
+        ///////////////
         int i = 0;
         boolean find = false;
         for (OutputPlan plan : outputPlanList) {
@@ -432,13 +438,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             String updateId = intent.getStringExtra(Constant.INTENT_ANKIHELPER_NOTE_ID);
             if(updateId != null && !updateId.isEmpty())
             {
-                try{
-                    mUpdateNoteId = Long.parseLong(updateId);
-                }
-                catch(Exception e){
+                    try{
+                        mUpdateNoteId = Long.parseLong(updateId);
+                    }
+                    catch(Exception e){
 
+                    }
         }
-    }
 }
         if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
                 mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);

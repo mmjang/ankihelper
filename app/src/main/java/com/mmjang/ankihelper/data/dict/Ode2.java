@@ -36,7 +36,7 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
     private static final String FIELD_DEF_CN = "def_cn";
 
     private static final String DICT_NAME = "ODE2";
-    private static final String INTRODUCTION = "新牛津英汉双解大词典；收词量大，释义全且偏难";
+    private static final String INTRODUCTION = "新牛津英汉双解大词典；收词量大，释义全且偏难;“复合项”指单词、音标、释义、发音的组合";
 
     private SQLiteDatabase db;
     private Context mContext;
@@ -50,7 +50,10 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
     private static final String[] EXP_ELE_LIST = new String[]{
             "单词",
             "音标",
-            "释义"
+            "释义",
+            "有道美式发音",
+            "有道英式发音",
+            "复合项"
     };
 
     public String getDictionaryName() {
@@ -163,8 +166,10 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
             eleMap.put(EXP_ELE_LIST[0], phrase);
         }
         eleMap.put(EXP_ELE_LIST[1], phonetics);
-        eleMap.put(EXP_ELE_LIST[2], sense + "<br/>" + ext + "<br/>" + defEn + "<br/>" + defCn);
-
+        eleMap.put(EXP_ELE_LIST[2], "<i>" + sense + "</i>" + "<br/>" + ext + "<br/>" + defEn + "<br/>" + defCn);
+        eleMap.put(EXP_ELE_LIST[3], getYoudaoAudioTag(hwd, 2));
+        eleMap.put(EXP_ELE_LIST[4], getYoudaoAudioTag(hwd, 1));
+        eleMap.put(EXP_ELE_LIST[5], getCombined(eleMap));
         String displayHtml;
         if (phrase.equals("")) {
             StringBuilder sb = new StringBuilder();
@@ -253,8 +258,21 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
         exp.put(EXP_ELE_LIST[0], youdaoResult.returnPhrase);
         exp.put(EXP_ELE_LIST[1], youdaoResult.phonetic);
         exp.put(EXP_ELE_LIST[2], definition);
+        exp.put(EXP_ELE_LIST[3], getYoudaoAudioTag(youdaoResult.returnPhrase, 2));
+        exp.put(EXP_ELE_LIST[4], getYoudaoAudioTag(youdaoResult.returnPhrase, 1));
+        exp.put(EXP_ELE_LIST[5], getCombined(exp));
 
         return new Definition(exp, notiString + definition);
+    }
+
+    String getYoudaoAudioTag(String word, int voiceType){
+        return "[sound:http://dict.youdao.com/dictvoice?audio=" + word + "&type=" + voiceType +"]";
+    }
+
+    private String getCombined(Map<String, String> eleMap) {
+        return "<b>" + eleMap.get(EXP_ELE_LIST[0]) + "</b> " + eleMap.get(EXP_ELE_LIST[1]) +
+                eleMap.get(EXP_ELE_LIST[3])  + "" + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>", " ");
+
     }
 
 }

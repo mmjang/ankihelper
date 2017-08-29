@@ -23,7 +23,8 @@ public class DictionaryRegister {
             Cloze.class,
             JiSho.class,
             VocabCom.class,
-            Mnemonic.class
+            Mnemonic.class,
+            WebsterLearners.class
     };
 
     private static List<IDictionary> dictList;

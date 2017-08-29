@@ -52,7 +52,8 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
             "音标",
             "释义",
             "有道美式发音",
-            "有道英式发音"
+            "有道英式发音",
+            "复合项"
     };
 
     public String getDictionaryName() {
@@ -60,7 +61,7 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
     }
 
     public String getIntroduction() {
-        return "柯林斯词典，释义简单，适合初学者。";
+        return "柯林斯词典，释义简单，适合初学者。“复合项”指单词、音标、释义、发音的组合";
     }
 
     public String[] getExportElementsList() {
@@ -166,9 +167,10 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
             eleMap.put(EXP_ELE_LIST[0], phrase);
         }
         eleMap.put(EXP_ELE_LIST[1], phonetics);
-        eleMap.put(EXP_ELE_LIST[2], sense + "<br/>" + ext + "<br/>" + defEn + "<br/>" + defCn);
+        eleMap.put(EXP_ELE_LIST[2], "<i>" + sense + "</i>" + "<br/>" + ext + "<br/>" + defEn + "<br/>" + defCn);
         eleMap.put(EXP_ELE_LIST[3], getYoudaoAudioTag(hwd, 2));
         eleMap.put(EXP_ELE_LIST[4], getYoudaoAudioTag(hwd, 1));
+        eleMap.put(EXP_ELE_LIST[5], getCombined(eleMap));
         String displayHtml;
         if (phrase.equals("")) {
             StringBuilder sb = new StringBuilder();
@@ -201,6 +203,11 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
         }
 
         return new Definition(eleMap, displayHtml);
+    }
+
+    private String getCombined(Map<String, String> eleMap) {
+        return "<b>" + eleMap.get(EXP_ELE_LIST[0]) + "</b> " + eleMap.get(EXP_ELE_LIST[1]) +
+                eleMap.get(EXP_ELE_LIST[3])  + "" + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>"," ");
     }
 
     private String[] getForms(String q) {
@@ -259,6 +266,7 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
         exp.put(EXP_ELE_LIST[2], definition);
         exp.put(EXP_ELE_LIST[3], getYoudaoAudioTag(youdaoResult.returnPhrase, 2));
         exp.put(EXP_ELE_LIST[4], getYoudaoAudioTag(youdaoResult.returnPhrase, 1));
+        exp.put(EXP_ELE_LIST[5], getCombined(exp));
         return new Definition(exp, notiString + definition);
     }
 

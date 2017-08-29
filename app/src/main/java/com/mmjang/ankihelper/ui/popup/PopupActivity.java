@@ -86,6 +86,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     String mUrl = "";
     //possible specific note id to update
     Long mUpdateNoteId = 0L;
+    //update action   replace/append    append is the default action, to prevent data loss;
+    String mUpdateAction;
     //possible bookmark id from fbreader
     String mFbReaderBookmarkId;
     //views
@@ -321,8 +323,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         setActAdapter(currentDicitonary);
                         //memorise last selected plan
                         settings.setLastSelectedPlan(currentOutputPlan.getPlanName());
-                        if (mCurrentKeyWord != null) {
-                            asyncSearch(act.getText().toString());
+                        String actContent = act.getText().toString();
+                        if(!actContent.trim().isEmpty()) {
+                            asyncSearch(actContent);
                         }
                     }
 
@@ -436,6 +439,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 mNoteEditedByUser = noteEditedByUser;
             }
             String updateId = intent.getStringExtra(Constant.INTENT_ANKIHELPER_NOTE_ID);
+            mUpdateAction = intent.getStringExtra(Constant.INTENT_ANKIHELPER_UPDATE_ACTION);
             if(updateId != null && !updateId.isEmpty())
             {
                     try{
@@ -518,7 +522,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 }
         );
         //final Definition def = mDefinitionList.get(position);
-        textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml(), Html.FROM_HTML_MODE_COMPACT));
+        }
+        else{
+            textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
+
+        }
         //holder.itemView.setAnimation(AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in));
         //holder.textVeiwDefinition.setTextColor(Color.BLACK);
         btnAddDefinition.setOnClickListener(
@@ -598,11 +608,27 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 Toast.makeText(PopupActivity.this, "note failed to update. Note type not compatible", Toast.LENGTH_SHORT).show();
                                 return ;
                             }
-                            for(int j = 0; j < original.length; j++){
-                                if(exportFields[j].isEmpty()){
-                                    exportFields[j] = original[j];
+
+                            if(mUpdateAction != null && mUpdateAction.equals("replace")) {
+                                //replace
+                                for (int j = 0; j < original.length; j++) {
+                                    if (exportFields[j].isEmpty()) {
+                                        exportFields[j] = original[j];
+                                    }
                                 }
+
                             }
+                            else {
+                                    //append
+                                    for(int j = 0; j < original.length; j++){
+                                        if(original[j].trim().isEmpty() || exportFields[j].trim().isEmpty()) {
+                                            exportFields[j] = original[j] + exportFields[j];
+                                        }else{
+                                            exportFields[j] = original[j] + "<br/>" + exportFields[j];
+                                        }
+                                    }
+                            }
+
                             boolean success = mAnkiDroid.getApi().updateNoteFields(mUpdateNoteId, exportFields);
                             boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, mTagEditedByUser);
                             if (success && successTag) {

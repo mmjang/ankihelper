@@ -96,7 +96,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     Button btnPronounce;
     Spinner planSpinner;
     Spinner pronounceLanguageSpinner;
-    RecyclerView recyclerViewDefinitionList;
+    //RecyclerView recyclerViewDefinitionList;
     ImageButton mBtnEditNote;
     ImageButton mBtnEditTag;
     ProgressBar progressBar;
@@ -188,7 +188,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         btnPronounce = ((Button) findViewById(R.id.btn_pronounce));
         planSpinner = (Spinner) findViewById(R.id.plan_spinner);
         pronounceLanguageSpinner = (Spinner) findViewById(R.id.language_spinner);
-        recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
+        //recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
         viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
         mBtnEditNote = (ImageButton) findViewById(R.id.btn_edit_note);
         mBtnEditTag = (ImageButton) findViewById(R.id.btn_edit_tag);

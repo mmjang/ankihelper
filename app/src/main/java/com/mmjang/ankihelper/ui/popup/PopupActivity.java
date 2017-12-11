@@ -508,8 +508,15 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     //plan B
     private View getCardFromDefinition(final Definition def) {
-        View view = LayoutInflater.from(PopupActivity.this)
-                .inflate(R.layout.definition_item, null);
+        View view;
+        if(settings.getLeftHandModeQ()){
+            view = LayoutInflater.from(PopupActivity.this)
+                    .inflate(R.layout.definition_item_left, null);
+        }
+        else{
+            view = LayoutInflater.from(PopupActivity.this)
+                    .inflate(R.layout.definition_item, null);
+        }
         final TextView textVeiwDefinition = (TextView) view.findViewById(R.id.textview_definition);
         final ImageButton btnAddDefinition = (ImageButton) view.findViewById(R.id.btn_add_definition);
         final LinearLayout btnAddDefinitionLarge = (LinearLayout) view.findViewById(R.id.btn_add_definition_large);

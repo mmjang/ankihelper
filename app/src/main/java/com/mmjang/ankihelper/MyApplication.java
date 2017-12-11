@@ -45,6 +45,4 @@ public class MyApplication extends Application {
     private static void getAnkiDroidPermission(Activity activity) {
 
     }
-
-
 }

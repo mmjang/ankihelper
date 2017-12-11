@@ -47,6 +47,7 @@ public class LauncherActivity extends AppCompatActivity {
     //views
     Switch switchMoniteClipboard;
     Switch switchCancelAfterAdd;
+    Switch switchLeftHandMode;
     TextView textViewOpenPlanManager;
     TextView textViewCustomDictionary;
     TextView textViewAbout;
@@ -62,6 +63,7 @@ public class LauncherActivity extends AppCompatActivity {
 
         switchMoniteClipboard = (Switch) findViewById(R.id.switch_monite_clipboard);
         switchCancelAfterAdd = (Switch) findViewById(R.id.switch_cancel_after_add);
+        switchLeftHandMode = (Switch) findViewById(R.id.left_hand_mode);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
         textViewCustomDictionary = (TextView) findViewById(R.id.btn_open_custom_dictionary);
         textViewAbout = (TextView) findViewById(R.id.btn_about_and_support);
@@ -87,6 +89,15 @@ public class LauncherActivity extends AppCompatActivity {
                         } else {
                             stopCBService();
                         }
+                    }
+                }
+        );
+
+        switchLeftHandMode.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        settings.setLeftHandModeQ(isChecked);
                     }
                 }
         );

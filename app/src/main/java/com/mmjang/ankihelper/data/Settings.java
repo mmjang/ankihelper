@@ -28,6 +28,7 @@ public class Settings {
     private final static String DEFAULT_TAG = "default_tag";
     private final static String SET_AS_DEFAULT_TAG = "set_as_default_tag";
     private final static String LAST_PRONOUNCE_LANGUAGE = "last_pronounce_language";
+    private final static String LEFT_HAND_MODE_Q = "left_hand_mode_q";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -162,6 +163,15 @@ public class Settings {
 
     public void setLastPronounceLanguage(int lastPronounceLanguageIndex) {
         editor.putInt(LAST_PRONOUNCE_LANGUAGE, lastPronounceLanguageIndex);
+        editor.commit();
+    }
+
+    public boolean getLeftHandModeQ(){
+        return  sp.getBoolean(LEFT_HAND_MODE_Q, false);
+    }
+
+    public void setLeftHandModeQ(boolean leftHandModeQ){
+        editor.putBoolean(LEFT_HAND_MODE_Q, leftHandModeQ);
         editor.commit();
     }
 

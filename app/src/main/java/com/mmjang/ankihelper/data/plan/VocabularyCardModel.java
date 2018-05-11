@@ -23,7 +23,7 @@ public class VocabularyCardModel {
     String[] AFMT = new String[1];
     String[] Cards = {"card1"};
     String CSS;
-    String [] FILEDS = {
+    public static final String [] FILEDS = {
             "单词",
             "音标",
             "释义",

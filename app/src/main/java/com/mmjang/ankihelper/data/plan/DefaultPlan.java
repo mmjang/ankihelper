@@ -73,18 +73,21 @@ public class DefaultPlan {
     }
 
     long getDefaultModelId(){
-        String modelName = DEFAULT_VOCABULARY_MODEL_NAME + getRandomHexString(8);
-        vc = new VocabularyCardModel(mContext);
-        return mAnkidroid.getApi().addNewCustomModel(
-                modelName,
-                vc.FILEDS,
-                vc.Cards,
-                vc.QFMT,
-                vc.AFMT,
-                vc.CSS,
-                null,
-                null
-        );
+    	Long mid = mAnkidroid.findModelIdByName(DEFAULT_VOCABULARY_MODEL_NAME, VocabularyCardModel.FILEDS.length);
+        if (mid == null) {
+	        String modelName = DEFAULT_VOCABULARY_MODEL_NAME;
+	        vc = new VocabularyCardModel(mContext);
+	        mid = mAnkidroid.getApi().addNewCustomModel(modelName,
+	                vc.FILEDS,
+	                vc.Cards,
+	                vc.QFMT,
+	                vc.AFMT,
+	                vc.CSS,
+	                null,
+	                null
+	        );
+        }
+        return mid;
     }
 
     static private String getRandomHexString(int numchars){

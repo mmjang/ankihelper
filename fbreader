@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "25.0.1"
+
+    defaultConfig {
+        applicationId "org.geometerplus.zlibrary.ui.android"
+        minSdkVersion 8
+        targetSdkVersion 19
+
+        ndk {
+            moduleName "DeflatingDecompressor-v3"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        sourceSets {
+            main {
+                jni.srcDirs = []
+            }
+        }
+    }
+}
+
+dependencies {
+    compile project(':ambilWarna')
+    compile project(':code')
+    compile project(':library')
+    compile project(':superToasts')
+    compile 'com.android.support:support-v4:19.1.0'
+    compile files('libs/LingvoIntegration_2.5.2.12.jar')
+    compile files('libs/httpmime-4.2.5.jar')
+    compile files('libs/json-simple-1.1.1.jar')
+    compile files('libs/nanohttpd-2.0.5.jar')
+    compile files('libs/open-dictionary-api-1.2.1.jar')
+    compile files('libs/pdfparse.jar')
+}

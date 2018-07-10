@@ -24,7 +24,8 @@ public class DictionaryRegister {
             JiSho.class,
             VocabCom.class,
             Mnemonic.class,
-            WebsterLearners.class
+            WebsterLearners.class,
+            HujiangJapanese.class
     };
 
     private static List<IDictionary> dictList;

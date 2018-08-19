@@ -98,7 +98,7 @@ public class VocabCom implements IDictionary {
         return null;
     }
 
-    private static String getSingleQueryResult(Document soup, String query, boolean toString){
+    static String getSingleQueryResult(Document soup, String query, boolean toString){
         Elements re = soup.select(query);
         if(!re.isEmpty()){
             if(toString){
@@ -111,7 +111,7 @@ public class VocabCom implements IDictionary {
         }
     }
 
-    private static String getSingleQueryResult(Element soup, String query, boolean toString){
+    static String getSingleQueryResult(Element soup, String query, boolean toString){
         Elements re = soup.select(query);
         if(!re.isEmpty()){
             if(toString) {

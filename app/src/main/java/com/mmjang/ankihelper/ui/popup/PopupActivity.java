@@ -51,6 +51,7 @@ import com.mmjang.ankihelper.ui.widget.BigBangLayout;
 import com.mmjang.ankihelper.ui.widget.BigBangLayoutWrapper;
 import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.util.FieldUtil;
+import com.mmjang.ankihelper.util.RegexUtil;
 import com.mmjang.ankihelper.util.TextSplitter;
 import com.mmjang.ankihelper.util.Utils;
 
@@ -169,6 +170,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             }
             act.setText(mTargetWord);
             asyncSearch(mTargetWord);
+        }else{
+            if(mTextToProcess.matches("[a-zA-Z\\-]*")){
+                act.setText(mTextToProcess);
+                asyncSearch(mTextToProcess);
+            }
         }
     }
 

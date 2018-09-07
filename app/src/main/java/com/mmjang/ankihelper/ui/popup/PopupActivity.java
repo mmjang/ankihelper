@@ -1,5 +1,6 @@
 package com.mmjang.ankihelper.ui.popup;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -103,18 +104,20 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     ProgressBar progressBar;
     //plan b
     LinearLayout viewDefinitionList;
+    List<Definition> mDefinitionList;
     //async event
     private static final int PROCESS_DEFINITION_LIST = 1;
     private static final int ASYNC_SEARCH_FAILED = 2;
     //async
+    @SuppressLint("HandlerLeak")
     final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PROCESS_DEFINITION_LIST:
                     showSearchButton();
-                    List<Definition> definitionList = (List<Definition>) msg.obj;
-                    processDefinitionList(definitionList);
+                    mDefinitionList = (List<Definition>) msg.obj;
+                    processDefinitionList(mDefinitionList);
                     break;
                 case ASYNC_SEARCH_FAILED:
                     showSearchButton();
@@ -577,6 +580,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             }
                             if (exportedFieldKey.equals(sharedExportElements[4])) {
                                 exportFields[i] = mUrl;
+                                i++;
+                                continue;
+                            }
+                            if (exportedFieldKey.equals(sharedExportElements[5])){
+                                exportFields[i] = Utils.getAllHtmlFromDefinitionList(mDefinitionList);
                                 i++;
                                 continue;
                             }

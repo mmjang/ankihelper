@@ -10,7 +10,8 @@ public class Constant {
             "加粗的例句",
             "挖空的例句",
             "笔记",
-            "URL"//,
+            "URL",
+            "所有释义"
             //"FBReader跳转链接"
     };
 

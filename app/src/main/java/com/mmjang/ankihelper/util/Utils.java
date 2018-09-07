@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
+import com.mmjang.ankihelper.data.dict.Definition;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -113,6 +116,22 @@ public class Utils {
         for (int i = 0; i < arr.length; i++)
             if (arr[i] == value) return i;
         return -1;
+    }
+
+    public static String getAllHtmlFromDefinitionList(List<Definition> defList){
+        if(defList.size() <= 1){
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("<div>");
+        for(Definition def : defList){
+            sb.append("<div>");
+            sb.append(def.getDisplayHtml());
+            sb.append("</div>");
+            sb.append("<br/>");
+        }
+        sb.append("</div>");
+        return sb.toString();
     }
 
 }

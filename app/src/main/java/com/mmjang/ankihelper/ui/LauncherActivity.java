@@ -53,6 +53,7 @@ public class LauncherActivity extends AppCompatActivity {
     TextView textViewAbout;
     TextView textViewHelp;
     TextView textViewAddDefaultPlan;
+    TextView textViewAddQQGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class LauncherActivity extends AppCompatActivity {
         textViewAbout = (TextView) findViewById(R.id.btn_about_and_support);
         textViewHelp = (TextView) findViewById(R.id.btn_help);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
+        textViewAddQQGroup = (TextView) findViewById(R.id.btn_qq_group);
 
         textViewAbout.setText(Html.fromHtml("<font color='red'>❤</font>" + getResources().getString(R.string.btn_about_and_support_str)));
         switchMoniteClipboard.setChecked(
@@ -192,8 +194,14 @@ public class LauncherActivity extends AppCompatActivity {
                 }
         );
 
-
-
+        textViewAddQQGroup.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        joinQQGroup("-1JxtFYckXpYUMpZKRbrMWuceCgM23R7");
+                    }
+                }
+        );
         if (settings.getMoniteClipboardQ()) {
             startCBService();
         }
@@ -331,4 +339,26 @@ public class LauncherActivity extends AppCompatActivity {
         intent.setData(uri);
         startActivity(intent);
     }
+
+    /****************
+     *
+     * 发起添加群流程。群号：安卓划词助手用户群(871406754) 的 key 为： -1JxtFYckXpYUMpZKRbrMWuceCgM23R7
+     * 调用 joinQQGroup(-1JxtFYckXpYUMpZKRbrMWuceCgM23R7) 即可发起手Q客户端申请加群 安卓划词助手用户群(871406754)
+     *
+     * @param key 由官网生成的key
+     * @return 返回true表示呼起手Q成功，返回fals表示呼起失败
+     ******************/
+    public boolean joinQQGroup(String key) {
+        Intent intent = new Intent();
+        intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + key));
+        // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            startActivity(intent);
+            return true;
+        } catch (Exception e) {
+            // 未安装手Q或安装的版本不支持
+            return false;
+        }
+    }
+
 }

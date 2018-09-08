@@ -1,21 +1,59 @@
 package com.mmjang.ankihelper.data.dict;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentSender;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.database.DatabaseErrorHandler;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.UserHandle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.Display;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
+import com.google.common.net.UrlEscapers;
 import com.mmjang.ankihelper.MyApplication;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.jsoup.helper.HttpConnection.DEFAULT_UA;
 
 /**
  * Created by liao on 2017/4/28.
@@ -30,8 +68,12 @@ public class HujiangJapanese implements IDictionary {
 
     private static final String wordUrl = "https://www.hjdict.com/jp/jc/";
     private static final String autoCompleteUrl = "https://www.esdict.cn/dicts/prefix/";
-
+    private static final String COOKIE = "_UZT_USER_SET_106_0_DEFAULT=2%7C94203fe9fb690808b7ef29aff3834b76; HJ_UID=92482875-6c87-23dc-b654-a051128fe960; TRACKSITEMAP=3%2C11%2C22%2C63%2C; _REF=http%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3D4EF7BW5aw2AUMr14xKpyBxPDcH6Ah3LnigHy27aeIww8BuyV8j6m02hc7eUKObbxwDxtpIE4vcOUheux2UYif_%26wd%3D%26eqid%3Df6c074f90001a098000000065a3e25dd; HJ_CMATCH=1; HJ_SID=47f67f36-d438-9a1f-782b-79a0eb723d97; HJ_CST=0; HJ_SSID_3=072d9dcf-6ba0-55a0-a662-22a1d555afb2; HJ_CSST_3=0; _SREF_3=";
     public HujiangJapanese(Context context) {
+
+    }
+
+    public HujiangJapanese(){
 
     }
 
@@ -49,10 +91,19 @@ public class HujiangJapanese implements IDictionary {
 
     public List<Definition> wordLookup(String key) {
         try {
+//            Connection.Response res = Jsoup.connect("https://www.hjdict.com")
+//                    .userAgent(DEFAULT_UA)
+//                    .method(Connection.Method.GET)
+//                    .execute();
+//            Map<String, String> cookies = res.cookies();
+
             Document doc = Jsoup.connect(wordUrl + key)
-                    .userAgent("Mozilla")
+                    .userAgent(DEFAULT_UA)
+                    .header("cookie", COOKIE)
+                    //.cookies(cookies)
                     .timeout(5000)
                     .get();
+            String html = doc.toString();
             Elements entrys = doc.select("div.word-details-pane");
             ArrayList<Definition> defList = new ArrayList<>();
             if (entrys.size() > 0) {
@@ -100,8 +151,8 @@ public class HujiangJapanese implements IDictionary {
 
             return defList;
         } catch (IOException ioe) {
-            //Log.d("time out", Log.getStackTraceString(ioe));
-            Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
+            Log.d("time out", Log.getStackTraceString(ioe));
+            //Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
             return new ArrayList<Definition>();
         }
 
@@ -112,5 +163,10 @@ public class HujiangJapanese implements IDictionary {
     }
 
 
+    public static void main(String[] args){
+        IDictionary dic = new HujiangJapanese();
+        //dic.wordLookup(UrlEscapers.urlFragmentEscaper().escape("娘"));
+        dic.wordLookup("娘");
+    }
 }
 

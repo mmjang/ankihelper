@@ -96,6 +96,8 @@
 
             </com.balysv.materialripple.MaterialRippleLayout>
 
+            <View style="@style/Divider" />
+
             <com.balysv.materialripple.MaterialRippleLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp">

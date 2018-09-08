@@ -37,5 +37,5 @@
     <string name="duplicate_plan_name_complain">已存在默认方案，不得重复添加。可在方案管理器中删除后再添加。</string>
     <string name="toast_no_available_plan">没有任何可用划词方案，无法正常使用，请前往Anki划词助手主界面设置</string>
     <string name="left_hand_mode">Left Hand Mode</string>
-    <string name="str_add_qq_group">👩Join QQ Group</string>
+    <string name="str_add_qq_group">👧Join QQ Group</string>
 </resources>

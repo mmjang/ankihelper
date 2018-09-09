@@ -6,7 +6,12 @@ import android.widget.FilterQueryProvider;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 
+import com.mmjang.ankihelper.data.dict.JPDeinflector.Deinflection;
+import com.mmjang.ankihelper.data.dict.JPDeinflector.Deinflector;
+import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryDbHelper;
 import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryInformation;
+import com.mmjang.ankihelper.util.RegexUtil;
+import com.mmjang.ankihelper.util.WanaKanaJava;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +27,7 @@ public class CustomDictionary implements IDictionary {
     private Context mContext;
     private CustomDictionaryDbHelper mDbHelper;
     private int mDictId;
+    private static WanaKanaJava mWanaKanaJava;
     public CustomDictionaryInformation mDictInformation;
 
     public CustomDictionary(Context context, CustomDictionaryDbHelper dbHelper, int dictId){
@@ -60,6 +66,23 @@ public class CustomDictionary implements IDictionary {
                 for (String deflectedWrod : deflectResult) {
                     re.addAll(queryDefinition(deflectedWrod));
                 }
+            }
+        }
+
+        //for handling japanese
+        if(mDictInformation.getDictLang().equals("jp")){
+            if(mWanaKanaJava == null){//lazy init of wanakana
+                mWanaKanaJava = new WanaKanaJava(false);
+            }
+
+            if(mWanaKanaJava.isKatakana(key) || RegexUtil.isEnglish(key)){
+                key = mWanaKanaJava.toHiragana(key);
+            }
+            re.addAll(queryDefinition(key));
+            for(Deinflection df : Deinflector.deinflect(key)){
+                String base = df.getBaseForm();
+                List<Definition> defs = queryDefinition(base);
+                re.addAll(defs);
             }
         }
 

@@ -1,12 +1,11 @@
-package com.mmjang.ankihelper.data.dict;
+package com.mmjang.ankihelper.data.dict.customdict;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.litepal.crud.callback.FindCallback;
+import com.mmjang.ankihelper.data.dict.CustomDictionary;
+import com.mmjang.ankihelper.data.dict.IDictionary;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,7 +49,7 @@ public class CustomDictionaryManager {
         DATA
     }
 
-    public CustomDictionaryManager(Context context,@NonNull String dictionaryPath){
+    public CustomDictionaryManager(Context context, @NonNull String dictionaryPath){
         dbHelper = new CustomDictionaryDbHelper(context);
         mDictionaryPath = dictionaryPath;
         mContext = context;

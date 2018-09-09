@@ -7,8 +7,8 @@ android {
         applicationId "com.mmjang.ankihelper"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 68
-        versionName "2.9.2"
+        versionCode 70
+        versionName "2.10.b"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -29,9 +29,9 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
-    implementation 'com.ichi2.anki:api:1.1.0alpha5'
-    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
-    implementation 'org.litepal.android:core:1.5.1'
+    api 'com.ichi2.anki:api:1.1.0alpha5'
+    api 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    api 'org.litepal.android:core:1.5.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'me.everything:overscroll-decor-android:1.0.4'
     implementation 'org.apmem.tools:layouts:1.10@aar'

@@ -3,6 +3,7 @@ package com.mmjang.ankihelper.data.dict;
 import android.content.Context;
 
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

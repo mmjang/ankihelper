@@ -21,9 +21,9 @@ import android.widget.Toast;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.dict.CustomDictionary;
-import com.mmjang.ankihelper.data.dict.CustomDictionaryManager;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
+import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryManager;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 import com.nononsenseapps.filepicker.Utils;
 
@@ -45,6 +45,8 @@ public class CustomDictionaryActivity extends AppCompatActivity {
     private static final int DICTS_REMOVED = 5;
 
     private int mMaxId = -1;
+
+    private boolean startProgressBarQ = false;
     //async
     final Handler mHandler = new Handler() {
         @Override
@@ -202,6 +204,7 @@ public class CustomDictionaryActivity extends AppCompatActivity {
         if (requestCode == FILE_CODE && resultCode == Activity.RESULT_OK) {
             List<Uri> files = Utils.getSelectedFilesFromResult(intent);
             if(files.size() > 0){
+                startProgressBarQ = true;
                 final File file = Utils.getFileForUri(files.get(0));
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -224,7 +227,6 @@ public class CustomDictionaryActivity extends AppCompatActivity {
             }
         });
         thread.start();
-                setProgressBar(true);
             }
             //long id = System.currentTimeMillis();
 //            List<Uri> files = Utils.getSelectedFilesFromResult(intent);
@@ -245,6 +247,15 @@ public class CustomDictionaryActivity extends AppCompatActivity {
 //                int ccc = rrr.size();
 //                ;
 //            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(startProgressBarQ){
+            setProgressBar(true);
+            startProgressBarQ = false;
         }
     }
 

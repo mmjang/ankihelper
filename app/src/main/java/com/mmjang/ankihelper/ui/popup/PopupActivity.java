@@ -395,6 +395,23 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     }
                 }
         );
+
+        act.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Log.d("autocomplete", i + "");
+                        act.post(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        btnSearch.callOnClick();
+                                    }
+                                }
+                        );
+                    }
+                }
+        );
     }
 
     private IDictionary getDictionaryFromOutputPlan(OutputPlan outputPlan) {

@@ -635,6 +635,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 btnAddDefinition.setEnabled(false);
                                 if (settings.getAutoCancelPopupQ()) {
                                     finish();
+                                }else{
+                                    clearBigbangSelection();
+                                    mNoteEditedByUser = "";
                                 }
                             } else {
                                 Toast.makeText(PopupActivity.this, R.string.str_failed_add, Toast.LENGTH_SHORT).show();
@@ -892,5 +895,16 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     void vibarate(int ms) {
         ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(ms);
+    }
+
+    void clearBigbangSelection(){
+        for (BigBangLayout.Line line : bigBangLayout.getLines()) {
+            List<BigBangLayout.Item> items = line.getItems();
+            for (BigBangLayout.Item item : items) {
+                if (item.getText().equals(mTargetWord)) {
+                    item.setSelected(false);
+                }
+            }
+        }
     }
 }

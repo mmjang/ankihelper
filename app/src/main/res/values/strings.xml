@@ -38,4 +38,5 @@
     <string name="toast_no_available_plan">没有任何可用划词方案，无法正常使用，请前往Anki划词助手主界面设置</string>
     <string name="left_hand_mode">Left Hand Mode</string>
     <string name="str_add_qq_group">👧🏻Join QQ Group</string>
+    <string name="str_clipboard_service_running">Clipboard Monitor is Running</string>
 </resources>

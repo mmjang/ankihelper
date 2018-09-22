@@ -3,8 +3,8 @@
     <string name="title_activity_plans_manager">Plan Manager</string>
     <string name="tv_plan_name">Plan Name:</string>
     <string name="title_activity_plan_editor">Plan Editor</string>
-    <string name="tv_select_deck">Deck</string>
-    <string name="tv_select_model">Model</string>
+    <string name="tv_select_deck">Deck:</string>
+    <string name="tv_select_model">Model:</string>
     <string name="tv_choose_dictionary">Dictionary:</string>
     <string name="api_not_available_message">Api not available!</string>
     <string name="permission_denied">Permission Denied！</string>
@@ -39,4 +39,5 @@
     <string name="left_hand_mode">Left Hand Mode</string>
     <string name="str_add_qq_group">👧🏻Join QQ Group</string>
     <string name="str_clipboard_service_running">Clipboard Monitor is Running</string>
+    <string name="str_field_map">Fields Mapping:</string>
 </resources>

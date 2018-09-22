@@ -15,14 +15,15 @@
                 android:orientation="horizontal"
                 >
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_plan_name"
                     android:textSize="20sp"
                     />
                 <EditText
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="6"
                     android:layout_height="wrap_content"
                     android:id="@+id/text_edit_plan_name"
                     android:inputType="text"
@@ -33,7 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_choose_dictionary"
                     android:textSize="20sp"
@@ -41,7 +43,7 @@
                 <Spinner
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="6"
                     android:id="@+id/dictionary_spinner"
                     >
                 </Spinner>
@@ -51,29 +53,52 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/text_view_dictionary_introduction"
                 />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tv_select_deck"
-                android:textSize="20sp" />
 
-            <Spinner
-                android:id="@+id/deck_spinner"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></Spinner>
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tv_select_model"
-                android:textSize="20sp" />
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tv_select_deck"
+                    android:textSize="20sp" />
+                <Spinner
+                    android:id="@+id/deck_spinner"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:layout_height="wrap_content"></Spinner>
+            </LinearLayout>
 
-            <Spinner
-                android:id="@+id/model_spinner"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></Spinner>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tv_select_model"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/model_spinner"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:layout_height="wrap_content"></Spinner>
+            </LinearLayout>
 
             <View style="@style/Divider"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="@string/str_field_map"
+                />
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"

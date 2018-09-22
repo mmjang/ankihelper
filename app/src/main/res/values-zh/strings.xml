@@ -4,8 +4,8 @@
     <string name="title_activity_plans_manager">划词方案管理</string>
     <string name="tv_plan_name">方案名称:</string>
     <string name="title_activity_plan_editor">方案编辑器</string>
-    <string name="tv_select_deck">牌组</string>
-    <string name="tv_select_model">模板</string>
+    <string name="tv_select_deck">牌组:</string>
+    <string name="tv_select_model">模板:</string>
     <string name="tv_choose_dictionary">选择词典：</string>
     <string name="api_not_available_message">Api 不可访问！可能原因为未安装Ankidroid，或Ankidroid高级设置中API选项未打开</string>
     <string name="permission_denied">本应用需要取得读写Ankidroid数据库的权限才能正常工作！请在本应用权限设置中打开“读写Ankidroid数据库”这个选项。点击确定立即跳转到应用设置界面。</string>
@@ -41,5 +41,6 @@
     <string name="left_hand_mode">左手模式</string>
     <string name="str_add_qq_group">👧🏻加入用户QQ群</string>
     <string name="str_clipboard_service_running">剪切板服务正在运行</string>
+    <string name="str_field_map">字段映射:</string>
 
 </resources>

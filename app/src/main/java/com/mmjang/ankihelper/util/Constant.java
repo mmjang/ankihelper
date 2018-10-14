@@ -11,7 +11,8 @@ public class Constant {
             "挖空的例句",
             "笔记",
             "URL",
-            "所有释义"
+            "所有释义",
+            "句子翻译"
             //"FBReader跳转链接"
     };
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
 import com.mmjang.ankihelper.data.dict.Definition;
+import com.mmjang.ankihelper.data.plan.OutputPlan;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -134,4 +135,13 @@ public class Utils {
         return sb.toString();
     }
 
+    public static boolean containsTranslationField(OutputPlan outputPlan){
+        Map<String, String> map = outputPlan.getFieldsMap();
+        for(String key : map.keySet()){
+            if(map.get(key).equals("句子翻译")){
+                return true;
+            }
+        }
+        return false;
+    }
 }

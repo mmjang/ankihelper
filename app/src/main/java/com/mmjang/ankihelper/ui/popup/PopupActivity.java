@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -54,6 +55,7 @@ import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.util.FieldUtil;
 import com.mmjang.ankihelper.util.RegexUtil;
 import com.mmjang.ankihelper.util.TextSplitter;
+import com.mmjang.ankihelper.util.Translator;
 import com.mmjang.ankihelper.util.Utils;
 
 import org.litepal.crud.DataSupport;
@@ -92,6 +94,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     String mUpdateAction;
     //possible bookmark id from fbreader
     String mFbReaderBookmarkId;
+    //translation
+    String mTranslatedResult = "";
+    boolean needTranslation = false;
     //views
     AutoCompleteTextView act;
     Button btnSearch;
@@ -101,13 +106,19 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     //RecyclerView recyclerViewDefinitionList;
     ImageButton mBtnEditNote;
     ImageButton mBtnEditTag;
+    ImageButton mBtnTranslation;
     ProgressBar progressBar;
+
+    CardView mCardViewTranslation;
+    EditText mEditTextTranslation;
     //plan b
     LinearLayout viewDefinitionList;
     List<Definition> mDefinitionList;
     //async event
     private static final int PROCESS_DEFINITION_LIST = 1;
     private static final int ASYNC_SEARCH_FAILED = 2;
+    private static final int TRANSLATION_DONE = 3;
+    private static final int TRANSLATIOn_FAILED = 4;
     //async
     @SuppressLint("HandlerLeak")
     final Handler mHandler = new Handler() {
@@ -123,7 +134,14 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     showSearchButton();
                     Toast.makeText(PopupActivity.this, (String) msg.obj, Toast.LENGTH_LONG).show();
                     break;
+                case TRANSLATION_DONE:
+                    mEditTextTranslation.setText((String) msg.obj);
+                    showTranslateDone();
+                    showTranslationCardView(true);
+                    break;
                 default:
+                    showTranslateNormal();
+                    Toast.makeText(PopupActivity.this, (String) msg.obj, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -156,6 +174,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             @Override
             public void run() {
                 setTargetWord();
+                if(Utils.containsTranslationField(currentOutputPlan)){
+                    asyncTranslate(mTextToProcess);
+                }
             }
         });
 
@@ -204,6 +225,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         bigBangLayout = (BigBangLayout) findViewById(R.id.bigbang);
         bigBangLayoutWrapper = (BigBangLayoutWrapper) findViewById(R.id.bigbang_wrapper);
+        mCardViewTranslation = (CardView) findViewById(R.id.cardview_translation);
+        mBtnTranslation = (ImageButton) findViewById(R.id.btn_translate);
+        mEditTextTranslation = (EditText) findViewById(R.id.edittext_translation);
     }
 
     private void loadData() {
@@ -412,6 +436,17 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     }
                 }
         );
+
+        mBtnTranslation.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(mEditTextTranslation.getText().toString().equals("")){
+                            asyncTranslate(mTextToProcess);
+                        }
+                    }
+                }
+        );
     }
 
     private IDictionary getDictionaryFromOutputPlan(OutputPlan outputPlan) {
@@ -524,6 +559,34 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         thread.start();
     }
 
+    private void asyncTranslate(final String mTextToProcess){
+        if(mTextToProcess == null) return;
+        if(mTextToProcess.trim().equals("")) return;
+        showTranslateLoading();
+        Thread thread = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            String result = Translator.translate(mTextToProcess, "auto", "zh");
+                            Message message = mHandler.obtainMessage();
+                            message.obj = result;
+                            message.what = TRANSLATION_DONE;
+                            mHandler.sendMessage(message);
+                        }
+                        catch(Exception e){
+                            String error = e.getMessage();
+                            Message message = mHandler.obtainMessage();
+                            message.obj = error;
+                            message.what = TRANSLATIOn_FAILED;
+                            mHandler.sendMessage(message);
+                        }
+                    }
+                }
+        );
+        thread.start();
+    }
+
     private void setActAdapter(IDictionary dict) {
         SimpleCursorAdapter sca = (SimpleCursorAdapter) dict.getAutoCompleteAdapter(PopupActivity.this,
                 android.R.layout.simple_spinner_dropdown_item);
@@ -602,6 +665,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             }
                             if (exportedFieldKey.equals(sharedExportElements[5])){
                                 exportFields[i] = Utils.getAllHtmlFromDefinitionList(mDefinitionList);
+                                i++;
+                                continue;
+                            }
+                            if (exportedFieldKey.equals(sharedExportElements[6])){
+                                exportFields[i] = mEditTextTranslation.getText().toString();
                                 i++;
                                 continue;
                             }
@@ -830,6 +898,28 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     private void showPronounce(boolean shouldShow) {
         btnPronounce.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
+    }
+
+    private void showTranslateNormal(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mBtnTranslation.setBackground(ContextCompat.getDrawable(this, R.drawable.icon_translate_normal));
+        }
+    }
+
+    private void showTranslateLoading(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mBtnTranslation.setBackground(ContextCompat.getDrawable(this, R.drawable.icon_translate_wait));
+        }
+    }
+
+    private void showTranslateDone(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mBtnTranslation.setBackground(ContextCompat.getDrawable(this, R.drawable.icon_translate_done));
+        }
+    }
+
+    private void showTranslationCardView(boolean show){
+        mCardViewTranslation.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override

@@ -28,7 +28,8 @@ public class DictionaryRegister {
             WebsterLearners.class,
             HujiangJapanese.class,
             Handian.class,
-            BingOxford.class
+            BingOxford.class,
+            DictionaryDotCom.class
     };
 
     private static List<IDictionary> dictList;

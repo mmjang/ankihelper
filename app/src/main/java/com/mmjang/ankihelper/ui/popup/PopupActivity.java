@@ -90,6 +90,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     String mUrl = "";
     //possible specific note id to update
     Long mUpdateNoteId = 0L;
+    //!!!!!!!!!!!important!!! boolean, if the plan spinner is during init, forbid asyncsearch;
+    boolean isDuringPlanSpinnerInit = false;
     //update action   replace/append    append is the default action, to prevent data loss;
     String mUpdateAction;
     //possible bookmark id from fbreader
@@ -278,6 +280,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         boolean find = false;
         for (OutputPlan plan : outputPlanList) {
             if (plan.getPlanName().equals(lastSelectedPlan)) {
+                isDuringPlanSpinnerInit = true;
+                isDuringPlanSpinnerInit = true;
                 planSpinner.setSelection(i);
                 currentOutputPlan = outputPlanList.get(i);
                 currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
@@ -358,7 +362,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         settings.setLastSelectedPlan(currentOutputPlan.getPlanName());
                         String actContent = act.getText().toString();
                         if(!actContent.trim().isEmpty()) {
-                            asyncSearch(actContent);
+                            if(isDuringPlanSpinnerInit){
+                                isDuringPlanSpinnerInit = false;
+                            }else {
+                                asyncSearch(actContent);
+                            }
                         }
                     }
 

@@ -178,7 +178,6 @@
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:textSize="14sp"
-                            android:maxLines="2"
                             />
                     </android.support.v7.widget.CardView>
 

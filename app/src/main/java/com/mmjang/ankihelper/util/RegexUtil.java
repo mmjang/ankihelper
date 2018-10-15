@@ -91,6 +91,23 @@ public class RegexUtil {
         int v = (int)a;
         return (v >=19968 && v <= 171941);
     }
+
+    public static boolean isChineseSentence(String s){
+        if(s.length() == 0) return false;
+        int count = 0;
+        for(int i = 0; i < s.length(); i ++){
+            if(isChinese(s.charAt(i))){
+                count ++;
+            }
+        }
+        if((count + 0.0) / s.length() >= 0.5){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
     public static boolean isSymbol(char a){
         String s = a+"";
        return s.matches(SYMBOL_REX);

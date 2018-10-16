@@ -63,6 +63,7 @@ public class DictionaryDotCom implements IDictionary {
                 String headWord = entry.getString("entry");
                 String prounceIPA = entry.getString("pronunciationIpa");
                 String audioURL = entry.getString("audioUrlMp3");
+                audioURL = "[sound:" + audioURL + "]";
                 JSONArray dataParts = entry.getJSONArray("dataParts");
                 for(int j = 0; j < dataParts.length(); j ++){
                     JSONObject dataPartObj = dataParts.getJSONObject(j);

@@ -68,6 +68,7 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.mmjang.ankihelper.util.FieldUtil.getBlankSentence;
 import static com.mmjang.ankihelper.util.FieldUtil.getBoldSentence;
+import static com.mmjang.ankihelper.util.FieldUtil.getNormalSentence;
 
 
 public class PopupActivity extends Activity implements BigBangLayoutWrapper.ActionListener{
@@ -656,32 +657,39 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 i++;
                                 continue;
                             }
+
                             if (exportedFieldKey.equals(sharedExportElements[1])) {
+                                exportFields[i] = getNormalSentence(bigBangLayout.getLines());
+                                i++;
+                                continue;
+                            }
+
+                            if (exportedFieldKey.equals(sharedExportElements[2])) {
                                 exportFields[i] = getBoldSentence(bigBangLayout.getLines());
                                 i++;
                                 continue;
                             }
-                            if (exportedFieldKey.equals(sharedExportElements[2])) {
+                            if (exportedFieldKey.equals(sharedExportElements[3])) {
                                 exportFields[i] = getBlankSentence(bigBangLayout.getLines());
                                 i++;
                                 continue;
                             }
-                            if (exportedFieldKey.equals(sharedExportElements[3])) {
+                            if (exportedFieldKey.equals(sharedExportElements[4])) {
                                 exportFields[i] = mNoteEditedByUser;
                                 i++;
                                 continue;
                             }
-                            if (exportedFieldKey.equals(sharedExportElements[4])) {
+                            if (exportedFieldKey.equals(sharedExportElements[5])) {
                                 exportFields[i] = mUrl;
                                 i++;
                                 continue;
                             }
-                            if (exportedFieldKey.equals(sharedExportElements[5])){
+                            if (exportedFieldKey.equals(sharedExportElements[6])){
                                 exportFields[i] = Utils.getAllHtmlFromDefinitionList(mDefinitionList);
                                 i++;
                                 continue;
                             }
-                            if (exportedFieldKey.equals(sharedExportElements[6])){
+                            if (exportedFieldKey.equals(sharedExportElements[7])){
                                 exportFields[i] = mEditTextTranslation.getText().toString();
                                 i++;
                                 continue;

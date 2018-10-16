@@ -7,6 +7,7 @@ package com.mmjang.ankihelper.util;
 public class Constant {
     private static final String[] SHARED_EXPORT_ELEMENTS = new String[]{
             "空",
+            "例句",
             "加粗的例句",
             "挖空的例句",
             "笔记",

@@ -39,6 +39,25 @@ public class FieldUtil {
         return selectedItems;
     }
 
+    public static String getNormalSentence(List<BigBangLayout.Line> lines) {
+        StringBuilder sb = new StringBuilder();
+        for (int lineIndex = 0; lineIndex < lines.size(); lineIndex++) {
+            BigBangLayout.Line line = lines.get(lineIndex);
+            List<BigBangLayout.Item> items = line.getItems();
+            for (int itemIndex = 0; itemIndex < items.size(); itemIndex++) {
+                BigBangLayout.Item item = items.get(itemIndex);
+                if (item.isSelected()) {
+                    //sb.append("<b>");
+                    sb.append(item.getText());
+                    //sb.append("</b>");
+                } else {
+                    sb.append(item.getText());
+                }
+            }
+        }
+        return sb.toString().trim();
+    }
+
     public static String getBoldSentence(List<BigBangLayout.Line> lines) {
         StringBuilder sb = new StringBuilder();
         for (int lineIndex = 0; lineIndex < lines.size(); lineIndex++) {

@@ -30,7 +30,7 @@ public class DictionaryDotCom implements IDictionary {
 
     private static final String DICT_NAME = "dictionary.com";
     private static final String DICT_INTRO = "英英词典，收词量大，释义全面";
-    private static final String[] EXP_ELE = new String[]{"单词", "音标", "发音", "释义"};
+    private static final String[] EXP_ELE = new String[]{"单词", "音标", "发音", "释义", "复合项"};
 
     private static final String wordUrl = "http://restcdn.dictionary.com//v2/word.json/";
     private static final String urlParams = "/completeFormatted?api_key=I6SnT6uSpyaarEn&audio=mp3&entry=all&part=all&hotlinks=on&platform=android&app_id=dcomAndroidFreeV7513";
@@ -82,6 +82,11 @@ public class DictionaryDotCom implements IDictionary {
                         expele.put(EXP_ELE[1], prounceIPA);
                         expele.put(EXP_ELE[2], audioURL);
                         expele.put(EXP_ELE[3], "<i>" + pos + "</i>" + "<br/>" + defHtml);
+                        expele.put(EXP_ELE[4],
+                                "<b>" + headWord + "</b><br/>" +
+                                        "/" + prounceIPA +"/" + audioURL + "<br/>" +
+                                "<i>" + pos + "</i>" + "<br/>" + defHtml
+                                );
                         String exportedHtml;
                         if(n == 0){
                             exportedHtml = "<b>" + headWord + " </b>" +

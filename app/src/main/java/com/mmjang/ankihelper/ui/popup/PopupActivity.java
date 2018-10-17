@@ -256,7 +256,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         ArrayAdapter<String> planSpinnerAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, planNameArr);
         planSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        planSpinner.setAdapter(planSpinnerAdapter);
         //set plan to last selected plan
         String lastSelectedPlan = settings.getLastSelectedPlan();
         if (lastSelectedPlan.equals("")) //first use, set default plan to first one if any
@@ -282,8 +281,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         for (OutputPlan plan : outputPlanList) {
             if (plan.getPlanName().equals(lastSelectedPlan)) {
                 isDuringPlanSpinnerInit = true;
-                isDuringPlanSpinnerInit = true;
                 planSpinner.setSelection(i);
+                planSpinner.setAdapter(planSpinnerAdapter);
                 currentOutputPlan = outputPlanList.get(i);
                 currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
                 setActAdapter(currentDicitonary);
@@ -362,10 +361,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         //memorise last selected plan
                         settings.setLastSelectedPlan(currentOutputPlan.getPlanName());
                         String actContent = act.getText().toString();
-                        if(!actContent.trim().isEmpty()) {
-                            if(isDuringPlanSpinnerInit){
-                                isDuringPlanSpinnerInit = false;
-                            }else {
+
+                        if(isDuringPlanSpinnerInit){
+                            isDuringPlanSpinnerInit = false;
+                        }else {
+                            if(!actContent.trim().isEmpty()) {
                                 asyncSearch(actContent);
                             }
                         }

@@ -42,5 +42,6 @@
     <string name="str_add_qq_group">👧🏻加入用户QQ群</string>
     <string name="str_clipboard_service_running">剪切板服务正在运行</string>
     <string name="str_field_map">字段映射:</string>
+    <string name="str_only_one_plan_cant_switch">只有一个方案，没法切换</string>
 
 </resources>

@@ -11,12 +11,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -114,6 +118,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     CardView mCardViewTranslation;
     EditText mEditTextTranslation;
+    //fab
+    FloatingActionButton mFab;
+    ScrollView scrollView;
     //plan b
     LinearLayout viewDefinitionList;
     List<Definition> mDefinitionList;
@@ -159,7 +166,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         setContentView(R.layout.activity_popup);
         //set animation
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         //
         assignViews();
@@ -231,6 +238,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         mCardViewTranslation = (CardView) findViewById(R.id.cardview_translation);
         mBtnTranslation = (ImageButton) findViewById(R.id.btn_translate);
         mEditTextTranslation = (EditText) findViewById(R.id.edittext_translation);
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
     }
 
     private void loadData() {
@@ -249,12 +257,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     }
 
     private void populatePlanSpinner() {
-        String[] planNameArr = new String[outputPlanList.size()];
+        final String[] planNameArr = new String[outputPlanList.size()];
         for (int i = 0; i < outputPlanList.size(); i++) {
             planNameArr[i] = outputPlanList.get(i).getPlanName();
         }
         ArrayAdapter<String> planSpinnerAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, planNameArr);
+        planSpinner.setAdapter(planSpinnerAdapter);
         planSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //set plan to last selected plan
         String lastSelectedPlan = settings.getLastSelectedPlan();
@@ -282,7 +291,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             if (plan.getPlanName().equals(lastSelectedPlan)) {
                 isDuringPlanSpinnerInit = true;
                 planSpinner.setSelection(i);
-                planSpinner.setAdapter(planSpinnerAdapter);
                 currentOutputPlan = outputPlanList.get(i);
                 currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
                 setActAdapter(currentDicitonary);
@@ -303,6 +311,22 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         } else {
             //if find, then current plan and dictionary must have been set above.
         }
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            scrollView.setOnScrollChangeListener(
+//                    new View.OnScrollChangeListener() {
+//                        @Override
+//                        public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//                            if(i1 > i3){
+//                                mFab.hide();
+//                            }else{
+//                                mFab.show();
+//                                //mFab.setAlpha(Constant.FLOAT_ACTION_BUTTON_ALPHA);
+//                            }
+//                        }
+//                    }
+//            );
+//        }
     }
 
     private void populateLanguageSpinner() {
@@ -452,6 +476,27 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     public void onClick(View view) {
                         if(mEditTextTranslation.getText().toString().equals("")){
                             asyncTranslate(mTextToProcess);
+                        }
+                    }
+                }
+        );
+        mFab.setAlpha(Constant.FLOAT_ACTION_BUTTON_ALPHA);
+        mFab.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int mPlanSize = outputPlanList.size();
+                        int currentPos = planSpinner.getSelectedItemPosition();
+                        if(mPlanSize > 1){
+                            if(currentPos < mPlanSize - 1){
+                                planSpinner.setSelection(currentPos + 1);
+                            }
+                            else if(currentPos == mPlanSize - 1){
+                                planSpinner.setSelection(0);
+                            }
+                            scrollView.fullScroll(ScrollView.FOCUS_UP);
+                        }else{
+                            Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -620,6 +665,19 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             view = LayoutInflater.from(PopupActivity.this)
                     .inflate(R.layout.definition_item, null);
         }
+        //toggle fab with clicks
+//        view.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if(mFab.getVisibility() == View.VISIBLE){
+//                            mFab.hide();
+//                        }else{
+//                            mFab.show();
+//                        }
+//                    }
+//                }
+//        );
         final TextView textVeiwDefinition = (TextView) view.findViewById(R.id.textview_definition);
         final ImageButton btnAddDefinition = (ImageButton) view.findViewById(R.id.btn_add_definition);
         final LinearLayout btnAddDefinitionLarge = (LinearLayout) view.findViewById(R.id.btn_add_definition_large);

@@ -32,5 +32,5 @@ public class Constant {
     static final public String INTENT_ANKIHELPER_NOTE = "com.mmjang.ankihelper.note";
     public static final int VIBRATE_DURATION = 10;
 
-    public static final float FLOAT_ACTION_BUTTON_ALPHA = 0.4f;
+    public static final float FLOAT_ACTION_BUTTON_ALPHA = 0.3f;
 }

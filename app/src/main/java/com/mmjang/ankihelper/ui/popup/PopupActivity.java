@@ -494,6 +494,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             else if(currentPos == mPlanSize - 1){
                                 planSpinner.setSelection(0);
                             }
+                            vibarate(Constant.VIBRATE_DURATION);
                             scrollView.fullScroll(ScrollView.FOCUS_UP);
                         }else{
                             Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();

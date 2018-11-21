@@ -114,12 +114,15 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     ImageButton mBtnEditNote;
     ImageButton mBtnEditTag;
     ImageButton mBtnTranslation;
+    ImageButton mBtnFooterRotateLeft;
+    ImageButton mBtnFooterRotateRight;
+    ImageButton mBtnFooterScrollup;
     ProgressBar progressBar;
 
     CardView mCardViewTranslation;
     EditText mEditTextTranslation;
     //fab
-    FloatingActionButton mFab;
+    //FloatingActionButton mFab;
     ScrollView scrollView;
     //plan b
     LinearLayout viewDefinitionList;
@@ -230,15 +233,18 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         pronounceLanguageSpinner = (Spinner) findViewById(R.id.language_spinner);
         //recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
         viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
-        mBtnEditNote = (ImageButton) findViewById(R.id.btn_edit_note);
-        mBtnEditTag = (ImageButton) findViewById(R.id.btn_edit_tag);
+        mBtnEditNote = (ImageButton) findViewById(R.id.footer_note);
+        mBtnEditTag = (ImageButton) findViewById(R.id.footer_tag);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         bigBangLayout = (BigBangLayout) findViewById(R.id.bigbang);
         bigBangLayoutWrapper = (BigBangLayoutWrapper) findViewById(R.id.bigbang_wrapper);
         mCardViewTranslation = (CardView) findViewById(R.id.cardview_translation);
-        mBtnTranslation = (ImageButton) findViewById(R.id.btn_translate);
+        mBtnTranslation = (ImageButton) findViewById(R.id.footer_translate);
         mEditTextTranslation = (EditText) findViewById(R.id.edittext_translation);
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        //mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mBtnFooterRotateLeft = (ImageButton) findViewById(R.id.footer_rotate_left);
+        mBtnFooterRotateRight= (ImageButton) findViewById(R.id.footer_rotate_right);
+        mBtnFooterScrollup = (ImageButton) findViewById(R.id.footer_scroll_up);
     }
 
     private void loadData() {
@@ -480,8 +486,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     }
                 }
         );
-        mFab.setAlpha(Constant.FLOAT_ACTION_BUTTON_ALPHA);
-        mFab.setOnClickListener(
+        mBtnFooterRotateRight.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -499,6 +504,37 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         }else{
                             Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();
                         }
+                    }
+                }
+        );
+
+        mBtnFooterRotateLeft.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int mPlanSize = outputPlanList.size();
+                        int currentPos = planSpinner.getSelectedItemPosition();
+                        if(mPlanSize > 1){
+                            if(currentPos > 0){
+                                planSpinner.setSelection(currentPos - 1);
+                            }
+                            else if(currentPos == 0){
+                                planSpinner.setSelection(mPlanSize - 1);
+                            }
+                            vibarate(Constant.VIBRATE_DURATION);
+                            scrollView.fullScroll(ScrollView.FOCUS_UP);
+                        }else{
+                            Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
+
+        mBtnFooterScrollup.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        scrollView.fullScroll(ScrollView.FOCUS_UP);
                     }
                 }
         );
@@ -982,19 +1018,19 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     private void showTranslateNormal(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mBtnTranslation.setBackground(ContextCompat.getDrawable(this, R.drawable.icon_translate_normal));
+            mBtnTranslation.setImageResource(R.drawable.icon_translate_normal);
         }
     }
 
     private void showTranslateLoading(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mBtnTranslation.setBackground(ContextCompat.getDrawable(this, R.drawable.icon_translate_wait));
+            mBtnTranslation.setImageResource(R.drawable.icon_translate_wait);
         }
     }
 
     private void showTranslateDone(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mBtnTranslation.setBackground(ContextCompat.getDrawable(this, R.drawable.icon_translate_done));
+            mBtnTranslation.setImageResource(R.drawable.icon_translate_done);
         }
     }
 

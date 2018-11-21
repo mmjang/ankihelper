@@ -44,7 +44,7 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="40dp"
                 android:layout_marginTop="10dp"
                 app:cardBackgroundColor="@color/popup_background"
                 app:cardCornerRadius="8dp"
@@ -76,38 +76,6 @@
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <ImageButton
-                                android:id="@+id/btn_edit_tag"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_marginRight="10dp"
-                                android:background="@drawable/ic_tag_black"
-                                android:elevation="8dp" />
-
-                            <ImageButton
-                                android:id="@+id/btn_edit_note"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_marginRight="10dp"
-                                android:background="@drawable/ic_note_black"
-                                android:elevation="8dp" />
-
-                            <ImageButton
-                                android:id="@+id/btn_translate"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_marginRight="0dp"
-                                android:background="@drawable/icon_translate_normal"
-                                android:elevation="8dp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
                             <android.support.v7.widget.AppCompatCheckBox
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -125,9 +93,8 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0"
+                            android:layout_weight="1"
                             android:orientation="horizontal"
-                            android:visibility="gone"
                             >
 
                             <Spinner
@@ -253,15 +220,80 @@
     </ScrollView>
 </LinearLayout>
 
-<android.support.design.widget.FloatingActionButton
-    android:id="@+id/fab"
-    android:layout_width="wrap_content"
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal|bottom"
-    app:backgroundTint="#f0f0f0"
-    app:fabCustomSize="42dp"
-    android:elevation="10dp"
-    android:src="@drawable/ic_right_arrow"
-    android:layout_margin="20dp"
-    android:visibility="visible" />
+    android:layout_gravity="bottom"
+    app:cardElevation="20dp"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        >
+        <ImageButton
+            android:id="@+id/footer_scroll_up"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" 
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_up_arrow"
+            android:background="@drawable/selector"            />
+        <ImageButton
+            android:id="@+id/footer_translate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_translate_normal"
+            android:background="@drawable/selector"/>
+        <ImageButton
+            android:id="@+id/footer_rotate_left"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_left_arrow"
+            android:background="@drawable/selector"            />
+        <ImageButton
+            android:id="@+id/footer_rotate_right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_right_arrow"
+            android:background="@drawable/selector"
+            />
+        <ImageButton
+            android:id="@+id/footer_note"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_note_black"
+            android:background="@drawable/selector"            />
+        <ImageButton
+            android:id="@+id/footer_tag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_tag_black"
+            android:background="@drawable/selector"            />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
 </android.support.design.widget.CoordinatorLayout>

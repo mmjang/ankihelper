@@ -10,6 +10,8 @@ public class Translator {
     private static final String SECURITY_KEY = "ISSPx0K_ZyrUN9IAOKel";
     private static TransApi api;
     public static String translate(String query, String from, String to){
+        //remove line break
+        query = query.replaceAll("\n","");
         if(api == null) api = new TransApi(APP_ID, SECURITY_KEY);
         String jsonStr = api.getTransResult(query, from , to);
         try {

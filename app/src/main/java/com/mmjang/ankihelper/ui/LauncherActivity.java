@@ -85,6 +85,10 @@ public class LauncherActivity extends AppCompatActivity {
                 settings.getAutoCancelPopupQ()
         );
 
+        switchLeftHandMode.setChecked(
+                settings.getLeftHandModeQ()
+        );
+
         switchMoniteClipboard.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override

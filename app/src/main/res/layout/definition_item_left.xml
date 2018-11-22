@@ -24,16 +24,18 @@
             android:layout_width="wrap_content"
             android:id="@+id/btn_add_definition_large"
             android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/btn_add_definition"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/ic_add_blue"
-                />
+           <ImageButton
+               android:id="@+id/btn_add_definition"
+               android:layout_width="25dp"
+               android:layout_height="25dp"
+               android:layout_margin="5dp"
+               android:padding="10dp"
+               android:background="@drawable/ic_ali_add"
+               />
         </LinearLayout>
          <TextView
             android:id="@+id/textview_definition"
+             android:textIsSelectable="true"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textColor="#101010"

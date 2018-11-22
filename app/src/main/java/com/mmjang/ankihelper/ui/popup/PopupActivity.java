@@ -107,7 +107,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     //views
     AutoCompleteTextView act;
     Button btnSearch;
-    Button btnPronounce;
+    ImageButton btnPronounce;
     Spinner planSpinner;
     Spinner pronounceLanguageSpinner;
     //RecyclerView recyclerViewDefinitionList;
@@ -140,6 +140,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             switch (msg.what) {
                 case PROCESS_DEFINITION_LIST:
                     showSearchButton();
+                    //scrollView.fullScroll(ScrollView.FOCUS_UP);
                     mDefinitionList = (List<Definition>) msg.obj;
                     processDefinitionList(mDefinitionList);
                     break;
@@ -228,7 +229,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     private void assignViews() {
         act = (AutoCompleteTextView) findViewById(R.id.edit_text_hwd);
         btnSearch = (Button) findViewById(R.id.btn_search);
-        btnPronounce = ((Button) findViewById(R.id.btn_pronounce));
+        btnPronounce = ((ImageButton) findViewById(R.id.btn_pronounce));
         planSpinner = (Spinner) findViewById(R.id.plan_spinner);
         pronounceLanguageSpinner = (Spinner) findViewById(R.id.language_spinner);
         //recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
@@ -500,7 +501,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 planSpinner.setSelection(0);
                             }
                             vibarate(Constant.VIBRATE_DURATION);
-                            scrollView.fullScroll(ScrollView.FOCUS_UP);
+                            //scrollView.fullScroll(ScrollView.FOCUS_UP);
                         }else{
                             Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();
                         }
@@ -522,7 +523,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 planSpinner.setSelection(mPlanSize - 1);
                             }
                             vibarate(Constant.VIBRATE_DURATION);
-                            scrollView.fullScroll(ScrollView.FOCUS_UP);
+                            //scrollView.fullScroll(ScrollView.FOCUS_UP);
                         }else{
                             Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();
                         }
@@ -534,7 +535,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        scrollView.fullScroll(ScrollView.FOCUS_UP);
+                        if(scrollView.getScrollY() > 0) {
+                            scrollView.fullScroll(ScrollView.FOCUS_UP);
+                        }
                     }
                 }
         );
@@ -566,6 +569,16 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             for (Definition def : definitionList) {
                 viewDefinitionList.addView(getCardFromDefinition(def));
             }
+            viewDefinitionList.post(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            if(scrollView.getScrollY() > 10) {
+                                //scrollView.fullScroll(ScrollView.FOCUS_UP);
+                            }
+                        }
+                    }
+            );
         }
     }
 
@@ -814,7 +827,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                            PopupActivity.this, R.drawable.ic_add_grey));
+                                            PopupActivity.this, R.drawable.ic_ali_add_green));
                                 }
                                 btnAddDefinition.setEnabled(false);
                                 if (settings.getAutoCancelPopupQ()) {
@@ -860,7 +873,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 Toast.makeText(PopupActivity.this, "note updated!", Toast.LENGTH_SHORT).show();
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                            PopupActivity.this, R.drawable.ic_add_grey));
+                                            PopupActivity.this, R.drawable.ic_ali_add_green));
                                 }
                                 btnAddDefinition.setEnabled(false);
                                 if(settings.getAutoCancelPopupQ()) {
@@ -1024,13 +1037,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     private void showTranslateLoading(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mBtnTranslation.setImageResource(R.drawable.icon_translate_wait);
+            mBtnTranslation.setImageResource(R.drawable.ic_ali_wait);
         }
     }
 
     private void showTranslateDone(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mBtnTranslation.setImageResource(R.drawable.icon_translate_done);
+            mBtnTranslation.setImageResource(R.drawable.ic_ali_translate_green);
         }
     }
 

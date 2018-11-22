@@ -15,5 +15,7 @@
 
     <color name="divider">#cee9e9e9</color>
 
-    <color name="footer_pressed">#227D51</color>
+    <color name="footer_pressed">#4f8069</color>
+
+    <color name="bottom_panel_icon">#808080</color>
 </resources>

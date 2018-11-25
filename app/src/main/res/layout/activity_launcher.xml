@@ -220,7 +220,24 @@
 
             </com.balysv.materialripple.MaterialRippleLayout>
 
+            <View style="@style/Divider"/>
 
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <TextView
+                    android:id="@+id/btn_random_quote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/str_btn_open_random_quote"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
 
         </LinearLayout>
 

@@ -32,13 +32,17 @@ import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.dict.YoudaoOnline;
 import com.mmjang.ankihelper.data.plan.DefaultPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.data.quote.Quote;
+import com.mmjang.ankihelper.data.quote.RandomQuote;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.ui.about.AboutActivity;
 import com.mmjang.ankihelper.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
+import com.mmjang.ankihelper.ui.popup.PopupActivity;
 
+import org.json.JSONException;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -58,6 +62,7 @@ public class LauncherActivity extends AppCompatActivity {
     TextView textViewHelp;
     TextView textViewAddDefaultPlan;
     TextView textViewAddQQGroup;
+    TextView textViewRandomQuote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +80,7 @@ public class LauncherActivity extends AppCompatActivity {
         textViewHelp = (TextView) findViewById(R.id.btn_help);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
         textViewAddQQGroup = (TextView) findViewById(R.id.btn_qq_group);
+        textViewRandomQuote = (TextView) findViewById(R.id.btn_random_quote);
 
         textViewAbout.setText(Html.fromHtml("<font color='red'>❤</font>" + getResources().getString(R.string.btn_about_and_support_str)));
         switchMoniteClipboard.setChecked(
@@ -213,6 +219,37 @@ public class LauncherActivity extends AppCompatActivity {
         if (settings.getMoniteClipboardQ()) {
             startCBService();
         }
+
+        textViewRandomQuote.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Thread thread = new Thread(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Quote quote = RandomQuote.fetch();
+                                            Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
+                                            intent.setAction(Intent.ACTION_SEND);
+                                            intent.setType("text/plain");
+                                            //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                            intent.putExtra(Intent.EXTRA_TEXT, quote.Quote +
+                                                    "(" + quote.Caption + "-"  + quote.Author + ")");
+                                            startActivity(intent);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            Toast.makeText(LauncherActivity.this, "error!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                        );
+                        thread.start();
+                    }
+                }
+        );
 
         //debug new feature
 //        Thread thread = new Thread(new Runnable() {

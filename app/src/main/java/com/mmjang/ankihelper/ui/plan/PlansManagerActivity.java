@@ -2,6 +2,7 @@ package com.mmjang.ankihelper.ui.plan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,9 +19,14 @@ import com.mmjang.ankihelper.util.DialogUtil;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlansManagerActivity extends AppCompatActivity {
+
+    private List<OutputPlan> mPlanList;
+    RecyclerView planListView;
+    PlansAdapter mPlansAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,28 +47,31 @@ public class PlansManagerActivity extends AppCompatActivity {
                 }
             }
         });
-
+        initPlanList();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        refreshPlanList();
+    protected void onResume() {
+        super.onResume();
+        List<OutputPlan> newList = DataSupport.findAll(OutputPlan.class);
+        mPlanList.clear();
+        mPlanList.addAll(newList);
+        mPlansAdapter.notifyDataSetChanged();
     }
 
-    private void refreshPlanList() {
-        List<OutputPlan> plans = DataSupport.findAll(OutputPlan.class);
+    private void initPlanList() {
+        mPlanList = new ArrayList<>();
         //Log.d("PlansManager:", plans.size() + "ge");
-        RecyclerView planList = (RecyclerView) findViewById(R.id.plan_list);
+        planListView = (RecyclerView) findViewById(R.id.plan_list);
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        planList.setLayoutManager(llm);
-        PlansAdapter pa = new PlansAdapter(PlansManagerActivity.this, plans);
+        planListView.setLayoutManager(llm);
+        mPlansAdapter = new PlansAdapter(PlansManagerActivity.this, mPlanList);
         //planList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        planList.setAdapter(pa);
+        planListView.setAdapter(mPlansAdapter);
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(pa);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mPlansAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(planList);
+        itemTouchHelper.attachToRecyclerView(planListView);
     }
 
 }

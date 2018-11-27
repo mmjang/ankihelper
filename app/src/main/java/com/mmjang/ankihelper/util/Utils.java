@@ -21,7 +21,7 @@ import java.util.Map;
 public class Utils {
     private static final String FIELDS_SEPERATOR = "@@@@";
 
-    public static String fieldsMap2Str(HashMap<String, String> map) {
+    public static String fieldsMap2Str(Map<String, String> map) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();

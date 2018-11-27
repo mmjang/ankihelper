@@ -20,8 +20,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -747,6 +750,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
 
         }
+
+        //set custom action for the textView
+        makeTextViewSelectAndSearch(textVeiwDefinition);
         //holder.itemView.setAnimation(AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in));
         //holder.textVeiwDefinition.setTextColor(Color.BLACK);
         btnAddDefinition.setOnClickListener(
@@ -1125,5 +1131,64 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 }
             }
         }
+    }
+
+    private void makeTextViewSelectAndSearch(final TextView textView){
+        textView.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                // Remove the "select all" option
+                menu.removeItem(android.R.id.selectAll);
+                // Remove the "cut" option
+                menu.removeItem(android.R.id.cut);
+                // Remove the "copy all" option
+                menu.removeItem(android.R.id.copy);
+                return true;
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                // Called when action mode is first created. The menu supplied
+                // will be used to generate action buttons for the action mode
+
+                // Here is an example MenuItem
+                menu.add(0, 1, 0, "Definition").setIcon(R.drawable.ic_ali_search);
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                // Called when an action mode is about to be exited and
+                // destroyed
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case 1:
+                        int min = 0;
+                        int max = textView.getText().length();
+                        if (textView.isFocused()) {
+                            final int selStart = textView.getSelectionStart();
+                            final int selEnd = textView.getSelectionEnd();
+
+                            min = Math.max(0, Math.min(selStart, selEnd));
+                            max = Math.max(0, Math.max(selStart, selEnd));
+                        }
+                        // Perform your definition lookup with the selected text
+                        final String selectedText = textView.getText().subSequence(min, max).toString();
+                        // Finish and close the ActionMode
+                        mode.finish();
+                        act.setText(selectedText);
+                        asyncSearch(selectedText);
+                        return true;
+                    default:
+                        break;
+                }
+                return false;
+            }
+
+        });
     }
 }

@@ -1,5 +1,6 @@
 package com.mmjang.ankihelper.util;
 
+import com.mmjang.ankihelper.util.com.baidu.translate.demo.RandomAPIKeyGenerator;
 import com.mmjang.ankihelper.util.com.baidu.translate.demo.TransApi;
 
 import org.json.JSONException;
@@ -12,7 +13,10 @@ public class Translator {
     public static String translate(String query, String from, String to){
         //remove line break
         query = query.replaceAll("\n","");
-        if(api == null) api = new TransApi(APP_ID, SECURITY_KEY);
+        if(api == null) {
+            String[] appAndKey = RandomAPIKeyGenerator.next();
+            api = new TransApi(appAndKey[0], appAndKey[1]);
+        }
         String jsonStr = api.getTransResult(query, from , to);
         try {
             JSONObject json = new JSONObject(jsonStr);

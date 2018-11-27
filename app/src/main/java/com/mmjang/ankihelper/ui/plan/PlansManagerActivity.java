@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.ui.plan.helper.SimpleItemTouchHelperCallback;
 import com.mmjang.ankihelper.util.DialogUtil;
 
 import org.litepal.crud.DataSupport;
@@ -57,6 +59,10 @@ public class PlansManagerActivity extends AppCompatActivity {
         PlansAdapter pa = new PlansAdapter(PlansManagerActivity.this, plans);
         //planList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         planList.setAdapter(pa);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(pa);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(planList);
     }
 
 }

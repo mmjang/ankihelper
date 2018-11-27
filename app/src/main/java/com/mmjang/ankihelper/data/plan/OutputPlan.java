@@ -11,12 +11,21 @@ import java.util.Map;
  * Created by liao on 2017/4/20.
  */
 
-public class OutputPlan extends DataSupport {
+public class OutputPlan extends DataSupport{
+//    private int order;
     private String planName;
     private String dictionaryKey;
     private long outputDeckId;
     private long outputModelId;
     private String fieldsMap;
+
+//    public void setOrder(int order) {
+//        this.order = order;
+//    }
+//
+//    public int getOrder() {
+//        return order;
+//    }
 
     public void setPlanName(String planName) {
         this.planName = planName;
@@ -50,7 +59,7 @@ public class OutputPlan extends DataSupport {
         return outputModelId;
     }
 
-    public void setFieldsMap(HashMap<String, String> fieldsMap) {
+    public void setFieldsMap(Map<String, String> fieldsMap) {
         this.fieldsMap = Utils.fieldsMap2Str(fieldsMap);
     }
 

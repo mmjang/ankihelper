@@ -116,6 +116,26 @@
 
             </com.balysv.materialripple.MaterialRippleLayout>
 
+            <View style="@style/Divider" />
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <Switch
+                    android:duplicateParentState="false"
+                    android:id="@+id/pink_theme_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/str_pink_theme_q"
+                    android:textColor="@color/primary_text"
+                    android:textSize="16sp" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

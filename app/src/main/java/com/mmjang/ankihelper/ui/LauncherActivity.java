@@ -1,5 +1,6 @@
 package com.mmjang.ankihelper.ui;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -56,6 +57,7 @@ public class LauncherActivity extends AppCompatActivity {
     Switch switchMoniteClipboard;
     Switch switchCancelAfterAdd;
     Switch switchLeftHandMode;
+    Switch switchPinkTheme;
     TextView textViewOpenPlanManager;
     TextView textViewCustomDictionary;
     TextView textViewAbout;
@@ -66,14 +68,17 @@ public class LauncherActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        settings = Settings.getInstance(this);
+        if(settings.getPinkThemeQ()){
+            setTheme(R.style.AppThemePink);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
         initAnkiApi();
-        settings = Settings.getInstance(this);
-
         switchMoniteClipboard = (Switch) findViewById(R.id.switch_monite_clipboard);
         switchCancelAfterAdd = (Switch) findViewById(R.id.switch_cancel_after_add);
         switchLeftHandMode = (Switch) findViewById(R.id.left_hand_mode);
+        switchPinkTheme = (Switch) findViewById(R.id.pink_theme_switch);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
         textViewCustomDictionary = (TextView) findViewById(R.id.btn_open_custom_dictionary);
         textViewAbout = (TextView) findViewById(R.id.btn_about_and_support);
@@ -93,6 +98,10 @@ public class LauncherActivity extends AppCompatActivity {
 
         switchLeftHandMode.setChecked(
                 settings.getLeftHandModeQ()
+        );
+
+        switchPinkTheme.setChecked(
+                settings.getPinkThemeQ()
         );
 
         switchMoniteClipboard.setOnCheckedChangeListener(
@@ -123,6 +132,16 @@ public class LauncherActivity extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         settings.setAutoCancelPopupQ(isChecked);
+                    }
+                }
+        );
+
+        switchPinkTheme.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        settings.setPinkThemeQ(b);
+                        recreate();
                     }
                 }
         );

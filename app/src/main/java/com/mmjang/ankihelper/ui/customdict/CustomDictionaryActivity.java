@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
+import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.dict.CustomDictionary;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
@@ -73,6 +74,9 @@ public class CustomDictionaryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(Settings.getInstance(this).getPinkThemeQ()){
+            setTheme(R.style.AppThemePink);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_dictionary);
         //views

@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
                 android:layout_marginTop="10dp"
-                app:cardBackgroundColor="@color/popup_background"
+                app:cardBackgroundColor="?attr/color_popup_background"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="10dp">
 
@@ -115,8 +115,8 @@
                             android:layout_gravity="center"
                             android:adjustViewBounds="true"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_ali_play"
-                            android:background="@drawable/selector"
+                            android:src="?attr/icon_play"
+                            android:background="?attr/button_background_selector"
                             android:visibility="gone" />
 
                     </LinearLayout>
@@ -202,7 +202,7 @@
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_margin="5dp"
-                                android:background="@drawable/ic_ali_search" />
+                                android:background="?attr/icon_search" />
 
                             <ProgressBar
                                 android:id="@+id/progress_bar"
@@ -237,7 +237,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     app:cardElevation="20dp"
-    app:cardBackgroundColor="@color/popup_background"
+    app:cardBackgroundColor="?attr/color_footer_background"
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -253,8 +253,8 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_ali_back_to_top"
-            android:background="@drawable/selector"            />
+            android:src="?attr/icon_scroll_up"
+            android:background="?attr/button_background_selector"            />
         <ImageButton
             android:padding="8dp"
             android:id="@+id/footer_translate"
@@ -264,8 +264,8 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_ali_translate"
-            android:background="@drawable/selector"/>
+            android:src="?attr/icon_translate_normal"
+            android:background="?attr/button_background_selector"/>
         <ImageButton
             android:id="@+id/footer_rotate_left"
             android:layout_width="0dp"
@@ -274,8 +274,8 @@
             android:adjustViewBounds="true"
             android:layout_weight="1"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_ali_arrow_up"
-            android:background="@drawable/selector"            />
+            android:src="?attr/icon_left_arrow"
+            android:background="?attr/button_background_selector"            />
         <ImageButton
             android:id="@+id/footer_rotate_right"
             android:layout_width="0dp"
@@ -284,8 +284,8 @@
             android:adjustViewBounds="true"
             android:layout_weight="1"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_ali_arrow_down"
-            android:background="@drawable/selector"
+            android:src="?attr/icon_right_arrow"
+            android:background="?attr/button_background_selector"
             />
         <ImageButton
             android:padding="8dp"
@@ -296,8 +296,8 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_ali_note"
-            android:background="@drawable/selector"            />
+            android:src="?attr/icon_note"
+            android:background="?attr/button_background_selector"            />
         <ImageButton
             android:padding="8dp"
             android:id="@+id/footer_tag"
@@ -307,8 +307,8 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_ali_tag"
-            android:background="@drawable/selector"            />
+            android:src="?attr/icon_tag"
+            android:background="?attr/button_background_selector"            />
 
     </LinearLayout>
 

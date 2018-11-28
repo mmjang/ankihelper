@@ -2,8 +2,12 @@ package com.mmjang.ankihelper.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.TypedValue;
 import android.view.inputmethod.InputMethodManager;
 
+import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 
@@ -143,5 +147,14 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static int getResIdFromAttribute(final Activity activity,final int attr)
+    {
+        TypedArray a = activity.getTheme().obtainStyledAttributes(
+                activity.getApplicationInfo().theme, new int[] {attr});
+        int attributeResourceId = a.getResourceId(0, 0);
+        a.recycle();
+        return attributeResourceId;
     }
 }

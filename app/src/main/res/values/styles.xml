@@ -1,11 +1,32 @@
 <resources>
 
+    <!--<attr name="color_popup_background" format="reference"/>-->
+    <!--<attr name="color_footer_pressed" format="reference"/>-->
+    <!--<attr name="icon_scroll_up" format="reference"/>-->
+    <!--<attr name="icon_translate_normal" format="reference"/>-->
+    <!--<attr name="icon_translate_wait" format="reference"/>-->
+    <!--<attr name="icon_translate_done" format="reference"/>-->
+    <!--<attr name="icon_left_arrow" format="reference"/>-->
+    <!--<attr name="icon_right_arrow" format="reference"/>-->
+    <!--<attr name="icon_note" format="reference"/>-->
+    <!--<attr name="icon_tag" format="reference"/>-->
+    <!--<attr name="icon_play" format="reference"/>-->
+    <!--<attr name="icon_search" format="reference"/>-->
+    <!--<attr name="icon_add" format="reference"/>-->
+    <!--<attr name="icon_add_done" format="reference"/>-->
     <!-- BaseDefinition application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppThemePink" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryPink</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkPink</item>
+        <item name="colorAccent">@color/colorAccentPink</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,7 +38,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.TransparentInfo" parent="AppTheme">
+    <!--<style name="Theme.TransparentInfo" parent="AppTheme">-->
+    <style name="Transparent" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -25,7 +47,52 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        <item name="button_background_selector">@drawable/selector</item>
+        <item name="color_popup_background">@color/popup_background</item>
+        <item name="color_footer_background">@color/footer_background</item>
+        <item name="color_footer_pressed">@color/footer_pressed</item>
+        <item name="icon_scroll_up">@drawable/ic_ali_back_to_top</item>
+        <item name="icon_translate_normal">@drawable/ic_ali_translate</item>
+        <item name="icon_translate_wait">@drawable/ic_ali_wait</item>
+        <item name="icon_translate_done">@drawable/ic_ali_translate_green</item>
+        <item name="icon_left_arrow">@drawable/ic_ali_arrow_up</item>
+        <item name="icon_right_arrow">@drawable/ic_ali_arrow_down</item>
+        <item name="icon_note">@drawable/ic_ali_note</item>
+        <item name="icon_tag">@drawable/ic_ali_tag</item>
+        <item name="icon_play">@drawable/ic_ali_play</item>
+        <item name="icon_search">@drawable/ic_ali_search</item>
+        <item name="icon_add">@drawable/ic_ali_add</item>
+        <item name="icon_add_done">@drawable/ic_ali_add_green</item>
     </style>
+
+    <style name="TransparentPink" parent="AppThemePink">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        <item name="button_background_selector">@drawable/selector_pink</item>
+        <item name="color_popup_background">@color/popup_background_pink</item>
+        <item name="color_footer_background">@color/footer_background_pink</item>
+        <item name="color_footer_pressed">@color/footer_pressed_pink</item>
+        <item name="icon_scroll_up">@drawable/ic_ali_back_to_top_pink</item>
+        <item name="icon_translate_normal">@drawable/ic_ali_translate_pink</item>
+        <item name="icon_translate_wait">@drawable/ic_ali_wait_pink</item>
+        <item name="icon_translate_done">@drawable/ic_ali_translate_green_pink</item>
+        <item name="icon_left_arrow">@drawable/ic_ali_arrow_up_pink</item>
+        <item name="icon_right_arrow">@drawable/ic_ali_arrow_down_pink</item>
+        <item name="icon_note">@drawable/ic_ali_note_pink</item>
+        <item name="icon_tag">@drawable/ic_ali_tag_pink</item>
+        <item name="icon_play">@drawable/ic_ali_play_pink</item>
+        <item name="icon_search">@drawable/ic_ali_search_pink</item>
+        <item name="icon_add">@drawable/ic_ali_heart</item>
+        <item name="icon_add_done">@drawable/ic_ali_heart_filled</item>
+    </style>
+
 
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>

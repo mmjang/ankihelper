@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
+import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
@@ -58,6 +59,9 @@ public class PlanEditorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(Settings.getInstance(this).getPinkThemeQ()){
+            setTheme(R.style.AppThemePink);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_editor);
         initAnkiApi();

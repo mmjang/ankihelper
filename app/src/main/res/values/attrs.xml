@@ -10,4 +10,22 @@
         <attr name="sectionTextBackground" format="reference"/>
         <attr name="symbolTextBackground" format="reference"/>
     </declare-styleable>
+
+    <attr name="button_background_selector" format="reference"/>
+    <attr name="color_popup_background" format="reference"/>
+    <attr name="color_footer_background" format="reference"/>
+    <attr name="color_footer_pressed" format="reference"/>
+    <attr name="icon_scroll_up" format="reference"/>
+    <attr name="icon_translate_normal" format="reference"/>
+    <attr name="icon_translate_wait" format="reference"/>
+    <attr name="icon_translate_done" format="reference"/>
+    <attr name="icon_left_arrow" format="reference"/>
+    <attr name="icon_right_arrow" format="reference"/>
+    <attr name="icon_note" format="reference"/>
+    <attr name="icon_tag" format="reference"/>
+    <attr name="icon_play" format="reference"/>
+    <attr name="icon_search" format="reference"/>
+    <attr name="icon_add" format="reference"/>
+    <attr name="icon_add_done" format="reference"/>
+
 </resources>

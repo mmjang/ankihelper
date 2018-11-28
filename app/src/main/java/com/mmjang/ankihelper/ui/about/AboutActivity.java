@@ -10,11 +10,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.mmjang.ankihelper.R;
+import com.mmjang.ankihelper.data.Settings;
 
 public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(Settings.getInstance(this).getPinkThemeQ()){
+            setTheme(R.style.AppThemePink);
+        }else{
+            setTheme(R.style.AppTheme);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ImageButton alipay10 = (ImageButton) findViewById(R.id.alipay10);

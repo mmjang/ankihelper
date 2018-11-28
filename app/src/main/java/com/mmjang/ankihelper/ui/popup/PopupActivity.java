@@ -15,6 +15,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -168,9 +169,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(Settings.getInstance(this).getPinkThemeQ()){
+            setTheme(R.style.TransparentPink);
+        }
         super.onCreate(savedInstanceState);
         setStatusBarColor();
         setContentView(R.layout.activity_popup);
+//        getActionBar().hide();
         //set animation
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -833,7 +838,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                            PopupActivity.this, R.drawable.ic_ali_add_green));
+                                            PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
                                 }
                                 btnAddDefinition.setEnabled(false);
                                 if (settings.getAutoCancelPopupQ()) {
@@ -879,7 +884,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 Toast.makeText(PopupActivity.this, "note updated!", Toast.LENGTH_SHORT).show();
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                            PopupActivity.this, R.drawable.ic_ali_add_green));
+                                            PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
                                 }
                                 btnAddDefinition.setEnabled(false);
                                 if(settings.getAutoCancelPopupQ()) {
@@ -1037,19 +1042,19 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     private void showTranslateNormal(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mBtnTranslation.setImageResource(R.drawable.icon_translate_normal);
+            mBtnTranslation.setImageResource(Utils.getResIdFromAttribute(this, R.attr.icon_translate_normal));
         }
     }
 
     private void showTranslateLoading(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mBtnTranslation.setImageResource(R.drawable.ic_ali_wait);
+            mBtnTranslation.setImageResource(Utils.getResIdFromAttribute(this, R.attr.icon_translate_wait));
         }
     }
 
     private void showTranslateDone(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mBtnTranslation.setImageResource(R.drawable.ic_ali_translate_green);
+            mBtnTranslation.setImageResource(Utils.getResIdFromAttribute(this, R.attr.icon_translate_done));
         }
     }
 

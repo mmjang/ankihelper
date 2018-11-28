@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
+import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.ui.plan.helper.SimpleItemTouchHelperCallback;
 import com.mmjang.ankihelper.util.DialogUtil;
@@ -30,11 +31,12 @@ public class PlansManagerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(Settings.getInstance(this).getPinkThemeQ()){
+            setTheme(R.style.AppThemePink);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plans_manager);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_plan);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

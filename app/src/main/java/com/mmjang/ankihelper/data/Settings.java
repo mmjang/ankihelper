@@ -29,6 +29,7 @@ public class Settings {
     private final static String SET_AS_DEFAULT_TAG = "set_as_default_tag";
     private final static String LAST_PRONOUNCE_LANGUAGE = "last_pronounce_language";
     private final static String LEFT_HAND_MODE_Q = "left_hand_mode_q";
+    private final static String PINK_THEME_Q = "pink_theme_q";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -174,6 +175,17 @@ public class Settings {
         editor.putBoolean(LEFT_HAND_MODE_Q, leftHandModeQ);
         editor.commit();
     }
+
+    public boolean getPinkThemeQ(){
+        return  sp.getBoolean(PINK_THEME_Q, false);
+    }
+
+    public void setPinkThemeQ(boolean pinkThemeQ){
+        editor.putBoolean(PINK_THEME_Q, pinkThemeQ);
+        editor.commit();
+    }
+
+
 
     /**************/
     boolean hasKey(String key) {

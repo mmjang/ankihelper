@@ -37,7 +37,7 @@
                 android:layout_height="25dp"
                 android:layout_margin="5dp"
                 android:padding="10dp"
-                android:background="@drawable/ic_ali_add"
+                android:background="?attr/icon_add"
                 />
         </LinearLayout>
     </LinearLayout>

@@ -742,10 +742,10 @@ boolean autoAddBlanks = false;
                 case MotionEvent.ACTION_CANCEL:
                     if (mItemState != null) {
                         ItemState state = mItemState;
-                        while (state != null) {
-                            state.item.setSelected(!state.isSelected);
-                            state = state.next;
-                        }
+                        //while (state != null) {
+                            //state.item.setSelected(!state.isSelected);
+                            //state = state.next;
+                        //}
                     }
                 case MotionEvent.ACTION_UP:
                     longPressedHandler.removeCallbacks(mLongPressedRunnable);
@@ -780,7 +780,13 @@ boolean autoAddBlanks = false;
         public void run() {
             Item item=findItemByPoint(x,y);
             if (item!=null){
-                item.longPressed();
+                for(Line line : getLines()) {
+                    List<Item> items = line.getItems();
+                    for(Item i : items) {
+                        i.setSelected(false);
+                    }
+                }
+                item.view.setSelected(true);
             }
         }
     }
@@ -1119,35 +1125,41 @@ boolean autoAddBlanks = false;
 
         void longPressed(){
             if ( !(((TextView)view).getText().toString().matches("[a-zA-Z]*"))){
-                String text=getText().toString();
-                int size=text.length();
-                if (size<=1){
+                if(this.isSymbol()) {
                     return;
                 }
-                mNeedReDetectInMeasure=true;
-                ViewGroup viewgroup= (ViewGroup) view.getParent();
-                viewgroup.removeView(view);
-//                int newPadding=(mTextPadding*2- mItemSpace*(size-1))/(size*2) ;
-                //还是不考虑界面会变动的问题了，先保证好看
-                int newPadding=(mTextPadding) ;
-                for (int i=0;i<size;i++){
-                    TextView newTextView = new TextView(getContext());
-                    newTextView.setText(text.substring(size-i-1,size-i));
-                    newTextView.setBackgroundResource(mTextBgRes);
-                    if (mColorStateList == null) {
-                        newTextView.setTextColor(ContextCompat.getColorStateList(getContext(), mTextColorRes));
-                    } else {
-                        newTextView.setTextColor(mColorStateList);
-                    }
-                    newTextView.setTextSize(mTextSize);
-                    newTextView.setPadding(newPadding, mTextPaddingPort,newPadding, mTextPaddingPort);
-                    newTextView.setGravity(Gravity.CENTER);
-
-                    viewgroup.addView(newTextView,index);
+//                ViewGroup viewGroup = (ViewGroup) view.getParent();
+//                for(int i = 0; i < viewGroup.getChildCount(); i ++){
+//                        TextView item = (ItemviewGroup.getChildAt()
+//                String text=getText().toString();
+//                int size=text.length();
+//                if (size<=1){
+//                    return;
+//                }
+//                mNeedReDetectInMeasure=true;
+//                ViewGroup viewgroup= (ViewGroup) view.getParent();
+//                viewgroup.removeView(view);
+////                int newPadding=(mTextPadding*2- mItemSpace*(size-1))/(size*2) ;
+//                //还是不考虑界面会变动的问题了，先保证好看
+//                int newPadding=(mTextPadding) ;
+//                for (int i=0;i<size;i++){
+//                    TextView newTextView = new TextView(getContext());
+//                    newTextView.setText(text.substring(size-i-1,size-i));
+//                    newTextView.setBackgroundResource(mTextBgRes);
+//                    if (mColorStateList == null) {
+//                        newTextView.setTextColor(ContextCompat.getColorStateList(getContext(), mTextColorRes));
+//                    } else {
+//                        newTextView.setTextColor(mColorStateList);
+//                    }
+//                    newTextView.setTextSize(mTextSize);
+//                    newTextView.setPadding(newPadding, mTextPaddingPort,newPadding, mTextPaddingPort);
+//                    newTextView.setGravity(Gravity.CENTER);
+//
+//                    viewgroup.addView(newTextView,index);
                 }
             }
         }
-    }
+
 
     /**
      * Action Listener

@@ -164,6 +164,7 @@
                             android:layout_marginTop="8dp"
                             android:textSize="14sp"
                             android:background="@color/transparent"
+                            android:textColor="@color/secondary_text"
                             />
                     </android.support.v7.widget.CardView>
 

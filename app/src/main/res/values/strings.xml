@@ -8,9 +8,9 @@
     <string name="tv_choose_dictionary">Dictionary:</string>
     <string name="api_not_available_message">Api not available!</string>
     <string name="permission_denied">Permission Denied！</string>
-    <string name="cancel_after_add">Close popup after adding</string>
-    <string name="monite_clipboard">Monitor Clipboard</string>
-    <string name="plan_manager_str">Plans Manager</string>
+    <string name="cancel_after_add">🍃Close popup after adding</string>
+    <string name="monite_clipboard">📋Monitor Clipboard</string>
+    <string name="plan_manager_str">⚙️Plans Manager</string>
     <string name="str_added">Added</string>
     <string name="str_failed_add">Failed! Please check plan settings.</string>
     <string name="str_plan_name_should_not_be_blank">Plan name can\'t be blank!</string>
@@ -25,7 +25,7 @@
     <string name="confirm_deletion">Delete?</string>
     <string name="save_plan_error_all_blank">Failed to save. All fields are empty!</string>
     <string name="plan_anki_not_started">please start ankidroid first!</string>
-    <string name="btn_open_custom_dicitonary_str">Custom Dictionaries</string>
+    <string name="btn_open_custom_dicitonary_str">💡Custom Dictionaries</string>
     <string name="add_custom_dictionary_str">Import custom dictionary</string>
     <string name="delete_all_custom_dictionary">Clear imported dictionaries</string>
     <string name="confirm_add_default_plan">No plans found, add default?</string>
@@ -33,14 +33,14 @@
     <string name="btn_help_str">❓Help</string>
     <string name="btn_about_and_support_str">Donate</string>
     <string name="confirm_add_default_plan_when_exists_already">已存在方案，确认添加默认方案（柯林斯词典）？</string>
-    <string name="btn_add_default_plan_str">add default plan</string>
+    <string name="btn_add_default_plan_str">♻️add default plan</string>
     <string name="duplicate_plan_name_complain">已存在默认方案，不得重复添加。可在方案管理器中删除后再添加。</string>
     <string name="toast_no_available_plan">没有任何可用划词方案，无法正常使用，请前往Anki划词助手主界面设置</string>
-    <string name="left_hand_mode">Left Hand Mode</string>
+    <string name="left_hand_mode">👈🏻Left Hand Mode</string>
     <string name="str_add_qq_group">👧🏻Join QQ Group</string>
     <string name="str_clipboard_service_running">Clipboard Monitor is Running</string>
     <string name="str_field_map">Fields Mapping:</string>
     <string name="str_only_one_plan_cant_switch">只有一个方案，没法切换</string>
     <string name="str_btn_open_random_quote">📚Show Me A Random Quote</string>
-    <string name="str_pink_theme_q">Pink Theme</string>
+    <string name="str_pink_theme_q">🌸Pink Theme</string>
 </resources>

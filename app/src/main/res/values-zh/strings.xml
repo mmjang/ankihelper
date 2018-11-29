@@ -9,9 +9,9 @@
     <string name="tv_choose_dictionary">选择词典：</string>
     <string name="api_not_available_message">Api 不可访问！可能原因为未安装Ankidroid，或Ankidroid高级设置中API选项未打开</string>
     <string name="permission_denied">本应用需要取得读写Ankidroid数据库的权限才能正常工作！请在本应用权限设置中打开“读写Ankidroid数据库”这个选项。点击确定立即跳转到应用设置界面。</string>
-    <string name="cancel_after_add">添加后退出弹窗</string>
-    <string name="monite_clipboard">剪切板查词</string>
-    <string name="plan_manager_str">划词方案管理</string>
+    <string name="cancel_after_add">🍃添加后退出弹窗</string>
+    <string name="monite_clipboard">📋剪切板查词</string>
+    <string name="plan_manager_str">⚙️划词方案管理</string>
     <string name="str_added">添加成功</string>
     <string name="plan_already_exists">方案名冲突，请修改！</string>
     <string name="dialog_note">笔记</string>
@@ -27,7 +27,7 @@
     <string name="save_plan_error_all_blank">保存失败，输出字段不能全部为空！</string>
     <!--Plan-->
     <string name="plan_anki_not_started">修改配置需要先打开AnkiDroid，点击确定将为你自动打开!</string>
-    <string name="btn_open_custom_dicitonary_str">自定义词典(实验功能)</string>
+    <string name="btn_open_custom_dicitonary_str">💡自定义词典(实验功能)</string>
     <string name="add_custom_dictionary_str">导入自定义字典</string>
     <string name="delete_all_custom_dictionary">清空已导入词典</string>
     <string name="confirm_add_default_plan">您还没有任何划词方案，是否写入默认方案(柯林斯词典)？</string>
@@ -35,15 +35,15 @@
     <string name="btn_help_str">❓帮助</string>
     <string name="btn_about_and_support_str">打赏(´,,•ω•,,)♡</string>
     <string name="confirm_add_default_plan_when_exists_already">已存在划词方案，确认添加默认方案（柯林斯词典）？</string>
-    <string name="btn_add_default_plan_str">添加默认方案</string>
+    <string name="btn_add_default_plan_str">♻️添加默认方案</string>
     <string name="duplicate_plan_name_complain">已存在默认方案，不得重复添加。可在方案管理器中删除后再添加。</string>
     <string name="toast_no_available_plan">没有任何可用划词方案，无法正常使用，请前往Anki划词助手主界面设置</string>
-    <string name="left_hand_mode">左手模式</string>
+    <string name="left_hand_mode">👈🏻左手模式</string>
     <string name="str_add_qq_group">👧🏻加入用户QQ群</string>
     <string name="str_clipboard_service_running">剪切板服务正在运行</string>
     <string name="str_field_map">字段映射:</string>
     <string name="str_only_one_plan_cant_switch">只有一个方案，没法切换</string>
     <string name="str_btn_open_random_quote">📚显示一条随机格言</string>
-    <string name="str_pink_theme_q">粉色主题</string>
+    <string name="str_pink_theme_q">🌸粉色主题</string>
 
 </resources>

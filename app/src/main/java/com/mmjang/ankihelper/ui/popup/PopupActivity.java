@@ -1145,8 +1145,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 // Remove the "select all" option
                 menu.removeItem(android.R.id.selectAll);
-                // Remove the "cut" option
-                menu.removeItem(android.R.id.cut);
                 // Remove the "copy all" option
                 menu.removeItem(android.R.id.copy);
                 return true;

@@ -206,8 +206,10 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
     }
 
     private String getCombined(Map<String, String> eleMap) {
-        return "<b>" + eleMap.get(EXP_ELE_LIST[0]) + "</b> " + eleMap.get(EXP_ELE_LIST[1]) +
-                eleMap.get(EXP_ELE_LIST[3])  + "" + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>"," ");
+        return "<div class='collins_hwd'>" + eleMap.get(EXP_ELE_LIST[0]) + "</div> " +
+                "<div class='collins_ipa'>" +  eleMap.get(EXP_ELE_LIST[1]) + eleMap.get(EXP_ELE_LIST[3])  + "</div>"
+                + "<div class='collins_def'>"  + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>"," ")
+                +"</div>";
     }
 
     private String[] getForms(String q) {

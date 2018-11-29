@@ -16,7 +16,7 @@ import java.util.Random;
  */
 
 public class DefaultPlan {
-    private static final String DEFAULT_VOCABULARY_MODEL_NAME = "划词助手默认单词模版";
+    private static final String DEFAULT_VOCABULARY_MODEL_NAME = "划词助手Antimoon模板";
     private static final String DEFAULT_CLOZE_MODEL_NAME = "ankihelper_default_cloze_card";
     private static final String DEFAULT_DECK_NAME = "划词助手默认牌组";
     public static final String DEFAULT_PLAN_NAME = "Collins(默认方案)";

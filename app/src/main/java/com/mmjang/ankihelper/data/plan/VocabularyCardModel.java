@@ -13,15 +13,15 @@ public class VocabularyCardModel {
     private final String MODEL_FILE = "vocabulary_card_model.html";
     private final String MODEL_SPLITTER = "@@@";
     private final String CODING = "UTF-8";
-    private final int NUMBER_OF_MODEL_STRING = 3;
+    private final int NUMBER_OF_MODEL_STRING = 5;
 
-    private String front = "";
+    private String[] front = new String[2];
     private String css = "";
-    private String back = "";
+    private String[] back = new String[2];
 
-    String[] QFMT = new String[1];
-    String[] AFMT = new String[1];
-    String[] Cards = {"card1"};
+    String[] QFMT = new String[2];
+    String[] AFMT = new String[2];
+    String[] Cards = {"recite", "type"};
     String CSS;
     public static final String [] FILEDS = {
             "单词",
@@ -43,15 +43,19 @@ public class VocabularyCardModel {
             String defaultModelStr = new String(data, CODING);
             String[] defaultModelSplitted = defaultModelStr.split(MODEL_SPLITTER);
             if(defaultModelSplitted.length == NUMBER_OF_MODEL_STRING) {
-                front = defaultModelSplitted[0];
-                css = defaultModelSplitted[1];
-                back = defaultModelSplitted[2];
+                front[0] = defaultModelSplitted[0];
+                back[0] = defaultModelSplitted[1];
+                front[1] = defaultModelSplitted[2];
+                back[1] = defaultModelSplitted[3];
+                css = defaultModelSplitted[4];
             }
             else{
                 ;
             }
-            QFMT[0] = front;
-            AFMT[0] = back;
+            QFMT[0] = front[0];
+            QFMT[1] = front[1];
+            AFMT[0] = back[0];
+            AFMT[1] = back[1];
             CSS = css;
 
         }

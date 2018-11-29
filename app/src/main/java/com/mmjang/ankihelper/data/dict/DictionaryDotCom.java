@@ -29,7 +29,8 @@ import java.util.List;
 public class DictionaryDotCom implements IDictionary {
 
     private static final String DICT_NAME = "dictionary.com";
-    private static final String DICT_INTRO = "英英词典，收词量大，释义全面";
+    private static final String DICT_INTRO = "英英词典，收词量大，释义全面\n" +
+            "复合项 css class：";
     private static final String[] EXP_ELE = new String[]{"单词", "音标", "发音", "释义", "复合项"};
 
     private static final String wordUrl = "http://restcdn.dictionary.com//v2/word.json/";
@@ -83,9 +84,9 @@ public class DictionaryDotCom implements IDictionary {
                         expele.put(EXP_ELE[2], audioURL);
                         expele.put(EXP_ELE[3], "<i>" + pos + "</i>" + "<br/>" + defHtml);
                         expele.put(EXP_ELE[4],
-                                "<b>" + headWord + "</b><br/>" +
-                                        "/" + prounceIPA +"/" + audioURL + "<br/>" +
-                                "<i>" + pos + "</i>" + "<br/>" + defHtml
+                                "<div class='dictionary_hwd'>" + headWord + "</div>" +
+                                 "<div class='dictionary_ipa>" + "/" + prounceIPA +"/" + audioURL + "</div>" +
+                                "<div class='dictionary_def'><i>" + pos + "</i>" + "<br/>" + defHtml + "</div>"
                                 );
                         String exportedHtml;
                         if(n == 0){

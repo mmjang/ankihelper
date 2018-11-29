@@ -270,10 +270,10 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
     }
 
     private String getCombined(Map<String, String> eleMap) {
-        return "<div class='collins_hwd'>" + eleMap.get(EXP_ELE_LIST[0]) + "</div> " +
-                "<div class='collins_ipa'>" +  eleMap.get(EXP_ELE_LIST[1]) + eleMap.get(EXP_ELE_LIST[3])  + "</div>"
-                + "<div class='collins_def'>"  + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>"," ")
-                +"</div>";
+        return "<div class='div_ode'><div class='ode_hwd'>" + eleMap.get(EXP_ELE_LIST[0]) + "</div> " +
+                "<div class='ode_ipa'>" +  eleMap.get(EXP_ELE_LIST[1]) + eleMap.get(EXP_ELE_LIST[3])  + "</div>"
+                + "<div class='ode_def'>"  + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>"," ")
+                +"</div></div>";
 
     }
 

@@ -74,6 +74,7 @@ public class LauncherActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+        setVersion();
         initAnkiApi();
         switchMoniteClipboard = (Switch) findViewById(R.id.switch_monite_clipboard);
         switchCancelAfterAdd = (Switch) findViewById(R.id.switch_cancel_after_add);
@@ -422,6 +423,18 @@ public class LauncherActivity extends AppCompatActivity {
         } catch (Exception e) {
             // 未安装手Q或安装的版本不支持
             return false;
+        }
+    }
+
+    public void setVersion(){
+        try {
+            String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            TextView versionTextView =(TextView) findViewById(R.id.textview_version);
+            versionTextView.setText(
+                    "Ver: " + versionName
+            );
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

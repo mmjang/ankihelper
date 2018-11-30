@@ -1,5 +1,8 @@
 package com.mmjang.ankihelper.ui.plan;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -9,7 +12,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
@@ -17,6 +24,7 @@ import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.ui.plan.helper.SimpleItemTouchHelperCallback;
 import com.mmjang.ankihelper.util.DialogUtil;
+import com.mmjang.ankihelper.util.Utils;
 
 import org.litepal.crud.DataSupport;
 
@@ -28,6 +36,8 @@ public class PlansManagerActivity extends AppCompatActivity {
     private List<OutputPlan> mPlanList;
     RecyclerView planListView;
     PlansAdapter mPlansAdapter;
+    private static final String PLAN_SEP = "|||";
+    private static final int ERROR_FORMAT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +84,97 @@ public class PlansManagerActivity extends AppCompatActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mPlansAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(planListView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_plans_manager_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_export_plan:
+                exportPlans();
+                break;
+            case R.id.menu_item_import_plan:
+                importPlans();
+                break;
+        }
+        return true;
+    }
+
+    private void importPlans() {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        if(clipboard.hasPrimaryClip()){
+            if(clipboard.getText()!=null){
+                String plansString = clipboard.getText().toString();
+                processPlanString(plansString);
+            }
+        }else{
+            Toast.makeText(this, "剪贴板为空！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void processPlanString(String plansString) {
+        String[] lines = plansString.split("\n");
+        if(lines.length == 0){
+            Toast.makeText(this, "格式错误！", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        for(String line : lines){
+            if(line.replace(" ","").replace("\t", "").equals("")){
+                continue;//blank line
+            }
+            String[] items = line.split("\\|\\|\\|");
+            if(items.length != 5){
+                String errorMessage = line;
+                errorMessage += "\n格式错误，每行项目数应为5";
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                continue;
+            }
+            try {
+                String planName = items[0].trim();
+                long deckId = Long.parseLong(items[1]);
+                long modeld = Long.parseLong(items[2]);
+                String dictKey = items[3].trim();
+                String fieldMapString = items[4];
+                OutputPlan outputPlan = new OutputPlan();
+                outputPlan.setPlanName(planName);
+                outputPlan.setOutputDeckId(deckId);
+                outputPlan.setOutputModelId(modeld);
+                outputPlan.setDictionaryKey(dictKey);
+                outputPlan.setFieldsMap(Utils.fieldsStr2Map(fieldMapString));
+                outputPlan.save();
+            }
+            catch (Exception e){
+                Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        onResume();
+    }
+
+    private void exportPlans() {
+        StringBuilder sb = new StringBuilder();
+        for(OutputPlan plan : mPlanList){
+            sb.append(plan.getPlanName());
+            sb.append(PLAN_SEP);
+            sb.append(plan.getOutputDeckId());
+            sb.append(PLAN_SEP);
+            sb.append(plan.getOutputModelId());
+            sb.append(PLAN_SEP);
+            sb.append(plan.getDictionaryKey());
+            sb.append(PLAN_SEP);
+            sb.append(plan.getFieldsMapString());
+            sb.append("\n");
+        }
+        String exportedString = sb.toString();
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("plans string", exportedString);
+        clipboard.setPrimaryClip(clip);
     }
 
 }

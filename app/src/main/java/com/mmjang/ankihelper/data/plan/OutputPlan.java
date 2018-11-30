@@ -66,4 +66,8 @@ public class OutputPlan extends DataSupport{
     public Map<String, String> getFieldsMap() {
         return Utils.fieldsStr2Map(fieldsMap);
     }
+
+    public String getFieldsMapString(){
+        return fieldsMap;
+    }
 }

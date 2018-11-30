@@ -51,5 +51,8 @@
     <string name="str_error_note_update">笔记更新失败</string>
     <string name="error_note_cancel">撤销失败</string>
     <string name="str_not_cancelable_append_mode">追加模式无法撤销</string>
+    <string name="str_export_plans">导出方案列表到剪贴板</string>
+    <string name="str_import_plans">从剪贴板导入方案</string>
+    <string name="str_cancel_note_add">已撤销</string>
 
 </resources>

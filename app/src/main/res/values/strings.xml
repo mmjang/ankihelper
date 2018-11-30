@@ -50,4 +50,6 @@
     <string name="str_cancel_note_add">Canceled</string>
     <string name="error_note_cancel">Failed to cancel</string>
     <string name="str_not_cancelable_append_mode">No cancellable in append mode</string>
+    <string name="str_export_plans">Export plans to clipboard</string>
+    <string name="str_import_plans">Import plans from clipbaord</string>
 </resources>

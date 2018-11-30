@@ -289,7 +289,7 @@ public class PlanEditorActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            //Toast.makeText(MainActivity.this, R.string.permission_granted, Toast.LENGTH_LONG).show();
+            //Toast.makeText(TestActivity.this, R.string.permission_granted, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
         }

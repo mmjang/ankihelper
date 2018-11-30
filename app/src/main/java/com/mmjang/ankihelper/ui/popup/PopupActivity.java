@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.wifi.hotspot2.omadm.PpsMoParser;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,6 +58,7 @@ import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.domain.PlayAudioManager;
 import com.mmjang.ankihelper.domain.PronounceManager;
+import com.mmjang.ankihelper.ui.LauncherActivity;
 import com.mmjang.ankihelper.ui.widget.BigBangLayout;
 import com.mmjang.ankihelper.ui.widget.BigBangLayoutWrapper;
 import com.mmjang.ankihelper.util.Constant;
@@ -136,6 +138,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     private static final int ASYNC_SEARCH_FAILED = 2;
     private static final int TRANSLATION_DONE = 3;
     private static final int TRANSLATIOn_FAILED = 4;
+
+    //view tag
+    private static final int TAG_NOTE_ID_LONG = 5;
     //async
     @SuppressLint("HandlerLeak")
     final Handler mHandler = new Handler() {
@@ -765,6 +770,27 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     @Override
                     public void onClick(View v) {
                         vibarate(Constant.VIBRATE_DURATION);
+                        //before add, check if this note is already added by check the attached tag
+                        Long noteIdAdded = (Long) btnAddDefinition.getTag(R.id.TAG_NOTE_ID);
+                        if(noteIdAdded != null){
+                            if(mUpdateNoteId == 0) {
+                                if(Utils.deleteNote(PopupActivity.this, noteIdAdded.longValue())){
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        btnAddDefinition.setBackground(ContextCompat.getDrawable(
+                                                PopupActivity.this,
+                                                Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add)));
+                                    }
+                                    btnAddDefinition.setTag(R.id.TAG_NOTE_ID, null);
+                                    Toast.makeText(PopupActivity.this, R.string.str_cancel_note_add, Toast.LENGTH_SHORT).show();
+
+                                }else{
+                                    Toast.makeText(PopupActivity.this, R.string.error_note_cancel, Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+                                Toast.makeText(PopupActivity.this, R.string.str_not_cancelable_append_mode, Toast.LENGTH_SHORT).show();
+                            }
+                            return ;
+                        }
                         AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid();
                         String[] sharedExportElements = Constant.getSharedExportElements();
                         String[] exportFields = new String[currentOutputPlan.getFieldsMap().size()];
@@ -840,12 +866,30 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                     btnAddDefinition.setBackground(ContextCompat.getDrawable(
                                             PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
                                 }
-                                btnAddDefinition.setEnabled(false);
+                                //btnAddDefinition.setEnabled(false);
                                 if (settings.getAutoCancelPopupQ()) {
                                     finish();
                                 }else{
                                     clearBigbangSelection();
                                     mNoteEditedByUser = "";
+                                }
+                                //attach the noteid to the button
+                                btnAddDefinition.setTag(R.id.TAG_NOTE_ID, result);
+                                //if there is a note id field in the model, update the note
+                                int count = 0;
+                                for(String field : currentOutputPlan.getFieldsMap().keySet()){
+                                    if(field.replace(" ","").toLowerCase().equals("noteid")){
+                                        exportFields[count] = result.toString();
+                                        boolean success = mAnkiDroid.getApi().updateNoteFields(
+                                                result.longValue(),
+                                                exportFields
+                                        );
+                                        if(!success){
+                                            Toast.makeText(PopupActivity.this, R.string.str_error_noteid, Toast.LENGTH_SHORT).show();
+                                        }
+                                        break;
+                                    }
+                                    count ++;
                                 }
                             } else {
                                 Toast.makeText(PopupActivity.this, R.string.str_failed_add, Toast.LENGTH_SHORT).show();
@@ -854,7 +898,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         else{
                             String[] original = mAnkiDroid.getApi().getNote(mUpdateNoteId).getFields();
                             if(original == null || original.length != exportFields.length){
-                                Toast.makeText(PopupActivity.this, "note failed to update. Note type not compatible", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PopupActivity.this, R.string.str_error_notetype_noncompatible, Toast.LENGTH_SHORT).show();
                                 return ;
                             }
 
@@ -881,7 +925,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             boolean success = mAnkiDroid.getApi().updateNoteFields(mUpdateNoteId, exportFields);
                             boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, mTagEditedByUser);
                             if (success && successTag) {
-                                Toast.makeText(PopupActivity.this, "note updated!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PopupActivity.this, R.string.str_note_updated, Toast.LENGTH_SHORT).show();
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     btnAddDefinition.setBackground(ContextCompat.getDrawable(
                                             PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
@@ -891,7 +935,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                     finish();
                                 }
                             } else {
-                                Toast.makeText(PopupActivity.this, "note failed to update!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PopupActivity.this, R.string.str_error_note_update, Toast.LENGTH_SHORT).show();
                             }
                         }
 

@@ -1,11 +1,14 @@
 package com.mmjang.ankihelper.util;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.util.TypedValue;
 import android.view.inputmethod.InputMethodManager;
 
+import com.ichi2.anki.FlashCardsContract;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.dict.Definition;
@@ -156,5 +159,18 @@ public class Utils {
         int attributeResourceId = a.getResourceId(0, 0);
         a.recycle();
         return attributeResourceId;
+    }
+
+    public static boolean deleteNote(Context context, long noteid){
+        ContentResolver cr = context.getContentResolver();
+        if(cr == null) return false;
+        Uri noteUri = Uri.withAppendedPath(FlashCardsContract.Note.CONTENT_URI, Long.toString(noteid));
+        int i = cr.delete(noteUri, null, null);
+        if(i == 1) {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

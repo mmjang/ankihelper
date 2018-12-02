@@ -160,8 +160,8 @@
                             android:id="@+id/edittext_translation"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:layout_marginTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:paddingTop="8dp"
                             android:textSize="14sp"
                             android:background="@color/transparent"
                             android:textColor="@color/secondary_text"
@@ -196,7 +196,10 @@
                                 android:imeOptions="actionDone"
                                 android:inputType="text"
                                 android:maxLines="1"
-                                android:textSize="18sp" />
+                                android:textSize="18sp"
+                                android:paddingTop="7dp"
+                                android:paddingBottom="10dp"
+                                />
 
                             <Button
                                 android:id="@+id/btn_search"

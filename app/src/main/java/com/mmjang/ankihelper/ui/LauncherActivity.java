@@ -42,6 +42,7 @@ import com.mmjang.ankihelper.ui.about.AboutActivity;
 import com.mmjang.ankihelper.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.popup.PopupActivity;
+import com.mmjang.ankihelper.ui.stat.StatActivity;
 
 import org.json.JSONException;
 import org.litepal.crud.DataSupport;
@@ -316,6 +317,9 @@ public class LauncherActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.menu_item_stat:
+                Intent intent2 = new Intent(this, StatActivity.class);
+                startActivity(intent2);
         }
         return true;
     }

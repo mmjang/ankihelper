@@ -7,4 +7,10 @@
         android:title="@string/str_about"
         app:showAsAction="always"
         />
+    <item
+        android:id="@+id/menu_item_stat"
+        android:icon="@drawable/ic_stat"
+        android:title="Statistics"
+        app:showAsAction="always"
+        />
 </menu>

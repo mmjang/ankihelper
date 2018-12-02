@@ -54,5 +54,9 @@
     <string name="str_export_plans">导出方案列表到剪贴板</string>
     <string name="str_import_plans">从剪贴板导入方案</string>
     <string name="str_cancel_note_add">已撤销</string>
+    <string name="str_chart_title_hour_stat">分时段统计</string>
+    <string name="str_time_period">时间段: </string>
+    <string name="title_activity_stat">使用统计</string>
+    <string name="str_last_days_stat">按天统计</string>
 
 </resources>

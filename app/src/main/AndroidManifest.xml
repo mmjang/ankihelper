@@ -70,7 +70,7 @@
         <activity
             android:name=".ui.customdict.CustomDictionaryActivity"
             android:label="@string/btn_open_custom_dicitonary_str"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -92,9 +92,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.TestActivity"
+        <activity
+            android:name=".ui.TestActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.stat.StatActivity"
+            android:label="@string/title_activity_stat"
             android:exported="true"
-            ></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

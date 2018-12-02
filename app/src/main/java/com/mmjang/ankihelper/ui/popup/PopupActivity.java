@@ -53,6 +53,7 @@ import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
+import com.mmjang.ankihelper.data.history.HistoryUtil;
 import com.mmjang.ankihelper.data.model.UserTag;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.domain.CBWatcherService;
@@ -635,6 +636,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             return;
         }
         populateWordSelectBox();
+
+        HistoryUtil.savePopupOpen(mTextToProcess);
     }
 
     private void populateWordSelectBox() {
@@ -674,6 +677,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             }
         });
         thread.start();
+        HistoryUtil.saveWordlookup(mTextToProcess, word);
     }
 
     private void asyncTranslate(final String mTextToProcess){
@@ -891,6 +895,14 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                     }
                                     count ++;
                                 }
+                                //save note add
+                                HistoryUtil.saveNoteAdd("", getBoldSentence(bigBangLayout.getLines()),
+                                    currentDicitonary.getDictionaryName(),
+                                    textVeiwDefinition.getText().toString(),
+                                    mTranslatedResult,
+                                    mNoteEditedByUser,
+                                        mTagEditedByUser.toString()
+                                );
                             } else {
                                 Toast.makeText(PopupActivity.this, R.string.str_failed_add, Toast.LENGTH_SHORT).show();
                             }

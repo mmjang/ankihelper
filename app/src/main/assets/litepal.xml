@@ -19,11 +19,12 @@
 			For example:
     	<version value="1" />
     -->
-    <version value="2" />
+    <version value="3" />
 
     <list>
         <mapping class="com.mmjang.ankihelper.data.plan.OutputPlan"></mapping>
         <mapping class="com.mmjang.ankihelper.data.model.UserTag"></mapping>
+        <mapping class="com.mmjang.ankihelper.data.history.History"></mapping>
     </list>
 
 
@@ -48,5 +49,6 @@
         For example:
         <storage value="external" />
     -->
+    <!--<storage value="external"/>-->
 
 </litepal>

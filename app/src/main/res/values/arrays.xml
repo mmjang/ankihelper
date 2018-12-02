@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="last_days">
+        <item>last 7 days</item>
+        <item>last 30 days</item>
+        <item>last 365 days</item>
+        <!--<item>all time</item>-->
+    </string-array>
+</resources>

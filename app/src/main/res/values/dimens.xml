@@ -3,4 +3,6 @@
     <dimen name="big_bang_action_bar_height">52dp</dimen>
     <dimen name="big_bang_default_item_space">0dp</dimen>
     <dimen name="big_bang_default_line_space">8dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

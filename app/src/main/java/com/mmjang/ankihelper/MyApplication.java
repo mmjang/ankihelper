@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -25,6 +26,8 @@ public class MyApplication extends Application {
         application = this;
         LitePalApplication.initialize(context);
         CrashReport.initCrashReport(getApplicationContext(), "398dc6145b", false);
+        AndroidThreeTen.init(this);
+
     }
 
     public static Context getContext() {

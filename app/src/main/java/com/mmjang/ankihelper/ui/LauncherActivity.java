@@ -245,29 +245,26 @@ public class LauncherActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Thread thread = new Thread(
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Quote quote = RandomQuote.fetch();
-                                            Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
-                                            intent.setAction(Intent.ACTION_SEND);
-                                            intent.setType("text/plain");
-                                            //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                            intent.putExtra(Intent.EXTRA_TEXT, quote.Quote +
-                                                    "(" + quote.Caption + "-"  + quote.Author + ")");
-                                            startActivity(intent);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                            Toast.makeText(LauncherActivity.this, "error!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                }
-                        );
-                        thread.start();
+                        try{
+                            Quote quote = RandomQuote.fetchFromDB();
+                            Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
+                            intent.setAction(Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+                            //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                            if(quote.Caption.length() == 0){
+                                intent.putExtra(Intent.EXTRA_TEXT, quote.Quote +
+                                        "(" + quote.Author + ")");
+                            }else {
+                                intent.putExtra(Intent.EXTRA_TEXT, quote.Quote +
+                                        "(" + quote.Caption + "-" + quote.Author + ")");
+                            }
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(LauncherActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
         );

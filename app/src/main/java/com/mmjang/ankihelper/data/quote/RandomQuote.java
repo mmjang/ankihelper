@@ -1,5 +1,6 @@
 package com.mmjang.ankihelper.data.quote;
 
+import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.util.com.baidu.translate.demo.HttpGet;
 
 import org.json.JSONArray;
@@ -18,6 +19,16 @@ public class RandomQuote {
         q.Quote = quote;
         q.Author = author;
         q.Caption = cat;
+        return q;
+    }
+
+    public static Quote fetchFromDB(){
+        String quote = QuoteDb.getInstance(MyApplication.getContext()).getQuote();
+        String[] splited = quote.split("\t");
+        Quote q = new Quote();
+        q.Quote = splited[0].replaceAll("<br/>", " ").trim();
+        q.Author = splited[1].replace(",", "").trim();
+        q.Caption = splited[2].replace("\n", "").trim();
         return q;
     }
 }

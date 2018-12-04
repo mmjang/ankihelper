@@ -255,10 +255,10 @@ public class LauncherActivity extends AppCompatActivity {
                             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                             if(quote.Caption.length() == 0){
                                 intent.putExtra(Intent.EXTRA_TEXT, quote.Quote +
-                                        "(" + quote.Author + ")");
+                                        "\n   - " + quote.Author + "");
                             }else {
                                 intent.putExtra(Intent.EXTRA_TEXT, quote.Quote +
-                                        "(" + quote.Caption + "-" + quote.Author + ")");
+                                        "\n   - " + quote.Author + ", " + quote.Caption);
                             }
                             startActivity(intent);
                         } catch (Exception e) {

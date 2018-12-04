@@ -26,7 +26,7 @@ public class RandomQuote {
         String quote = QuoteDb.getInstance(MyApplication.getContext()).getQuote();
         String[] splited = quote.split("\t");
         Quote q = new Quote();
-        q.Quote = splited[0].replaceAll("<br/>", " ").trim();
+        q.Quote = splited[0].replaceAll("<br/>", "\n").trim();
         q.Author = splited[1].replace(",", "").trim();
         q.Caption = splited[2].replace("\n", "").trim();
         return q;

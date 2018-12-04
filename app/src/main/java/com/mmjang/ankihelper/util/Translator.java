@@ -3,6 +3,7 @@ package com.mmjang.ankihelper.util;
 import com.mmjang.ankihelper.util.com.baidu.translate.demo.RandomAPIKeyGenerator;
 import com.mmjang.ankihelper.util.com.baidu.translate.demo.TransApi;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,7 +13,7 @@ public class Translator {
     private static TransApi api;
     public static String translate(String query, String from, String to){
         //remove line break
-        query = query.replaceAll("\n","");
+        //query = query.replaceAll("\n","");
         if(api == null) {
             String[] appAndKey = RandomAPIKeyGenerator.next();
             api = new TransApi(appAndKey[0], appAndKey[1]);
@@ -20,8 +21,16 @@ public class Translator {
         String jsonStr = api.getTransResult(query, from , to);
         try {
             JSONObject json = new JSONObject(jsonStr);
-            String result =json.getJSONArray("trans_result").getJSONObject(0).getString("dst");
-            return result;
+            JSONArray resultArray =json.getJSONArray("trans_result");
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i < resultArray.length() - 1; i ++){
+                sb.append(resultArray.getJSONObject(i).getString("dst"));
+                sb.append("\n");
+            }
+            if(resultArray.length() > 0){
+                sb.append(resultArray.getJSONObject(resultArray.length() - 1).getString("dst"));
+            }
+            return sb.toString();
         } catch (JSONException e) {
             e.printStackTrace();
             return "";

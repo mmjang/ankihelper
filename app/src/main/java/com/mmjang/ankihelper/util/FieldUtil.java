@@ -46,6 +46,9 @@ public class FieldUtil {
             List<BigBangLayout.Item> items = line.getItems();
             for (int itemIndex = 0; itemIndex < items.size(); itemIndex++) {
                 BigBangLayout.Item item = items.get(itemIndex);
+                if(item.getText().equals("\n")){
+                    sb.append("<br/>");
+                }
                 if (item.isSelected()) {
                     //sb.append("<b>");
                     sb.append(item.getText());
@@ -65,16 +68,19 @@ public class FieldUtil {
             List<BigBangLayout.Item> items = line.getItems();
             for (int itemIndex = 0; itemIndex < items.size(); itemIndex++) {
                 BigBangLayout.Item item = items.get(itemIndex);
-                if (item.isSelected()) {
-                    sb.append("<b>");
-                    sb.append(item.getText());
-                    sb.append("</b>");
-                } else {
-                    sb.append(item.getText());
+                if (item.getText().equals("\n")) {
+                    sb.append("<br/>");
+                }
+                    if (item.isSelected()) {
+                        sb.append("<b>");
+                        sb.append(item.getText());
+                        sb.append("</b>");
+                    } else {
+                        sb.append(item.getText());
+                    }
                 }
             }
-        }
-        return sb.toString().trim();
+            return sb.toString().trim();
     }
 
     public static String getBlankSentence(List<BigBangLayout.Line> lines) {
@@ -84,6 +90,9 @@ public class FieldUtil {
             List<BigBangLayout.Item> items = line.getItems();
             for (int itemIndex = 0; itemIndex < items.size(); itemIndex++) {
                 BigBangLayout.Item item = items.get(itemIndex);
+                if(item.getText().equals("\n")) {
+                    sb.append("<br/>");
+                }
                 if (item.isSelected()) {
                     sb.append("{{c1::" + item.getText() + "}}");
                 } else {

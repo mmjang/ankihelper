@@ -491,7 +491,7 @@ boolean autoAddBlanks = false;
                 item.height = child.getMeasuredHeight();
                 if (currentLine.getItems() == null && (isEnter && showSection)) {
                     int padding = child.getPaddingLeft();
-                    child.setBackgroundResource(mSectionTextBgRes);
+                    child.setBackgroundResource(mTextBgRes);
                     child.setPadding(padding, mTextPaddingPort, padding, mTextPaddingPort);
                 } else if(item.isSymbol()){
                     child.setBackgroundResource(mSymbolTextBgRes);

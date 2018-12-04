@@ -365,6 +365,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     private void initBigBangLayout(){
         bigBangLayout.setShowSymbol(true);
         bigBangLayout.setShowSpace(true);
+        bigBangLayout.setShowSection(true);
         bigBangLayout.setItemSpace(0);
         bigBangLayout.setLineSpace(0);
         bigBangLayout.setTextPadding(5);

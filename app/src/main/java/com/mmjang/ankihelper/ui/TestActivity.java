@@ -13,9 +13,6 @@ import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.history.HistoryStat;
 import com.mmjang.ankihelper.data.history.HistoryType;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
-
-import junit.framework.Test;
-
 import org.litepal.crud.DataSupport;
 
 import java.util.List;

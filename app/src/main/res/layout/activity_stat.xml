@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_margin="8dp"
+            android:visibility="gone"
             >
             <TextView
                 android:layout_width="0dp"
@@ -35,6 +36,41 @@
 
             </Spinner>
         </LinearLayout>
+
+        <android.support.design.chip.ChipGroup
+            android:id="@+id/last_days_stat_chipgroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            app:singleSelection="true"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            <android.support.design.chip.Chip
+                android:checked="true"
+                android:id="@+id/chip_7"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7 days" />
+
+            <android.support.design.chip.Chip
+                android:checked="false"
+                android:id="@+id/chip_30"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30 days" />
+
+            <android.support.design.chip.Chip
+                android:checked="false"
+                android:id="@+id/chip_365"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 year" />
+        </android.support.design.chip.ChipGroup>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +84,7 @@
                 android:gravity="center"
                 android:layout_marginTop="8dp"
                 />
-            <com.github.mikephil.charting.charts.LineChart
+            <com.github.mikephil.charting.charts.BarChart
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="8dp"

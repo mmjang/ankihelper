@@ -3,15 +3,23 @@ package com.mmjang.ankihelper.ui.stat;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.design.chip.Chip;
+import android.support.design.chip.ChipGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Switch;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -26,11 +34,15 @@ import java.util.List;
 
 public class StatActivity extends AppCompatActivity {
     HistoryStat mHistoryStat;
-    LineChart mHourChart;
+    BarChart mHourChart;
     LineChart mLastDaysChart;
     Spinner lastDaySpinner;
-    int mLastDays = 30;
+    ChipGroup mChipGroup;
+    int mLastDays = 7;
     int[] dayMap = new int[]{7, 30, 365, 3650};
+
+    private static final int DARK_GREEN = Color.parseColor("#2d6d4b");
+    private static final int DARK_PINK = Color.parseColor("#b05154");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +55,7 @@ public class StatActivity extends AppCompatActivity {
         mHistoryStat = new HistoryStat(mLastDays);
         mHourChart = findViewById(R.id.hourt_chart);
         mLastDaysChart = findViewById(R.id.last_days_chart);
+        mChipGroup = findViewById(R.id.last_days_stat_chipgroup);
         lastDaySpinner = findViewById(R.id.spinner_last_days);
         plotData();
 
@@ -60,6 +73,28 @@ public class StatActivity extends AppCompatActivity {
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
 
+                    }
+                }
+        );
+
+        mChipGroup.setOnCheckedChangeListener(
+                new ChipGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(ChipGroup chipGroup, int i) {
+                        switch (i){
+                            case R.id.chip_7:
+                                mLastDays = dayMap[0];
+                                break;
+                            case R.id.chip_30:
+                                mLastDays = dayMap[1];
+                                break;
+                            case R.id.chip_365:
+                                mLastDays = dayMap[2];
+                        }
+                        mHistoryStat = new HistoryStat(mLastDays);
+                        mLastDaysChart.clear();
+                        mHourChart.clear();
+                        plotData();
                     }
                 }
         );
@@ -94,13 +129,13 @@ public class StatActivity extends AppCompatActivity {
         }
         float lineWidth = 2;
         LineDataSet lineDataSet2 = new LineDataSet(lookupEntries, "Lookups");
-        lineDataSet2.setColor(Color.GREEN);
+        lineDataSet2.setColor(DARK_PINK);
         lineDataSet2.setLineWidth(lineWidth);
         lineDataSet2.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         lineDataSet2.setDrawCircles(false);
         lineDataSet2.setDrawValues(false);
         LineDataSet lineDataSet3 = new LineDataSet(cardaddEntries, "Cards");
-        lineDataSet3.setColor(Color.RED);
+        lineDataSet3.setColor(DARK_GREEN);
         lineDataSet3.setLineWidth(lineWidth);
         lineDataSet3.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
         lineDataSet3.setDrawCircles(false);
@@ -119,46 +154,29 @@ public class StatActivity extends AppCompatActivity {
                 new IAxisValueFormatter() {
                     @Override
                     public String getFormattedValue(float value, AxisBase axis) {
-                        return "-" + ((int)(mLastDays - value - 1)) + "d";
+                        return  + ((int)(-mLastDays + value + 1)) + "d";
                     }
                 }
         );
+        mLastDaysChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         mLastDaysChart.invalidate();
     }
 
     private void drawHourChart(int[][] data){
-        List<Entry> popupEntries = new ArrayList<>();
-        List<Entry> lookupEntries = new ArrayList<>();
-        List<Entry> cardaddEntries = new ArrayList<>();
+//        List<BarEntry> popupEntries = new ArrayList<>();
+        List<BarEntry> lookupEntries = new ArrayList<>();
+        List<BarEntry> cardaddEntries = new ArrayList<>();
         for(int i = 0; i < 24; i ++){
-            popupEntries.add(new Entry(i, data[0][i]));
-            lookupEntries.add(new Entry(i, data[1][i]));
-            cardaddEntries.add(new Entry(i, data[2][i]));
+//            popupEntries.add(new BarEntry(i, data[0][i]));
+            lookupEntries.add(new BarEntry(i, new float[] {data[1][i], data[2][i]}));
         }
-        float lineWidth = 2;
-        LineDataSet lineDataSet1 = new LineDataSet(popupEntries, "Popups");
-        lineDataSet1.setColor(Color.BLUE);
-        lineDataSet1.setLineWidth(lineWidth);
-        lineDataSet1.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-        lineDataSet1.setDrawCircles(false);
-        lineDataSet1.setDrawValues(false);
-        LineDataSet lineDataSet2 = new LineDataSet(lookupEntries, "Lookups");
-        lineDataSet2.setColor(Color.GREEN);
-        lineDataSet2.setLineWidth(lineWidth);
-        lineDataSet2.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-        lineDataSet2.setDrawCircles(false);
-        lineDataSet2.setDrawValues(false);
-        LineDataSet lineDataSet3 = new LineDataSet(cardaddEntries, "Cards");
-        lineDataSet3.setColor(Color.RED);
-        lineDataSet3.setLineWidth(lineWidth);
-        lineDataSet3.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-        lineDataSet3.setDrawCircles(false);
-        lineDataSet3.setDrawValues(false);
-        List<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-        dataSets.add(lineDataSet2);
-        dataSets.add(lineDataSet3);
-        mHourChart.setData(new LineData(dataSets));
-        mHourChart.getDescription().setText("");
+        BarDataSet barDataSet = new BarDataSet(lookupEntries, "Bar");
+        barDataSet.setStackLabels(new String[]{"Lookups", "Cards"});
+        barDataSet.setDrawValues(false);
+        barDataSet.setColors(DARK_PINK, DARK_GREEN);
+        BarData barData = new BarData(barDataSet);
+        mHourChart.setData(barData);
+        mHourChart.getDescription().setText("hour");
         //mHourChart.getDescription().setTextAlign();
         mHourChart.getXAxis().setDrawGridLines(false);
         mHourChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -168,10 +186,14 @@ public class StatActivity extends AppCompatActivity {
                 new IAxisValueFormatter() {
                     @Override
                     public String getFormattedValue(float value, AxisBase axis) {
-                        return ((int) value) + ":00";
+                        return ((int) value) + "";
                     }
                 }
         );
+        mHourChart.getXAxis().setLabelCount(24);
+        mHourChart.getXAxis().setAxisMinimum(0);
+        mHourChart.getXAxis().setAxisMaximum(23);
+        mHourChart.getLegend().setEnabled(false);
         mHourChart.invalidate();
     }
 }

@@ -94,7 +94,7 @@ public class CustomDictionaryActivity extends AppCompatActivity {
             public void run() {
                 try {
                     CustomDictionaryManager cm = new CustomDictionaryManager(MyApplication.getContext(), "");
-                    cm.dbHelper.clearDB();
+                    cm.db.clearDB();
                     Message message = mHandler.obtainMessage();
                     message.what = DICTS_REMOVED;
                     mHandler.sendMessage(message);
@@ -240,9 +240,9 @@ public class CustomDictionaryActivity extends AppCompatActivity {
 //            for (Uri uri: files) {
 //                File file = Utils.getFileForUri(uri);
 //                cm.processOneDictionaryFile(i, file);
-//                CustomDictionaryInformation info = cm.dbHelper.getDictInfo(i);
-//                List<String[]> result = cm.dbHelper.queryHeadword(i, "one");
-//                Cursor cursor = cm.dbHelper.getFilterCursor(i, "t");
+//                CustomDictionaryInformation info = cm.db.getDictInfo(i);
+//                List<String[]> result = cm.db.queryHeadword(i, "one");
+//                Cursor cursor = cm.db.getFilterCursor(i, "t");
 //                List<String> rrr = new ArrayList<>();
 //                String[] forms = FormsUtil.getInstance(this).getForms("ones");
 //                while(cursor.moveToNext()){

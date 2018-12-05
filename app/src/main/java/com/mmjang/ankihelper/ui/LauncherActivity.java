@@ -1,22 +1,19 @@
 package com.mmjang.ankihelper.ui;
 
-import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
-import android.provider.ContactsContract;
+import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,9 +25,6 @@ import android.widget.Toast;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
-import com.mmjang.ankihelper.data.dict.CustomDictionary;
-import com.mmjang.ankihelper.data.dict.Definition;
-import com.mmjang.ankihelper.data.dict.YoudaoOnline;
 import com.mmjang.ankihelper.data.plan.DefaultPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.data.quote.Quote;
@@ -43,11 +37,11 @@ import com.mmjang.ankihelper.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.popup.PopupActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
+import com.mmjang.ankihelper.util.Constant;
 
-import org.json.JSONException;
 import org.litepal.crud.DataSupport;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.List;
 
 public class LauncherActivity extends AppCompatActivity {
@@ -67,6 +61,9 @@ public class LauncherActivity extends AppCompatActivity {
     TextView textViewAddQQGroup;
     TextView textViewRandomQuote;
 
+    private static final int REQUEST_CODE_ANKI = 0;
+    private static final int REQUEST_CODE_STORAGE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         settings = Settings.getInstance(this);
@@ -76,7 +73,7 @@ public class LauncherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
         setVersion();
-        initAnkiApi();
+        checkAndRequestPermissions();
         switchMoniteClipboard = (Switch) findViewById(R.id.switch_monite_clipboard);
         switchCancelAfterAdd = (Switch) findViewById(R.id.switch_cancel_after_add);
         switchLeftHandMode = (Switch) findViewById(R.id.left_hand_mode);
@@ -284,7 +281,7 @@ public class LauncherActivity extends AppCompatActivity {
 //        thread.start();
     }
 
-    private void initAnkiApi() {
+    private void checkAndRequestPermissions() {
         if (mAnkiDroid == null) {
             mAnkiDroid = new AnkiDroidHelper(this);
         }
@@ -293,12 +290,14 @@ public class LauncherActivity extends AppCompatActivity {
         }
 
         if (mAnkiDroid.shouldRequestPermission()) {
-            mAnkiDroid.requestPermission(this, 0);
+            mAnkiDroid.requestPermission(this, REQUEST_CODE_ANKI);
         }
         else{
-
+            initStoragePermission();
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -324,18 +323,40 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            askIfAddDefaultPlan();
-        } else {
-            //Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
-            new AlertDialog.Builder(LauncherActivity.this)
-                    .setMessage(R.string.permission_denied)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            openSettingsPage();
-                        }
-                    }).show();
+        if(grantResults.length == 0){
+            return ;
+        }
+
+        if(requestCode == REQUEST_CODE_ANKI){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                askIfAddDefaultPlan();
+                initStoragePermission();
+            } else {
+                //Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
+                new AlertDialog.Builder(LauncherActivity.this)
+                        .setMessage(R.string.permission_denied)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                openSettingsPage();
+                            }
+                        }).show();
+            }
+        }
+        if(requestCode == REQUEST_CODE_STORAGE) {
+            if (requestCode == REQUEST_CODE_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                ensureExternalDbDirectory();
+            } else {
+                Toast.makeText(this, "storage permission denied, go to the settings and grant it manually!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+    private void ensureExternalDbDirectory() {
+        File f = new File(Environment.getExternalStorageDirectory(), Constant.EXTERNAL_STORAGE_DIRECTORY);
+        if (!f.exists()) {
+            f.mkdirs();
         }
     }
 
@@ -439,4 +460,17 @@ public class LauncherActivity extends AppCompatActivity {
         }
     }
 
+    private void initStoragePermission(){
+        if(Build.VERSION.SDK_INT >= 23){
+            int result = ContextCompat.checkSelfPermission(LauncherActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if(result != PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.shouldShowRequestPermissionRationale(LauncherActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                } else {
+                    ActivityCompat.requestPermissions(LauncherActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
+                }
+            }else{
+                ensureExternalDbDirectory();
+            }
+        }
+    }
 }

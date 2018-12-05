@@ -6,9 +6,10 @@ import android.widget.FilterQueryProvider;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 
+import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.ExternalDatabaseHelper;
 import com.mmjang.ankihelper.data.dict.JPDeinflector.Deinflection;
 import com.mmjang.ankihelper.data.dict.JPDeinflector.Deinflector;
-import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryDbHelper;
 import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryInformation;
 import com.mmjang.ankihelper.util.RegexUtil;
 import com.mmjang.ankihelper.util.WanaKanaJava;
@@ -25,16 +26,16 @@ import java.util.Map;
 public class CustomDictionary implements IDictionary {
 
     private Context mContext;
-    private CustomDictionaryDbHelper mDbHelper;
+    private ExternalDatabase mDatabase;
     private int mDictId;
     private static WanaKanaJava mWanaKanaJava;
     public CustomDictionaryInformation mDictInformation;
 
-    public CustomDictionary(Context context, CustomDictionaryDbHelper dbHelper, int dictId){
+    public CustomDictionary(Context context, ExternalDatabase db, int dictId){
         mContext = context;
-        mDbHelper = dbHelper;
+        mDatabase = db;
         mDictId = dictId;
-        mDictInformation = mDbHelper.getDictInfo(dictId);
+        mDictInformation = mDatabase.getDictInfo(dictId);
     }
 
     public int getId(){
@@ -93,7 +94,7 @@ public class CustomDictionary implements IDictionary {
     public ListAdapter getAutoCompleteAdapter(Context context, int layout) {
         SimpleCursorAdapter adapter =
                 new SimpleCursorAdapter(context, layout, null,
-                        new String[] {CustomDictionaryDbHelper.getHeadwordColumnName()},
+                        new String[] {ExternalDatabase.getHeadwordColumnName()},
                         new int[] {android.R.id.text1},
                         0
                         );
@@ -101,7 +102,7 @@ public class CustomDictionary implements IDictionary {
                 new FilterQueryProvider() {
                     @Override
                     public Cursor runQuery(CharSequence constraint) {
-                        return mDbHelper.getFilterCursor(mDictId, constraint.toString());
+                        return mDatabase.getFilterCursor(mDictId, constraint.toString());
                     }
                 }
         );
@@ -120,7 +121,7 @@ public class CustomDictionary implements IDictionary {
 
     private List<Definition> queryDefinition(String q){
         ArrayList<Definition> re = new ArrayList<>();
-        List<String[]> results =  mDbHelper.queryHeadword(mDictId, q);
+        List<String[]> results =  mDatabase.queryHeadword(mDictId, q);
         for(String[] result : results){
             re.add(fromResultsToDefinition(result));
         }

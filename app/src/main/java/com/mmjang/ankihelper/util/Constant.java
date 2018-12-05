@@ -33,4 +33,6 @@ public class Constant {
     public static final int VIBRATE_DURATION = 10;
 
     public static final float FLOAT_ACTION_BUTTON_ALPHA = 0.3f;
+
+    public static final String EXTERNAL_STORAGE_DIRECTORY = "ankihelper";
 }

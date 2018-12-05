@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.mmjang.ankihelper.data.database.ExternalDatabase;
 import com.mmjang.ankihelper.data.dict.CustomDictionary;
 import com.mmjang.ankihelper.data.dict.IDictionary;
 
@@ -37,7 +38,7 @@ public class CustomDictionaryManager {
     private static final String META_FIELDS = "FIELDS";
 
 
-    public CustomDictionaryDbHelper dbHelper;
+    public ExternalDatabase db;
     String mDictionaryPath;
     Context mContext;
 
@@ -50,7 +51,7 @@ public class CustomDictionaryManager {
     }
 
     public CustomDictionaryManager(Context context, @NonNull String dictionaryPath){
-        dbHelper = new CustomDictionaryDbHelper(context);
+        db = new ExternalDatabase(context);
         mDictionaryPath = dictionaryPath;
         mContext = context;
     }
@@ -60,7 +61,7 @@ public class CustomDictionaryManager {
         if(files.size() == 0){
             return false;
         }
-        dbHelper.clearDB();
+        db.clearDB();
         int i = 0;
         for(File file : files){
             if(processOneDictionaryFile(i, file)){
@@ -91,13 +92,13 @@ public class CustomDictionaryManager {
     }
 
     public void clearDictionaries(){
-        dbHelper.clearDB();
+        db.clearDB();
     }
 
     public List<IDictionary> getDictionaryList(){
         List<IDictionary> dictionaries = new ArrayList<>();
-        for(int id : dbHelper.getDictIdList()){
-            dictionaries.add(new CustomDictionary(mContext, dbHelper, id));
+        for(int id : db.getDictIdList()){
+            dictionaries.add(new CustomDictionary(mContext, db, id));
         }
         return  dictionaries;
     }
@@ -188,7 +189,7 @@ public class CustomDictionaryManager {
                           if(splitted.length == fields.length){ //ensure all rows are of same length
                               entries.add(splitted);
                               if(entries.size() > MAX_ENTRIES_ONE_WRITE){ //insert in batch to speed up
-                                  dbHelper.addEntries(id, entries);
+                                  db.addEntries(id, entries);
                                   entries.clear();
                               }
                           }else{
@@ -200,8 +201,8 @@ public class CustomDictionaryManager {
                       return false;
                   }
                   //insert remaining entries
-                  dbHelper.addEntries(id, entries);
-                  dbHelper.addDictionaryInformation(id, dictName, dictLang, fields, dictIntro, tmpl);
+                  db.addEntries(id, entries);
+                  db.addDictionaryInformation(id, dictName, dictLang, fields, dictIntro, tmpl);
 
             } catch (IOException e) {
                 e.printStackTrace();

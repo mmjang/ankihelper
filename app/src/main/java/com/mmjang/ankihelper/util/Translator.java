@@ -33,7 +33,7 @@ public class Translator {
             return sb.toString();
         } catch (JSONException e) {
             e.printStackTrace();
-            return "";
+            return e.getMessage();
         }
     }
     public static void main(String[] args) {

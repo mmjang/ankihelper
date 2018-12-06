@@ -25,8 +25,11 @@ import android.widget.Toast;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
+import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.MigrationUtil;
 import com.mmjang.ankihelper.data.plan.DefaultPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.data.quote.Quote;
 import com.mmjang.ankihelper.data.quote.RandomQuote;
 import com.mmjang.ankihelper.domain.CBWatcherService;
@@ -329,7 +332,6 @@ public class LauncherActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_CODE_ANKI){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                askIfAddDefaultPlan();
                 initStoragePermission();
             } else {
                 //Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
@@ -345,7 +347,8 @@ public class LauncherActivity extends AppCompatActivity {
         }
         if(requestCode == REQUEST_CODE_STORAGE) {
             if (requestCode == REQUEST_CODE_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                ensureExternalDbDirectory();
+                ensureExternalDbDirectoryAndMigrate();
+                askIfAddDefaultPlan();
             } else {
                 Toast.makeText(this, "storage permission denied, go to the settings and grant it manually!", Toast.LENGTH_SHORT).show();
             }
@@ -353,10 +356,16 @@ public class LauncherActivity extends AppCompatActivity {
 
     }
 
-    private void ensureExternalDbDirectory() {
+    private void ensureExternalDbDirectoryAndMigrate() {
         File f = new File(Environment.getExternalStorageDirectory(), Constant.EXTERNAL_STORAGE_DIRECTORY);
         if (!f.exists()) {
             f.mkdirs();
+        }
+        if(!settings.getOldDataMigrated()){
+            Toast.makeText(this, "正在迁移旧版数据请稍等...", Toast.LENGTH_LONG).show();
+            MigrationUtil.migrate();
+            Toast.makeText(this, "旧版数据迁移完成！", Toast.LENGTH_SHORT).show();
+            settings.setOldDataMigrated(true);
         }
     }
 
@@ -371,8 +380,8 @@ public class LauncherActivity extends AppCompatActivity {
     }
     
     void askIfAddDefaultPlan(){
-        List<OutputPlan> plans = DataSupport.findAll(OutputPlan.class);
-        for(OutputPlan plan : plans){
+        List<OutputPlanPOJO> plans = ExternalDatabase.getInstance().getAllPlan();
+        for(OutputPlanPOJO plan : plans){
             if(plan.getPlanName().equals(DefaultPlan.DEFAULT_PLAN_NAME)){
                 new AlertDialog.Builder(LauncherActivity.this)
                         .setMessage(R.string.duplicate_plan_name_complain)
@@ -469,7 +478,7 @@ public class LauncherActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(LauncherActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
                 }
             }else{
-                ensureExternalDbDirectory();
+                ensureExternalDbDirectoryAndMigrate();
             }
         }
     }

@@ -13,6 +13,7 @@ import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -142,7 +143,7 @@ public class Utils {
         return sb.toString();
     }
 
-    public static boolean containsTranslationField(OutputPlan outputPlan){
+    public static boolean containsTranslationField(OutputPlanPOJO outputPlan){
         Map<String, String> map = outputPlan.getFieldsMap();
         for(String key : map.keySet()){
             if(map.get(key).equals("句子翻译")){
@@ -172,5 +173,17 @@ public class Utils {
         else{
             return false;
         }
+    }
+
+    public static String renderTmpl(String tmpl, Map<String, String> dataMap) {
+        tmpl = tmpl.trim();
+        for (String key : dataMap.keySet()) {
+            tmpl = tmpl.replace("{{" + key + "}}", dataMap.get(key));
+        }
+        return tmpl;
+    }
+
+    public static String keyCleanup(String key) {
+        return key.trim().replaceAll("[,.!?()\"'“”’？]", "").toLowerCase();
     }
 }

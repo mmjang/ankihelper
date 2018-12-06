@@ -15,7 +15,9 @@ import android.widget.TextView;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
+import com.mmjang.ankihelper.data.database.ExternalDatabase;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.ui.plan.helper.ItemTouchHelperAdapter;
 import com.mmjang.ankihelper.ui.plan.helper.ItemTouchHelperViewHolder;
 import com.mmjang.ankihelper.util.DialogUtil;
@@ -31,7 +33,7 @@ import java.util.List;
  */
 
 public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> implements ItemTouchHelperAdapter{
-    private List<OutputPlan> mPlansList;
+    private List<OutputPlanPOJO> mPlansList;
     private Activity mActivity;
 
     static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
@@ -61,7 +63,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
 
     public PlansAdapter(
             Activity activity,
-            List<OutputPlan> planList) {
+            List<OutputPlanPOJO> planList) {
         mPlansList = planList;
         mActivity = activity;
     }
@@ -76,7 +78,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        OutputPlan plan = mPlansList.get(position);
+        OutputPlanPOJO plan = mPlansList.get(position);
         holder.planName.setText(plan.getPlanName());
         holder.layoutDelete.setOnClickListener(
                 new View.OnClickListener() {
@@ -90,7 +92,8 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         int pos = holder.getAdapterPosition();
-                                        mPlansList.get(pos).delete();
+                                        //mPlansList.get(pos).delete();
+                                        ExternalDatabase.getInstance().deletePlanByName(mPlansList.get(pos).getPlanName());
                                         mPlansList.remove(pos);
                                         notifyItemRemoved(pos);
                                     }
@@ -123,7 +126,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        OutputPlan from = mPlansList.get(fromPosition);
+        OutputPlanPOJO from = mPlansList.get(fromPosition);
         mPlansList.remove(fromPosition);
         mPlansList.add(toPosition, from);
         notifyItemMoved(fromPosition, toPosition);
@@ -131,21 +134,22 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
 
     @Override
     public void onMoveFinished() {
-        List<OutputPlan> plansInDatabase = DataSupport.findAll(OutputPlan.class);
-        for(int i = 0; i < plansInDatabase.size(); i ++){
-            OutputPlan oldPlan = plansInDatabase.get(i);
-            OutputPlan newPlan = mPlansList.get(i);
-            if(oldPlan.getPlanName() == newPlan.getPlanName()){
-                continue;
-            }else{
-                oldPlan.setPlanName(newPlan.getPlanName());
-                oldPlan.setDictionaryKey(newPlan.getDictionaryKey());
-                oldPlan.setOutputDeckId(newPlan.getOutputDeckId());
-                oldPlan.setOutputModelId(newPlan.getOutputModelId());
-                oldPlan.setFieldsMap(newPlan.getFieldsMap());
-                oldPlan.save();
-            }
-        }
+        ExternalDatabase.getInstance().refreshPlanWith(mPlansList);
+//        List<OutputPlan> plansInDatabase = DataSupport.findAll(OutputPlan.class);
+//        for(int i = 0; i < plansInDatabase.size(); i ++){
+//            OutputPlan oldPlan = plansInDatabase.get(i);
+//            OutputPlan newPlan = mPlansList.get(i);
+//            if(oldPlan.getPlanName() == newPlan.getPlanName()){
+//                continue;
+//            }else{
+//                oldPlan.setPlanName(newPlan.getPlanName());
+//                oldPlan.setDictionaryKey(newPlan.getDictionaryKey());
+//                oldPlan.setOutputDeckId(newPlan.getOutputDeckId());
+//                oldPlan.setOutputModelId(newPlan.getOutputModelId());
+//                oldPlan.setFieldsMap(newPlan.getFieldsMap());
+//                oldPlan.save();
+//            }
+//        }
     }
 
     @Override

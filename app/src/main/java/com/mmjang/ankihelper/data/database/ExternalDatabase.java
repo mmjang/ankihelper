@@ -6,7 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 
+import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.data.dict.JiSho;
 import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryInformation;
+import com.mmjang.ankihelper.data.history.HistoryPOJO;
+import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +31,18 @@ public class ExternalDatabase {
     private static final String SPLITTER = "\t"; //original file is splitted by \t, so it's safe.
     Context mContext;
     SQLiteDatabase mDatabase;
-    public ExternalDatabase(Context context){
+    private static ExternalDatabase instance;
+    private ExternalDatabase(Context context){
         mContext = context;
         ExternalDatabaseHelper dbHelper = new ExternalDatabaseHelper(mContext);
         mDatabase = dbHelper.getWritableDatabase();
+    }
+
+    public static ExternalDatabase getInstance() {
+        if(instance == null){
+            instance = new ExternalDatabase(MyApplication.getContext());
+        }
+        return instance;
     }
 
     public void clearDB(){
@@ -149,6 +162,153 @@ public class ExternalDatabase {
         }
         return result;
     }
+
+    public boolean insertHistory(HistoryPOJO history){
+        ContentValues values = new ContentValues();
+        values.put(DBContract.History.COLUMN_TIME_STAMP, history.getTimeStamp());
+        values.put(DBContract.History.COLUMN_DEFINITION, history.getDefinition());
+        values.put(DBContract.History.COLUMN_DICTIONARY, history.getDictionary());
+        values.put(DBContract.History.COLUMN_NOTE, history.getNote());
+        values.put(DBContract.History.COLUMN_TAG, history.getTag());
+        values.put(DBContract.History.COLUMN_SENTENCE, history.getSentence());
+        values.put(DBContract.History.COLUMN_TYPE, history.getType());
+        values.put(DBContract.History.COLUMN_WORD, history.getWord());
+        long result = mDatabase.insert(DBContract.History.TABLE_NAME, null, values);
+        return result >= 0;
+    }
+
+    public void insertManyHistory(List<HistoryPOJO> historyPOJOS){
+        mDatabase.beginTransaction();
+        for(HistoryPOJO history : historyPOJOS){
+            insertHistory(history);
+        }
+        mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+    }
+
+    public List<HistoryPOJO> getHistoryAfter(long timeStamp){
+        Cursor cursor = mDatabase.rawQuery(
+                String.format("select %s, %s, %s, %s, %s, %s, %s, %s from %s where %s > %s",
+                        DBContract.History.COLUMN_TIME_STAMP,
+                        DBContract.History.COLUMN_DEFINITION,
+                        DBContract.History.COLUMN_DICTIONARY,
+                        DBContract.History.COLUMN_NOTE,
+                        DBContract.History.COLUMN_TAG,
+                        DBContract.History.COLUMN_SENTENCE,
+                        DBContract.History.COLUMN_TYPE,
+                        DBContract.History.COLUMN_WORD,
+                        DBContract.History.TABLE_NAME,
+                        DBContract.History.COLUMN_TIME_STAMP,
+                        timeStamp
+                        ),
+                null
+        );
+        List<HistoryPOJO> result = new ArrayList<>();
+        while (cursor.moveToNext()){
+            HistoryPOJO historyPOJO = new HistoryPOJO();
+            historyPOJO.setTimeStamp(cursor.getLong(0));
+            historyPOJO.setDefinition(cursor.getString(1));
+            historyPOJO.setDictionary(cursor.getString(2));
+            historyPOJO.setNote(cursor.getString(3));
+            historyPOJO.setTag(cursor.getString(4));
+            historyPOJO.setSentence(cursor.getString(5));
+            historyPOJO.setType(cursor.getInt(6));
+            historyPOJO.setWord(cursor.getString(7));
+            result.add(historyPOJO);
+        }
+        return result;
+    }
+
+    public List<OutputPlanPOJO> getAllPlan(){
+        Cursor cursor = mDatabase.rawQuery(
+                String.format("select %s, %s, %s, %s, %s from %s",
+                        DBContract.Plan.COLUMN_PLAN_NAME,
+                        DBContract.Plan.COLUMN_DICTIONARY_KEY,
+                        DBContract.Plan.COLUMN_OUTPUT_DECK_ID,
+                        DBContract.Plan.COLUMN_OUTPUT_MODEL_ID,
+                        DBContract.Plan.COLUMN_FIELDS_MAP,
+                        DBContract.Plan.TABLE_NAME
+                        ),
+                null
+        );
+        List<OutputPlanPOJO> result = new ArrayList<>();
+        while(cursor.moveToNext()){
+            OutputPlanPOJO outputPlanPOJO = new OutputPlanPOJO();
+            outputPlanPOJO.setPlanName(cursor.getString(0));
+            outputPlanPOJO.setDictionaryKey(cursor.getString(1));
+            outputPlanPOJO.setOutputDeckId(cursor.getLong(2));
+            outputPlanPOJO.setOutputModelId(cursor.getLong(3));
+            outputPlanPOJO.setFieldsMapString(cursor.getString(4));
+            result.add(outputPlanPOJO);
+        }
+        return result;
+    }
+
+    public OutputPlanPOJO getPlanByName(String planName){
+        Cursor cursor = mDatabase.rawQuery(
+                String.format("select %s, %s, %s, %s, %s from %s where %s='%s'",
+                        DBContract.Plan.COLUMN_PLAN_NAME,
+                        DBContract.Plan.COLUMN_DICTIONARY_KEY,
+                        DBContract.Plan.COLUMN_OUTPUT_DECK_ID,
+                        DBContract.Plan.COLUMN_OUTPUT_MODEL_ID,
+                        DBContract.Plan.COLUMN_FIELDS_MAP,
+                        DBContract.Plan.TABLE_NAME,
+                        DBContract.Plan.COLUMN_PLAN_NAME,
+                        planName
+                ),
+                null
+        );
+        OutputPlanPOJO result = null;
+        while(cursor.moveToNext()){
+            OutputPlanPOJO outputPlanPOJO = new OutputPlanPOJO();
+            outputPlanPOJO.setPlanName(cursor.getString(0));
+            outputPlanPOJO.setDictionaryKey(cursor.getString(1));
+            outputPlanPOJO.setOutputDeckId(cursor.getLong(2));
+            outputPlanPOJO.setOutputModelId(cursor.getLong(3));
+            outputPlanPOJO.setFieldsMapString(cursor.getString(4));
+            result = outputPlanPOJO;
+        }
+        return result;
+    }
+
+    public void refreshPlanWith(List<OutputPlanPOJO> outputPlanPOJOS){
+        mDatabase.beginTransaction();
+        mDatabase.delete(DBContract.Plan.TABLE_NAME, null, null);
+        for(OutputPlanPOJO outputPlanPOJO : outputPlanPOJOS){
+            insertPlan(outputPlanPOJO);
+        }
+        mDatabase.setTransactionSuccessful();
+        mDatabase.endTransaction();
+    }
+
+    public int deletePlanByName(String planName){
+        return mDatabase.delete(DBContract.Plan.TABLE_NAME,
+                "" + DBContract.Plan.COLUMN_PLAN_NAME + "='" + planName +"'",
+                null
+                );
+    }
+
+    public int updatePlan(OutputPlanPOJO outputPlanPOJO){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBContract.Plan.COLUMN_PLAN_NAME, outputPlanPOJO.getPlanName());
+        contentValues.put(DBContract.Plan.COLUMN_DICTIONARY_KEY, outputPlanPOJO.getDictionaryKey());
+        contentValues.put(DBContract.Plan.COLUMN_OUTPUT_DECK_ID, outputPlanPOJO.getOutputDeckId());
+        contentValues.put(DBContract.Plan.COLUMN_OUTPUT_MODEL_ID, outputPlanPOJO.getOutputModelId());
+        contentValues.put(DBContract.Plan.COLUMN_FIELDS_MAP, outputPlanPOJO.getFieldsMapString());
+        return mDatabase.update(DBContract.Plan.TABLE_NAME, contentValues,
+                "" + DBContract.Plan.COLUMN_PLAN_NAME + "='" + outputPlanPOJO.getPlanName() +"'", null);
+    }
+
+    public long insertPlan(OutputPlanPOJO outputPlanPOJO){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBContract.Plan.COLUMN_PLAN_NAME, outputPlanPOJO.getPlanName());
+        contentValues.put(DBContract.Plan.COLUMN_DICTIONARY_KEY, outputPlanPOJO.getDictionaryKey());
+        contentValues.put(DBContract.Plan.COLUMN_OUTPUT_DECK_ID, outputPlanPOJO.getOutputDeckId());
+        contentValues.put(DBContract.Plan.COLUMN_OUTPUT_MODEL_ID, outputPlanPOJO.getOutputModelId());
+        contentValues.put(DBContract.Plan.COLUMN_FIELDS_MAP, outputPlanPOJO.getFieldsMapString());
+        return mDatabase.insert(DBContract.Plan.TABLE_NAME, null, contentValues);
+    }
+
     private static String joinFields(String[] fields){
         StringBuilder sb = new StringBuilder();
         for(String s : fields){
@@ -161,4 +321,6 @@ public class ExternalDatabase {
     private static String[] fromFieldsString(String fieldsString){
         return fieldsString.split(SPLITTER);
     }
+
+
 }

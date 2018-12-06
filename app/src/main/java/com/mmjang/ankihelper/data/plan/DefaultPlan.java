@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
+import com.mmjang.ankihelper.data.database.ExternalDatabase;
 import com.mmjang.ankihelper.data.dict.Collins;
 
 import java.util.HashMap;
@@ -52,13 +53,13 @@ public class DefaultPlan {
         for(int i = 0; i < FILEDS.length; i ++){
             fieldMap.put(FILEDS[i], elements[i]);
         }
-        OutputPlan defaultPlan = new OutputPlan();
+        OutputPlanPOJO defaultPlan = new OutputPlanPOJO();
         defaultPlan.setPlanName(DEFAULT_PLAN_NAME);
         defaultPlan.setOutputModelId(getDefaultModelId());
         defaultPlan.setOutputDeckId(getDefaultDeckId());
         defaultPlan.setDictionaryKey(collins.getDictionaryName());
         defaultPlan.setFieldsMap(fieldMap);
-        defaultPlan.save();
+        ExternalDatabase.getInstance().insertPlan(defaultPlan);
     }
 
 

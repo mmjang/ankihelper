@@ -1,19 +1,8 @@
 package com.mmjang.ankihelper.data.database;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
-import android.support.annotation.Nullable;
-
-import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryInformation;
-import com.mmjang.ankihelper.util.Constant;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExternalDatabaseHelper extends SQLiteOpenHelper {
 
@@ -21,16 +10,23 @@ public class ExternalDatabaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
     Context mContext;
 
-    private static final String SQL_CREATE = "create table if not exists " + DBContract.History.TABLE_NAME + " (" +
-            DBContract.History.COLUMN_TIME_STAMP + " integer primary key, " +
-            DBContract.History.COLUMN_TYPE + " integer, " +
-            DBContract.History.COLUMN_WORD + " text, " +
-            DBContract.History.COLUMN_SENTENCE + "text, " +
-            DBContract.History.COLUMN_DICTIONARY + "text, " +
-            DBContract.History.COLUMN_DEFINITION + "text, " +
-            DBContract.History.COLUMN_TRANSLATION + "text, " +
-            DBContract.History.COLUMN_NOTE + "text, " +
-            DBContract.History.COLUMN_TAG + "text)";
+    private static final String SQL_CREATE_HISTORY = String.format(
+            "create table if not exists %s (%s integer primary key, %s integer, %s text, %s text, %s text, %s text, %s text, %s text, %s text)",
+            DBContract.History.TABLE_NAME, DBContract.History.COLUMN_TIME_STAMP,
+            DBContract.History.COLUMN_TYPE, DBContract.History.COLUMN_WORD,
+            DBContract.History.COLUMN_SENTENCE, DBContract.History.COLUMN_DICTIONARY,
+            DBContract.History.COLUMN_DEFINITION, DBContract.History.COLUMN_TRANSLATION,
+            DBContract.History.COLUMN_NOTE, DBContract.History.COLUMN_TAG);
+
+    private static final String SQL_CREATE_PLAN = String.format(
+            "create table if not exists %s (%s text, %s text, %s integer, %s integer, %s text)",
+            DBContract.Plan.TABLE_NAME,
+            DBContract.Plan.COLUMN_PLAN_NAME,
+            DBContract.Plan.COLUMN_DICTIONARY_KEY,
+            DBContract.Plan.COLUMN_OUTPUT_DECK_ID,
+            DBContract.Plan.COLUMN_OUTPUT_MODEL_ID,
+            DBContract.Plan.COLUMN_FIELDS_MAP
+    );
 
     private static final String SQL_CREATE_DICT_TABLE = "CREATE TABLE IF NOT EXISTS dict" +
             "(id integer, name text, lang text, " +
@@ -45,7 +41,8 @@ public class ExternalDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE);
+        db.execSQL(SQL_CREATE_HISTORY);
+        db.execSQL(SQL_CREATE_PLAN);
         db.execSQL(SQL_CREATE_DICT_TABLE);
         db.execSQL(SQL_CREATE_ENTRY_TABLE);
     }

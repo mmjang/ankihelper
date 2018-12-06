@@ -50,12 +50,14 @@ import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.Settings;
+import com.mmjang.ankihelper.data.database.ExternalDatabase;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
 import com.mmjang.ankihelper.data.history.HistoryUtil;
 import com.mmjang.ankihelper.data.model.UserTag;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.domain.PlayAudioManager;
 import com.mmjang.ankihelper.domain.PronounceManager;
@@ -86,9 +88,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     List<IDictionary> dictionaryList;
     IDictionary currentDicitonary;
-    List<OutputPlan> outputPlanList;
+    List<OutputPlanPOJO> outputPlanList;
     List<String> languageList;
-    OutputPlan currentOutputPlan;
+    OutputPlanPOJO currentOutputPlan;
     Settings settings;
     String mTextToProcess;
     String mPlanNameFromIntent;
@@ -264,7 +266,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     private void loadData() {
         dictionaryList = DictionaryRegister.getDictionaryObjectList();
-        outputPlanList = DataSupport.findAll(OutputPlan.class);
+        outputPlanList = ExternalDatabase.getInstance().getAllPlan();
         settings = Settings.getInstance(this);
         //load tag
         boolean loadQ = settings.getSetAsDefaultTag();
@@ -308,7 +310,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         ///////////////
         int i = 0;
         boolean find = false;
-        for (OutputPlan plan : outputPlanList) {
+        for (OutputPlanPOJO plan : outputPlanList) {
             if (plan.getPlanName().equals(lastSelectedPlan)) {
                 isDuringPlanSpinnerInit = true;
                 planSpinner.setSelection(i);
@@ -558,7 +560,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         );
     }
 
-    private IDictionary getDictionaryFromOutputPlan(OutputPlan outputPlan) {
+    private IDictionary getDictionaryFromOutputPlan(OutputPlanPOJO outputPlan) {
         String dictionaryName = outputPlan.getDictionaryKey();
         for (IDictionary dict : dictionaryList) {
             if (dict.getDictionaryName().equals(dictionaryName)) {

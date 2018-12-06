@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.Settings;
+import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
@@ -41,7 +43,7 @@ public class PlanEditorActivity extends AppCompatActivity {
 
     private String planNameToEdit;
     private AnkiDroidHelper mAnkiDroid;
-    private OutputPlan planForEdit;
+    private OutputPlanPOJO planForEdit;
     private Map<Long, String> deckList;
     private Map<Long, String> modelList;
     private List<IDictionary> dictionaryList;
@@ -120,9 +122,9 @@ public class PlanEditorActivity extends AppCompatActivity {
             String type = intent.getType();
             if (action != null && action.equals(Intent.ACTION_SEND)) {
                 planNameToEdit = intent.getStringExtra(Intent.EXTRA_TEXT);
-                List<OutputPlan> re = DataSupport.where("planName = ?", planNameToEdit).find(OutputPlan.class);
-                if (!re.isEmpty()) {
-                    planForEdit = re.get(0);
+                OutputPlanPOJO re = ExternalDatabase.getInstance().getPlanByName(planNameToEdit);
+                if (re != null) {
+                    planForEdit = re;
                     //set plan name unable to edit
                     planNameEditText.setText(planNameToEdit);
                     //planNameEditText.setEnabled(false);
@@ -302,13 +304,13 @@ public class PlanEditorActivity extends AppCompatActivity {
             return false;
         }
         //DataSupport.findAll()
-        OutputPlan plan;
+        OutputPlanPOJO plan;
         if (planForEdit != null) {
             //if when edit an exiting plan, and the user chang the plan name to another existing plan name
             if (!planName.equals(planNameToEdit)) {
                 //if name conflicts, toast.
-                List<OutputPlan> rel = DataSupport.where("planName = ?", planName).find(OutputPlan.class);
-                if (!rel.isEmpty()) {
+                OutputPlanPOJO rel = ExternalDatabase.getInstance().getPlanByName(planName);
+                if (rel != null) {
                     Toast.makeText(this, R.string.plan_already_exists, Toast.LENGTH_SHORT).show();
                     return false;
                 }
@@ -316,12 +318,12 @@ public class PlanEditorActivity extends AppCompatActivity {
             plan = planForEdit;
         } else {
             //if name conflicts, toast.
-            List<OutputPlan> rel = DataSupport.where("planName = ?", planName).find(OutputPlan.class);
-            if (!rel.isEmpty()) {
+            OutputPlanPOJO rel = ExternalDatabase.getInstance().getPlanByName(planName);
+            if (rel != null) {
                 Toast.makeText(this, R.string.plan_already_exists, Toast.LENGTH_SHORT).show();
                 return false;
             }
-            plan = new OutputPlan();
+            plan = new OutputPlanPOJO();
         }
         //new OutputPlan();
         plan.setPlanName(planName);
@@ -344,7 +346,11 @@ public class PlanEditorActivity extends AppCompatActivity {
             return false;
         }
         plan.setFieldsMap(map);
-        plan.save();
+        if(ExternalDatabase.getInstance().getPlanByName(plan.getPlanName()) != null){
+            ExternalDatabase.getInstance().updatePlan(plan);
+        }else{
+            ExternalDatabase.getInstance().insertPlan(plan);
+        }
         return true;
     }
 

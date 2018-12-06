@@ -51,7 +51,7 @@ public class CustomDictionaryManager {
     }
 
     public CustomDictionaryManager(Context context, @NonNull String dictionaryPath){
-        db = new ExternalDatabase(context);
+        db = ExternalDatabase.getInstance();
         mDictionaryPath = dictionaryPath;
         mContext = context;
     }

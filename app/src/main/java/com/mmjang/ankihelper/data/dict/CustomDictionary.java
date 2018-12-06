@@ -7,17 +7,16 @@ import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 
 import com.mmjang.ankihelper.data.database.ExternalDatabase;
-import com.mmjang.ankihelper.data.database.ExternalDatabaseHelper;
 import com.mmjang.ankihelper.data.dict.JPDeinflector.Deinflection;
 import com.mmjang.ankihelper.data.dict.JPDeinflector.Deinflector;
 import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryInformation;
 import com.mmjang.ankihelper.util.RegexUtil;
+import com.mmjang.ankihelper.util.Utils;
 import com.mmjang.ankihelper.util.WanaKanaJava;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by liao on 2017/8/11.
@@ -59,7 +58,7 @@ public class CustomDictionary implements IDictionary {
 
     @Override
     public List<Definition> wordLookup(String key) {
-        key = keyCleanup(key);
+        key = Utils.keyCleanup(key);
         List<Definition> re = queryDefinition(key);
         if(mDictInformation.getDictLang().equals("en")) {
             String[] deflectResult = FormsUtil.getInstance(mContext).getForms(key);
@@ -143,21 +142,10 @@ public class CustomDictionary implements IDictionary {
             }
             displayedHtml = sb.toString();
         }else{
-            displayedHtml = renderTmpl(tmpl, eleMap);
+            displayedHtml = Utils.renderTmpl(tmpl, eleMap);
         }
         return new Definition(eleMap, displayedHtml);
     }
 
 
-    private String renderTmpl(String tmpl, Map<String, String> dataMap) {
-        tmpl = tmpl.trim();
-        for (String key : dataMap.keySet()) {
-            tmpl = tmpl.replace("{{" + key + "}}", dataMap.get(key));
-        }
-        return tmpl;
-    }
-
-    private String keyCleanup(String key) {
-        return key.trim().replaceAll("[,.!?()\"'“”’？]", "").toLowerCase();
-    }
 }

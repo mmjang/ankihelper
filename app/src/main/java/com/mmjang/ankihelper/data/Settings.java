@@ -30,6 +30,7 @@ public class Settings {
     private final static String LAST_PRONOUNCE_LANGUAGE = "last_pronounce_language";
     private final static String LEFT_HAND_MODE_Q = "left_hand_mode_q";
     private final static String PINK_THEME_Q = "pink_theme_q";
+    private final static String OLD_DATA_MIGRATED = "old_data_migrated";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -185,7 +186,14 @@ public class Settings {
         editor.commit();
     }
 
+    public boolean getOldDataMigrated(){
+        return sp.getBoolean(OLD_DATA_MIGRATED, false);
+    }
 
+    public void setOldDataMigrated(boolean oldDataMigrated){
+        editor.putBoolean(OLD_DATA_MIGRATED, oldDataMigrated);
+        editor.commit();
+    }
 
     /**************/
     boolean hasKey(String key) {

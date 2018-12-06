@@ -21,7 +21,9 @@ import android.widget.Toast;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.Settings;
+import com.mmjang.ankihelper.data.database.ExternalDatabase;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.ui.plan.helper.SimpleItemTouchHelperCallback;
 import com.mmjang.ankihelper.util.DialogUtil;
 import com.mmjang.ankihelper.util.Utils;
@@ -33,7 +35,7 @@ import java.util.List;
 
 public class PlansManagerActivity extends AppCompatActivity {
 
-    private List<OutputPlan> mPlanList;
+    private List<OutputPlanPOJO> mPlanList;
     RecyclerView planListView;
     PlansAdapter mPlansAdapter;
     private static final String PLAN_SEP = "|||";
@@ -65,7 +67,7 @@ public class PlansManagerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        List<OutputPlan> newList = DataSupport.findAll(OutputPlan.class);
+        List<OutputPlanPOJO> newList = ExternalDatabase.getInstance().getAllPlan();
         mPlanList.clear();
         mPlanList.addAll(newList);
         mPlansAdapter.notifyDataSetChanged();
@@ -142,13 +144,13 @@ public class PlansManagerActivity extends AppCompatActivity {
                 long modeld = Long.parseLong(items[2]);
                 String dictKey = items[3].trim();
                 String fieldMapString = items[4];
-                OutputPlan outputPlan = new OutputPlan();
+                OutputPlanPOJO outputPlan = new OutputPlanPOJO();
                 outputPlan.setPlanName(planName);
                 outputPlan.setOutputDeckId(deckId);
                 outputPlan.setOutputModelId(modeld);
                 outputPlan.setDictionaryKey(dictKey);
                 outputPlan.setFieldsMap(Utils.fieldsStr2Map(fieldMapString));
-                outputPlan.save();
+                ExternalDatabase.getInstance().insertPlan(outputPlan);
             }
             catch (Exception e){
                 Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
@@ -159,7 +161,7 @@ public class PlansManagerActivity extends AppCompatActivity {
 
     private void exportPlans() {
         StringBuilder sb = new StringBuilder();
-        for(OutputPlan plan : mPlanList){
+        for(OutputPlanPOJO plan : mPlanList){
             sb.append(plan.getPlanName());
             sb.append(PLAN_SEP);
             sb.append(plan.getOutputDeckId());

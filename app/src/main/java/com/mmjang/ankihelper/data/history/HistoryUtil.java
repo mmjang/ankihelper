@@ -1,5 +1,7 @@
 package com.mmjang.ankihelper.data.history;
 
+import com.mmjang.ankihelper.data.database.ExternalDatabase;
+
 //private long timeStamp;
 //private int type;
 //private String word;
@@ -12,26 +14,26 @@ package com.mmjang.ankihelper.data.history;
 //private String tag;
 public class HistoryUtil {
     public static void savePopupOpen(String sentence){
-        History history = new History();
+        HistoryPOJO history = new HistoryPOJO();
         history.setType(HistoryType.POPUP_OPEN);
         history.setTimeStamp(System.currentTimeMillis());
         history.setSentence(sentence);
-        history.save();
-    }
+        ExternalDatabase.getInstance().insertHistory(history);
+        }
 
     public static void saveWordlookup(String sentence, String word){
-        History history = new History();
+        HistoryPOJO history = new HistoryPOJO();
         history.setType(HistoryType.WORD_LOOK_UP);
         history.setTimeStamp(System.currentTimeMillis());
         history.setSentence(sentence);
         history.setWord(word);
-        history.save();
+        ExternalDatabase.getInstance().insertHistory(history);
     }
 
     public static void saveNoteAdd(String sentence, String word,
                                    String dictionary, String definition,
                                    String translation, String note, String tag){
-        History history = new History();
+        HistoryPOJO history = new HistoryPOJO();
         history.setType(HistoryType.NOTE_ADD);
         history.setTimeStamp(System.currentTimeMillis());
         history.setSentence(sentence);
@@ -41,6 +43,6 @@ public class HistoryUtil {
         history.setTranslation(translation);
         history.setNote(note);
         history.setTag(tag);
-        history.save();
+        ExternalDatabase.getInstance().insertHistory(history);
     }
 }

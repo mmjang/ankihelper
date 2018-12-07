@@ -1,5 +1,8 @@
 package com.mmjang.ankihelper.util;
 
+import android.widget.Toast;
+
+import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.util.com.baidu.translate.demo.RandomAPIKeyGenerator;
 import com.mmjang.ankihelper.util.com.baidu.translate.demo.TransApi;
 
@@ -18,22 +21,23 @@ public class Translator {
             String[] appAndKey = RandomAPIKeyGenerator.next();
             api = new TransApi(appAndKey[0], appAndKey[1]);
         }
-        String jsonStr = api.getTransResult(query, from , to);
+        String jsonStr = "";
         try {
+            jsonStr = api.getTransResult(query, from , to);
             JSONObject json = new JSONObject(jsonStr);
-            JSONArray resultArray =json.getJSONArray("trans_result");
+            JSONArray resultArray = json.getJSONArray("trans_result");
             StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < resultArray.length() - 1; i ++){
+            for (int i = 0; i < resultArray.length() - 1; i++) {
                 sb.append(resultArray.getJSONObject(i).getString("dst"));
                 sb.append("\n");
             }
-            if(resultArray.length() > 0){
+            if (resultArray.length() > 0) {
                 sb.append(resultArray.getJSONObject(resultArray.length() - 1).getString("dst"));
             }
             return sb.toString();
         } catch (JSONException e) {
-            e.printStackTrace();
-            return e.getMessage();
+            //Toast.makeText(MyApplication.getContext(), e.getMessage() + jsonStr, Toast.LENGTH_LONG).show();
+            return "error\n" + e.getMessage() + "\n" + jsonStr;
         }
     }
     public static void main(String[] args) {

@@ -161,7 +161,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     Toast.makeText(PopupActivity.this, (String) msg.obj, Toast.LENGTH_LONG).show();
                     break;
                 case TRANSLATION_DONE:
-                    mEditTextTranslation.setText((String) msg.obj);
+                    String result = (String) msg.obj;
+                    String[] splitted = result.split("\n");
+                    if(splitted.length > 0 && splitted[0].equals("error")){
+                        Toast.makeText(PopupActivity.this, result, Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    mEditTextTranslation.setText((result));
                     showTranslateDone();
                     showTranslationCardView(true);
                     break;

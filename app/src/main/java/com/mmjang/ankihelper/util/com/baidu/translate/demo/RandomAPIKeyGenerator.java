@@ -4,10 +4,10 @@ import java.util.Random;
 public class RandomAPIKeyGenerator {
 
     private static String[] APP_ID_AND_KEY_LIST = new String[] {
-            "20181126000239193\nCPhOj0FHGhvt2f5x5kag",
-            "20180208000121840\n6vcjzWbWq5Swqk8y_VQG",
-            "20181125000239165\nXVCzhWeP3QLLzW7TXHGm",
-            "20181125000239170\np4CI4cEngtYvRx12HUec",
+//            "20181126000239193\nCPhOj0FHGhvt2f5x5kag",
+//            "20180208000121840\n6vcjzWbWq5Swqk8y_VQG",
+//            "20181125000239165\nXVCzhWeP3QLLzW7TXHGm",
+//            "20181125000239170\np4CI4cEngtYvRx12HUec",
             "20160220000012831\nISSPx0K_ZyrUN9IAOKel"
     };
 

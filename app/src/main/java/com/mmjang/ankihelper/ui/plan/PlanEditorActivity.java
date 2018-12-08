@@ -152,9 +152,9 @@ public class PlanEditorActivity extends AppCompatActivity {
         dictionarySpinner.setAdapter(dictionarySpinnerAdapter);
 
         if (planForEdit != null) {
+            String key1 = planForEdit.getDictionaryKey();
             for (int i = 0; i < dictionaryList.size(); i++) {
                 IDictionary dict = dictionaryList.get(i);
-                String key1 = planForEdit.getDictionaryKey();
                 String key2 = dict.getDictionaryName();
                 Log.d("Editor", dict.getDictionaryName() + "haha");
                 if (key1.equals(key2)) {
@@ -164,6 +164,8 @@ public class PlanEditorActivity extends AppCompatActivity {
                     break;
                 }
             }
+            String message = String.format("词典\"%s\"不存在，请检查是否需要重新导入自定义词典", key1);
+            Utils.showMessage(PlanEditorActivity.this, message);
         } else {
 
             int pos = dictionarySpinner.getSelectedItemPosition();

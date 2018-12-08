@@ -3,8 +3,10 @@ package com.mmjang.ankihelper.util;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
 import android.view.inputmethod.InputMethodManager;
 
@@ -14,6 +16,7 @@ import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
+import com.mmjang.ankihelper.ui.LauncherActivity;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -185,5 +188,16 @@ public class Utils {
 
     public static String keyCleanup(String key) {
         return key.trim().replaceAll("[,.!?()\"'“”’？]", "").toLowerCase();
+    }
+
+    public static void showMessage(Context context, String message){
+        new AlertDialog.Builder(context)
+                .setMessage(message)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        return;
+                    }
+                }).show();
     }
 }

@@ -62,6 +62,7 @@ import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.domain.PlayAudioManager;
 import com.mmjang.ankihelper.domain.PronounceManager;
 import com.mmjang.ankihelper.ui.LauncherActivity;
+import com.mmjang.ankihelper.ui.plan.PlanEditorActivity;
 import com.mmjang.ankihelper.ui.widget.BigBangLayout;
 import com.mmjang.ankihelper.ui.widget.BigBangLayoutWrapper;
 import com.mmjang.ankihelper.util.Constant;
@@ -281,11 +282,15 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         }
         //check if outputPlanList is empty
         if(outputPlanList.size() == 0){
-            Toast.makeText(this, R.string.toast_no_available_plan, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, , Toast.LENGTH_LONG).show();
+            Utils.showMessage(this, getResources().getString(R.string.toast_no_available_plan));
         }
     }
 
     private void populatePlanSpinner() {
+        if(outputPlanList.size() == 0){
+            return;
+        }
         final String[] planNameArr = new String[outputPlanList.size()];
         for (int i = 0; i < outputPlanList.size(); i++) {
             planNameArr[i] = outputPlanList.get(i).getPlanName();
@@ -302,9 +307,16 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 settings.setLastSelectedPlan(outputPlanList.get(0).getPlanName());
                 currentOutputPlan = outputPlanList.get(0);
                 currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
-                setActAdapter(currentDicitonary);
+                if(currentDicitonary == null){
+                    String message = String.format("方案\"%s\"所选词典\"%s\"不存在，请检查是否需要重新导入自定义词典",
+                            currentOutputPlan.getPlanName(),
+                            currentOutputPlan.getDictionaryKey());
+                    Utils.showMessage(PopupActivity.this, message);
+                }else {
+                    setActAdapter(currentDicitonary);
+                }
             } else {
-                //no outputplan available!!!
+                return ;
             }
         }
 
@@ -322,6 +334,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 planSpinner.setSelection(i);
                 currentOutputPlan = outputPlanList.get(i);
                 currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
+                if(currentDicitonary == null) {
+                    String message = String.format("方案\"%s\"所选词典\"%s\"不存在，请检查是否需要重新导入自定义词典",
+                            currentOutputPlan.getPlanName(),
+                            currentOutputPlan.getDictionaryKey());
+                    Utils.showMessage(PopupActivity.this, message);
+                    break;
+                }
                 setActAdapter(currentDicitonary);
                 find = true;
                 break;
@@ -335,6 +354,12 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 settings.setLastSelectedPlan(outputPlanList.get(0).getPlanName());
                 currentOutputPlan = outputPlanList.get(0);
                 currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
+                if(currentDicitonary == null) {
+                    String message = String.format("方案\"%s\"所选词典\"%s\"不存在，请检查是否需要重新导入自定义词典",
+                            currentOutputPlan.getPlanName(),
+                            currentOutputPlan.getDictionaryKey());
+                    Utils.showMessage(PopupActivity.this, message);
+                }
                 setActAdapter(currentDicitonary);
             }
         } else {

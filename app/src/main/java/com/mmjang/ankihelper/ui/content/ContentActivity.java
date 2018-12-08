@@ -76,12 +76,23 @@ public class ContentActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
 
-                            Thread thrad = new Thread(
+                            Thread thread = new Thread(
                                     new Runnable() {
                                         @Override
                                         public void run() {
                                             ContentEntity contentEntity = externalContent.getRandomContentAt(index,
                                                     !settings.getShowContentAlreadyRead());
+                                            if(contentEntity == null){
+                                                ContentActivity.this.runOnUiThread(
+                                                        new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                Toast.makeText(ContentActivity.this, "加载失败！", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                );
+                                                return ;
+                                            }
                                             Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
                                             intent.setAction(Intent.ACTION_SEND);
                                             intent.setType("text/plain");
@@ -95,7 +106,7 @@ public class ContentActivity extends AppCompatActivity {
                                     }
                             );
 
-                            thrad.start();
+                            thread.start();
 
                         }
                     }

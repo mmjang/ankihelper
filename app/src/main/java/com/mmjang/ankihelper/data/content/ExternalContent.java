@@ -52,12 +52,21 @@ public class ExternalContent {
             String name = dbFileList.get(index).getName();
             helperList[index] = new ExternalContentDatabaseHelper(mContext, name);
         }
-        SQLiteDatabase database = helperList[index].getWritableDatabase();
+        SQLiteDatabase database;
+        try {
+            database = helperList[index].getWritableDatabase();
+        }
+        catch (Exception e){
+            return null;
+        }
+        if(database == null){
+            return null;
+        }
         Cursor cursor;
         if(filterRead) {
             cursor = database.rawQuery(
-                    "select id, txt, note, is_read from content where is_read=0 " +
-                            "and id in (select id from content order by random() limit 1)"
+                    "select id, txt, note, is_read from content " +
+                            "where id in (select id from content where is_read=0 order by random() limit 1)"
                     , null
             );
         }else{

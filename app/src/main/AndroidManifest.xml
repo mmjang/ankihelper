@@ -97,9 +97,13 @@
             android:exported="true" />
         <activity
             android:name=".ui.stat.StatActivity"
-            android:label="@string/title_activity_stat"
             android:exported="true"
+            android:label="@string/title_activity_stat"
             android:theme="@style/AppTheme" />
+        <activity android:name=".ui.content.ContentActivity"
+            android:label="@string/str_btn_open_random_quote"
+            android:theme="@style/AppTheme"
+            ></activity>
     </application>
 
 </manifest>

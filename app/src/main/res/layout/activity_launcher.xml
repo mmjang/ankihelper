@@ -216,7 +216,7 @@
                 android:layout_height="48dp">
 
                 <TextView
-                    android:id="@+id/btn_random_quote"
+                    android:id="@+id/btn_show_random_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="16dp"

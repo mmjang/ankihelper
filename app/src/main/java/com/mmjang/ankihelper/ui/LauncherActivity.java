@@ -3,7 +3,6 @@ package com.mmjang.ankihelper.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.database.ExternalDatabase;
 import com.mmjang.ankihelper.data.database.MigrationUtil;
 import com.mmjang.ankihelper.data.plan.DefaultPlan;
-import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.data.quote.Quote;
 import com.mmjang.ankihelper.data.quote.RandomQuote;
@@ -36,13 +34,12 @@ import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.ui.about.AboutActivity;
+import com.mmjang.ankihelper.ui.content.ContentActivity;
 import com.mmjang.ankihelper.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.popup.PopupActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
 import com.mmjang.ankihelper.util.Constant;
-
-import org.litepal.crud.DataSupport;
 
 import java.io.File;
 import java.util.List;
@@ -87,7 +84,7 @@ public class LauncherActivity extends AppCompatActivity {
         textViewHelp = (TextView) findViewById(R.id.btn_help);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
         textViewAddQQGroup = (TextView) findViewById(R.id.btn_qq_group);
-        textViewRandomQuote = (TextView) findViewById(R.id.btn_random_quote);
+        textViewRandomQuote = (TextView) findViewById(R.id.btn_show_random_content);
 
         textViewAbout.setText(Html.fromHtml("<font color='red'>❤</font>" + getResources().getString(R.string.btn_about_and_support_str)));
         switchMoniteClipboard.setChecked(
@@ -245,26 +242,8 @@ public class LauncherActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        try{
-                            Quote quote = RandomQuote.fetchFromDB();
-                            Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
-                            intent.setAction(Intent.ACTION_SEND);
-                            intent.setType("text/plain");
-                            //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                            if(quote.Caption.length() == 0){
-                                intent.putExtra(Intent.EXTRA_TEXT, quote.Quote +
-                                        "\n   - " + quote.Author + "");
-                            }else {
-                                intent.putExtra(Intent.EXTRA_TEXT, quote.Quote +
-                                        "\n   - " + quote.Author + ", " + quote.Caption);
-                            }
-                            startActivity(intent);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(LauncherActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                        Intent intent = new Intent(LauncherActivity.this, ContentActivity.class);
+                        startActivity(intent);
                     }
                 }
         );
@@ -361,6 +340,12 @@ public class LauncherActivity extends AppCompatActivity {
         if (!f.exists()) {
             f.mkdirs();
         }
+        //the content folder
+        File f2 = new File(f, Constant.EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY);
+        if (!f2.exists()){
+            f2.mkdir();
+        }
+
         if(!settings.getOldDataMigrated()){
             Toast.makeText(this, "正在迁移旧版数据请稍等...", Toast.LENGTH_LONG).show();
             MigrationUtil.migrate();

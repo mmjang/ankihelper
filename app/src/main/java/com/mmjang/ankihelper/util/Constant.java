@@ -35,4 +35,5 @@ public class Constant {
     public static final float FLOAT_ACTION_BUTTON_ALPHA = 0.3f;
 
     public static final String EXTERNAL_STORAGE_DIRECTORY = "ankihelper";
+    public static final String EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY = "content";
 }

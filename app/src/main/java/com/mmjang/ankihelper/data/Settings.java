@@ -31,6 +31,7 @@ public class Settings {
     private final static String LEFT_HAND_MODE_Q = "left_hand_mode_q";
     private final static String PINK_THEME_Q = "pink_theme_q";
     private final static String OLD_DATA_MIGRATED = "old_data_migrated";
+    private final static String SHOW_CONTENT_ALREADY_READ = "show_content_already_read";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -192,6 +193,15 @@ public class Settings {
 
     public void setOldDataMigrated(boolean oldDataMigrated){
         editor.putBoolean(OLD_DATA_MIGRATED, oldDataMigrated);
+        editor.commit();
+    }
+
+    public boolean getShowContentAlreadyRead(){
+        return sp.getBoolean(SHOW_CONTENT_ALREADY_READ, false);
+    }
+
+    public void setShowContentAlreadyRead(boolean showContentAlreadyRead){
+        editor.putBoolean(SHOW_CONTENT_ALREADY_READ, showContentAlreadyRead);
         editor.commit();
     }
 

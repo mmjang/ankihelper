@@ -43,7 +43,7 @@
     <string name="str_clipboard_service_running">剪切板服务正在运行</string>
     <string name="str_field_map">字段映射:</string>
     <string name="str_only_one_plan_cant_switch">只有一个方案，没法切换</string>
-    <string name="str_btn_open_random_quote">显示一条随机格言</string>
+    <string name="str_btn_open_random_quote">刷一刷</string>
     <string name="str_pink_theme_q">粉色主题</string>
     <string name="str_error_noteid">note id 生成出错</string>
     <string name="str_error_notetype_noncompatible">无法更新，模板不一致</string>
@@ -58,5 +58,6 @@
     <string name="str_time_period">时间段: </string>
     <string name="title_activity_stat">使用统计</string>
     <string name="str_last_days_stat">按天统计</string>
+    <string name="str_show_already_read">不显示已阅内容</string>
 
 </resources>

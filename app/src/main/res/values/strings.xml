@@ -41,7 +41,7 @@
     <string name="str_clipboard_service_running">Clipboard Monitor is Running</string>
     <string name="str_field_map">Fields Mapping:</string>
     <string name="str_only_one_plan_cant_switch">There is only one plan, not switchable.</string>
-    <string name="str_btn_open_random_quote">Show Me A Random Quote</string>
+    <string name="str_btn_open_random_quote">Random Content</string>
     <string name="str_pink_theme_q">Pink Theme</string>
     <string name="str_error_noteid">failed to add note id</string>
     <string name="str_error_notetype_noncompatible">note failed to update. Note type not compatible</string>
@@ -146,4 +146,5 @@
     <string name="str_chart_title_hour_stat">By Hours</string>
     <string name="str_time_period">Period: </string>
     <string name="str_last_days_stat">By Days</string>
+    <string name="str_show_already_read">不显示已阅内容</string>
 </resources>

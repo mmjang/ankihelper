@@ -41,6 +41,6 @@
     <string name="str_clipboard_service_running">Clipboard Monitor is Running</string>
     <string name="str_field_map">Fields Mapping:</string>
     <string name="str_only_one_plan_cant_switch">There is only one plan, not switchable.</string>
-    <string name="str_btn_open_random_quote">📚Show Me A Random Quote</string>
+    <string name="str_btn_open_random_quote">📚Random Content</string>
     <string name="str_pink_theme_q">🌸Pink Theme</string>
 </resources>

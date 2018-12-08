@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.ichi2.anki.FlashCardsContract;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
+import com.mmjang.ankihelper.data.content.ContentEntity;
+import com.mmjang.ankihelper.data.content.ExternalContent;
 import com.mmjang.ankihelper.data.database.ExternalDatabaseHelper;
 import com.mmjang.ankihelper.data.history.HistoryStat;
 import com.mmjang.ankihelper.data.history.HistoryType;
@@ -25,8 +27,11 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ExternalDatabaseHelper helper = new ExternalDatabaseHelper(this);
-        SQLiteDatabase db = helper.getWritableDatabase();
+        ExternalContent externalContent = new ExternalContent(this);
+        ContentEntity content = externalContent.getRandomContentAt(0, true);
+        ContentEntity content2 = externalContent.getRandomContentAt(0, true);
+        ContentEntity content3 = externalContent.getRandomContentAt(0, true);
+
 //        HistoryStat historyStat = new HistoryStat(30);
 //        int a = historyStat.getDayCount(HistoryType.POPUP_OPEN);
 //        int b = historyStat.getDayCount(HistoryType.WORD_LOOK_UP);

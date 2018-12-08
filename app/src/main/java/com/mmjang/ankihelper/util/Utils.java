@@ -147,6 +147,9 @@ public class Utils {
     }
 
     public static boolean containsTranslationField(OutputPlanPOJO outputPlan){
+        if(outputPlan == null){
+            return false;
+        }
         Map<String, String> map = outputPlan.getFieldsMap();
         for(String key : map.keySet()){
             if(map.get(key).equals("句子翻译")){

@@ -40,6 +40,10 @@ public class DictionaryDotCom implements IDictionary {
 
     }
 
+    public DictionaryDotCom(){
+
+    }
+
     public String getDictionaryName() {
         return DICT_NAME;
     }
@@ -77,7 +81,8 @@ public class DictionaryDotCom implements IDictionary {
                     Document contentDoc = Jsoup.parse("<html><body>" + content + "</body></html>");
                     Elements smallElements = contentDoc.select("li");
                     for(int n = 0; n < smallElements.size(); n ++){
-                        String defHtml = smallElements.get(n).text().replace("\n", "<br/>");
+                        String defHtml = smallElements.get(n).text().replaceAll("\n", "<br/>")
+                                .replaceAll(":(.+?)$", ":<font color='gray'><i>$1</i></font>");
                         HashMap<String, String> expele = new HashMap<>();
                         expele.put(EXP_ELE[0], headWord);
                         expele.put(EXP_ELE[1], prounceIPA);
@@ -114,5 +119,8 @@ public class DictionaryDotCom implements IDictionary {
         return null;
     }
 
-
+    public static void main(String[] args){
+        DictionaryDotCom dictionaryDotCom = new DictionaryDotCom();
+        dictionaryDotCom.wordLookup("word");
+    }
 }

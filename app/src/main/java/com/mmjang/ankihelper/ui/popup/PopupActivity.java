@@ -688,6 +688,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             showPronounce(false);
             return;
         }
+        if(currentDicitonary == null || currentOutputPlan == null){
+            return;
+        }
         showProgressBar();
         showPronounce(true);
         Thread thread = new Thread(new Runnable() {
@@ -873,7 +876,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 continue;
                             }
                             if (exportedFieldKey.equals(sharedExportElements[7])){
-                                exportFields[i] = mEditTextTranslation.getText().toString();
+                                exportFields[i] = mEditTextTranslation.getText().toString().replace("\n", "<br/>");
                                 i++;
                                 continue;
                             }

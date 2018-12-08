@@ -26,7 +26,7 @@ public class VocabCom implements IDictionary {
     private static final String AUDIO_TAG = "MP3";
     private static final String DICT_NAME = "Vocabulary.com";
     private static final String DICT_INTRO = "";
-    private static final String[] EXP_ELE = new String[] {"单词", "发音", "释义"};
+    private static final String[] EXP_ELE = new String[] {"单词", "发音", "释义", "复合项"};
 
     private static final String wordUrl = "http://app.vocabulary.com/app/1.0/dictionary/search?word=";
     private static final String mp3Url = "https://audio.vocab.com/1.0/us/";
@@ -72,6 +72,12 @@ public class VocabCom implements IDictionary {
                 eleMap.put(EXP_ELE[0], headWord);
                 eleMap.put(EXP_ELE[1], getMp3Url(mp3Id));
                 eleMap.put(EXP_ELE[2], defShort + defLong);
+                eleMap.put(EXP_ELE[3],
+                        "<div class='dictionary_vocab'>" +
+                                "<div class='vocab_hwd'>" + headWord + "</div>" +
+                                "<div class='vocab_def'>" + defShort + defLong + "</div>" +
+                        "</div>"
+                        );
                 definitionList.add(new Definition(eleMap, defShort + defLong));
             }
 
@@ -81,6 +87,12 @@ public class VocabCom implements IDictionary {
                 eleMap.put(EXP_ELE[0], headWord);
                 eleMap.put(EXP_ELE[1], getMp3Url(mp3Id));
                 eleMap.put(EXP_ELE[2], defText);
+                eleMap.put(EXP_ELE[3],
+                        "<div class='dictionary_vocab'>" +
+                                "<div class='vocab_hwd'>" + headWord + "</div>" +
+                                "<div class='vocab_def'>" + defText + "</div>" +
+                                "</div>"
+                );
                 definitionList.add(new Definition(eleMap, defText));
             }
 
@@ -130,7 +142,7 @@ public class VocabCom implements IDictionary {
     }
 
     private String getDefHtml(Element def){
-        String sense = def.toString().replaceAll("<h3.+?>","<div>").replace("</h3>","</div>").replaceAll("<a.+?>","<b>").replace("</a>","</b>");
+        String sense = def.toString().replaceAll("<h3.+?>","<div class='vocab_def'>").replace("</h3>","</div>").replaceAll("<a.+?>","<b>").replace("</a>","</b>");
         //String defString = def.child(1).text().trim();
         return sense;
     }

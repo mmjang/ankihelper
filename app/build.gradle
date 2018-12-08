@@ -7,8 +7,8 @@ android {
         applicationId "com.mmjang.ankihelper"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 109
-        versionName "2.21.0"
+        versionCode 110
+        versionName "2.21.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -37,7 +37,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
-    api 'com.ichi2.anki:api:1.1.0alpha5'
+    //api 'com.ichi2.anki:api:1.1.0alpha5'
     //noinspection GradleDynamicVersion
     api 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     api 'org.litepal.android:core:1.5.1'

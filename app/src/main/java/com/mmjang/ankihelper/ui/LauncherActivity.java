@@ -346,7 +346,7 @@ public class LauncherActivity extends AppCompatActivity {
             f2.mkdir();
         }
 
-        if(!settings.getOldDataMigrated()){
+        if(!settings.getOldDataMigrated() && MigrationUtil.needMigration()){
             Toast.makeText(this, "正在迁移旧版数据请稍等...", Toast.LENGTH_LONG).show();
             MigrationUtil.migrate();
             Toast.makeText(this, "旧版数据迁移完成！", Toast.LENGTH_SHORT).show();

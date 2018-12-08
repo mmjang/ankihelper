@@ -16,21 +16,32 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class MigrationUtil {
+    public static boolean needMigration(){
+        List<OutputPlan> oldPlan = DataSupport.findAll(OutputPlan.class);
+        List<History> oldHistory = DataSupport.findAll(History.class);
+        if(oldPlan.size() == 0 && oldHistory.size() == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public static void migrate(){
         List<OutputPlan> oldPlan = DataSupport.findAll(OutputPlan.class);
-        List<OutputPlanPOJO> newPlan = new ArrayList<>();
-        for(OutputPlan outputPlan : oldPlan){
-            OutputPlanPOJO np = new OutputPlanPOJO();
-            np.setFieldsMap(outputPlan.getFieldsMap());
-            np.setOutputModelId(outputPlan.getOutputModelId());
-            np.setOutputDeckId(outputPlan.getOutputDeckId());
-            np.setDictionaryKey(outputPlan.getDictionaryKey());
-            np.setPlanName(outputPlan.getPlanName());
-            newPlan.add(np);
+        if(oldPlan.size() > 0) {
+            List<OutputPlanPOJO> newPlan = new ArrayList<>();
+            for (OutputPlan outputPlan : oldPlan) {
+                OutputPlanPOJO np = new OutputPlanPOJO();
+                np.setFieldsMap(outputPlan.getFieldsMap());
+                np.setOutputModelId(outputPlan.getOutputModelId());
+                np.setOutputDeckId(outputPlan.getOutputDeckId());
+                np.setDictionaryKey(outputPlan.getDictionaryKey());
+                np.setPlanName(outputPlan.getPlanName());
+                newPlan.add(np);
+            }
+            ExternalDatabase.getInstance().refreshPlanWith(newPlan);
+            DataSupport.deleteAll(OutputPlan.class);
         }
-        ExternalDatabase.getInstance().refreshPlanWith(newPlan);
-        DataSupport.deleteAll(OutputPlan.class);
-
         List<History> oldHistory = DataSupport.findAll(History.class);
         List<HistoryPOJO> newHistory = new ArrayList<>();
         for(History history : oldHistory){

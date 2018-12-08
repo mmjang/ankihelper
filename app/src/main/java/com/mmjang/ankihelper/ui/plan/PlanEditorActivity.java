@@ -346,8 +346,8 @@ public class PlanEditorActivity extends AppCompatActivity {
             return false;
         }
         plan.setFieldsMap(map);
-        if(ExternalDatabase.getInstance().getPlanByName(plan.getPlanName()) != null){
-            ExternalDatabase.getInstance().updatePlan(plan);
+        if(planNameToEdit != null){
+            ExternalDatabase.getInstance().updatePlan(plan, planNameToEdit);
         }else{
             ExternalDatabase.getInstance().insertPlan(plan);
         }

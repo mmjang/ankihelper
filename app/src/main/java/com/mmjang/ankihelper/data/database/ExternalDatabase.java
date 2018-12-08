@@ -288,7 +288,13 @@ public class ExternalDatabase {
                 );
     }
 
+    //the plan name don't change
     public int updatePlan(OutputPlanPOJO outputPlanPOJO){
+        return updatePlan(outputPlanPOJO, outputPlanPOJO.getPlanName());
+    }
+
+    //if we want to change the plan's name
+    public int updatePlan(OutputPlanPOJO outputPlanPOJO, String oldPlanName){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBContract.Plan.COLUMN_PLAN_NAME, outputPlanPOJO.getPlanName());
         contentValues.put(DBContract.Plan.COLUMN_DICTIONARY_KEY, outputPlanPOJO.getDictionaryKey());
@@ -296,7 +302,7 @@ public class ExternalDatabase {
         contentValues.put(DBContract.Plan.COLUMN_OUTPUT_MODEL_ID, outputPlanPOJO.getOutputModelId());
         contentValues.put(DBContract.Plan.COLUMN_FIELDS_MAP, outputPlanPOJO.getFieldsMapString());
         return mDatabase.update(DBContract.Plan.TABLE_NAME, contentValues,
-                "" + DBContract.Plan.COLUMN_PLAN_NAME + "='" + outputPlanPOJO.getPlanName() +"'", null);
+                "" + DBContract.Plan.COLUMN_PLAN_NAME + "='" + oldPlanName +"'", null);
     }
 
     public long insertPlan(OutputPlanPOJO outputPlanPOJO){

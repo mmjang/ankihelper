@@ -467,7 +467,11 @@ boolean autoAddBlanks = false;
                     }
                 }
                 if (content.contains(ENTER) || content.equals(ENTER_SYMBOL)) {
+                    //add an invisisble enter item at the end of line
                     child.setVisibility(GONE);
+                    Item item = new Item(currentLine);
+                    item.view = child;
+                    currentLine.addItem(item);
                     mSectionIndex.add(i);
                     isEnter = true;
                     continue;

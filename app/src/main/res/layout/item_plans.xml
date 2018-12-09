@@ -22,7 +22,7 @@
             android:layout_marginLeft="16dp"
             android:maxLines="1"
             android:textColor="@color/primary_text"
-            android:textSize="24sp"
+            android:textSize="20sp"
             tools:text="方案一" />
 
         <TextView

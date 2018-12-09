@@ -39,6 +39,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
     static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
         RelativeLayout countainer;
         TextView planName;
+        TextView dictName;
         LinearLayout layoutEdit;
         LinearLayout layoutDelete;
 
@@ -46,6 +47,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
             super(view);
             countainer = view.findViewById(R.id.plan_item);
             planName = (TextView) view.findViewById(R.id.plans_name);
+            dictName = (TextView) view.findViewById(R.id.plans_dictionary_name);
             layoutEdit = (LinearLayout) view.findViewById(R.id.layout_edit);
             layoutDelete = (LinearLayout) view.findViewById(R.id.layout_delete);
         }
@@ -80,6 +82,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         OutputPlanPOJO plan = mPlansList.get(position);
         holder.planName.setText(plan.getPlanName());
+        holder.dictName.setText(plan.getDictionaryKey());
         holder.layoutDelete.setOnClickListener(
                 new View.OnClickListener() {
                     @Override

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,7 @@ public class PlansManagerActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plans_manager);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_plan);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +106,9 @@ public class PlansManagerActivity extends AppCompatActivity {
             case R.id.menu_item_import_plan:
                 importPlans();
                 break;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return true;
     }

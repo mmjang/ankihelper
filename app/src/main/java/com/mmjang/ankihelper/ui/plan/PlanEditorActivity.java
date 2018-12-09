@@ -3,6 +3,7 @@ package com.mmjang.ankihelper.ui.plan;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -66,6 +67,7 @@ public class PlanEditorActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_editor);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initAnkiApi();
         setViewMember();
         handleIntent();
@@ -89,6 +91,9 @@ public class PlanEditorActivity extends AppCompatActivity {
                     finish();
                 }
                 break;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
         return true;
     }

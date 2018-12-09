@@ -2,10 +2,12 @@ package com.mmjang.ankihelper.ui.content;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -41,6 +43,7 @@ public class ContentActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         switchShowContentAlreadyRead = findViewById(R.id.switch_show_already_read);
         contentCatagoryContainer = findViewById(R.id.content_catagory_container);
         switchShowContentAlreadyRead.setChecked(!settings.getShowContentAlreadyRead());
@@ -114,5 +117,16 @@ public class ContentActivity extends AppCompatActivity {
 
             contentCatagoryContainer.addView(view);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

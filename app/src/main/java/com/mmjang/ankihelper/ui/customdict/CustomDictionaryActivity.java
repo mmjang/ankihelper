@@ -10,9 +10,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -79,6 +81,7 @@ public class CustomDictionaryActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_dictionary);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //views
         mBtnImportCustomDictionary = (TextView) findViewById(R.id.btn_import_custom_dictionary);
         mBtnClearCustomDictionaries = (TextView) findViewById(R.id.btn_remove_all_custom_dictionaries);
@@ -270,5 +273,16 @@ public class CustomDictionaryActivity extends AppCompatActivity {
         else{
             mProgressBarImportCustomDictionary.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -45,11 +45,19 @@
         <activity
             android:name=".ui.plan.PlansManagerActivity"
             android:label="@string/title_activity_plans_manager"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+        </activity>
         <activity
             android:name=".ui.plan.PlanEditorActivity"
             android:label="@string/title_activity_plan_editor"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.plan.PlansManagerActivity" />
+        </activity>
 
         <service
             android:name=".domain.CBWatcherService"
@@ -70,7 +78,11 @@
         <activity
             android:name=".ui.customdict.CustomDictionaryActivity"
             android:label="@string/btn_open_custom_dicitonary_str"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -99,11 +111,18 @@
             android:name=".ui.stat.StatActivity"
             android:exported="true"
             android:label="@string/title_activity_stat"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+        </activity>
         <activity android:name=".ui.content.ContentActivity"
             android:label="@string/str_btn_open_random_quote"
-            android:theme="@style/AppTheme"
-            ></activity>
+            android:theme="@style/AppTheme">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+            </activity>
     </application>
 
 </manifest>

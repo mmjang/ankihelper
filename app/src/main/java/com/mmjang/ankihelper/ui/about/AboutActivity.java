@@ -2,9 +2,11 @@ package com.mmjang.ankihelper.ui.about;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ public class AboutActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ImageButton alipay10 = (ImageButton) findViewById(R.id.alipay10);
         ImageButton alipay20 = (ImageButton) findViewById(R.id.alipay20);
         ImageButton alipayany = (ImageButton) findViewById(R.id.alipayany);
@@ -55,5 +58,16 @@ public class AboutActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,8 +5,10 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -52,6 +54,7 @@ public class StatActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stat);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mHistoryStat = new HistoryStat(mLastDays);
         mHourChart = findViewById(R.id.hourt_chart);
         mLastDaysChart = findViewById(R.id.last_days_chart);
@@ -195,5 +198,16 @@ public class StatActivity extends AppCompatActivity {
         mHourChart.getXAxis().setAxisMaximum(23);
         mHourChart.getLegend().setEnabled(false);
         mHourChart.invalidate();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

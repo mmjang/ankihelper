@@ -153,6 +153,7 @@ public class PlanEditorActivity extends AppCompatActivity {
 
         if (planForEdit != null) {
             String key1 = planForEdit.getDictionaryKey();
+            boolean find = false;
             for (int i = 0; i < dictionaryList.size(); i++) {
                 IDictionary dict = dictionaryList.get(i);
                 String key2 = dict.getDictionaryName();
@@ -161,11 +162,14 @@ public class PlanEditorActivity extends AppCompatActivity {
                     currentDictionary = dictionaryList.get(i);
                     dictionaryIntroductionTextView.setText(currentDictionary.getIntroduction());
                     dictionarySpinner.setSelection(i);
+                    find = true;
                     break;
                 }
             }
+            if(!find){
             String message = String.format("词典\"%s\"不存在，请检查是否需要重新导入自定义词典", key1);
             Utils.showMessage(PlanEditorActivity.this, message);
+            }
         } else {
 
             int pos = dictionarySpinner.getSelectedItemPosition();

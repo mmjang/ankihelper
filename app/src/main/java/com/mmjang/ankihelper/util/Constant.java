@@ -25,6 +25,7 @@ public class Constant {
     public static final String INTENT_ANKIHELPER_TARGET_URL = "com.mmjang.ankihelper.url";
     public static final String INTENT_ANKIHELPER_NOTE_ID = "com.mmjang.ankihelper.note_id";
     public static final String INTENT_ANKIHELPER_UPDATE_ACTION = "com.mmjang.ankihelper.note_update_action";//replace;append;
+    public static final String INTENT_ANKIHELPER_BASE64 = "com.mmjang.ankihelper.base64";
     public static final String INTENT_ANKIHELPER_PLAN_NAME = "com.mmjang.ankihelper.plan_name";
     public static final String INTENT_ANKIHELPER_FBREADER_BOOKMARK_ID = "com.mmjang.ankihelper.fbreader.bookmark.id";
     public static final String ANKI_PACKAGE_NAME = "com.ichi2.anki";

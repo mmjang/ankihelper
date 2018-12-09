@@ -21,6 +21,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.DragEvent;
@@ -74,6 +75,8 @@ import com.mmjang.ankihelper.util.Utils;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -643,7 +646,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         }
         //getStringExtra() may return null
         if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
+            String base64 = intent.getStringExtra(Constant.INTENT_ANKIHELPER_BASE64);
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if(base64 != null && !base64.equals("0")){
+                mTextToProcess = new String(Base64.decode(mTextToProcess, Base64.DEFAULT));
+            }
             mTargetWord = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_WORD);
             mUrl = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_URL);
             //mFbReaderBookmarkId = intent.getStringExtra(Constant.INTENT_ANKIHELPER_FBREADER_BOOKMARK_ID);

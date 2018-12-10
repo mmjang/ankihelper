@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Cancel">Отмена</string>
+    <string name="LanguageChooserTitle">Выберите два языка:</string>
+    <string name="OK">OK</string>
+    <string name="SetSizeTitle">Размер верхний панели:</string>
+    <string name="authorsMeta">&lt;tr>&lt;td>Авторы:&lt;/td></string>
+    <string name="changeStyle">Изменить стиль</string>
+    <string name="change_Font">Изменить шрифт</string>
+    <string name="change_Font_Color">Цвет шрифта:</string>
+    <string name="contents">Содержание</string>
+    <string name="contributorsMeta">&lt;tr>&lt;td>Участникии:&lt;/td></string>
+    <string name="copied">Скопировано</string>
+    <string name="copy">Копировать</string>
+    <string name="define">Определить</string>
+    <string name="descriptionsMeta">&lt;tr>&lt;td>Описание:&lt;/td></string>
+    <string name="edit_notes">Сохранить ваши заметки</string>
+    <string name="error_CannotChangeStyle">Не удалось изменить стиль!</string>
+    <string name="highlight">Выделить</string>
+    <string name="highlights">Выделенные</string>
+    <string name="languageMeta">&lt;tr>&lt;td>Язык:&lt;/td>&lt;td></string>
+    <string name="less_than_minute">Меньше минуты · </string>
+    <string name="loading">Загрузка</string>
+    <string name="minute_left">%1$d минута · </string>
+    <string name="minutes_left">%1$d минуты · </string>
+    <string name="page_left">Остался %1$d страница</string>
+    <string name="pages_left">Осталось %1$d страниц</string>
+    <string name="please_enter_note">пожалуйста введите заметку</string>
+    <string name="please_wait">пожалуйста, подождите...</string>
+    <string name="please_wait_till_audio_is_parsed">пожалуйста, подождите, пока звук будет обработан, повторите попытку через некоторое время</string>
+    <string name="publishersMeta">&lt;tr>&lt;td>Издатели:&lt;/td></string>
+    <string name="rightsMeta">&lt;tr>&lt;td>Права:&lt;/td></string>
+    <string name="save_note">Сохранить заметку</string>
+    <string name="send_to">Отправить</string>
+    <string name="share">Поделиться</string>
+    <string name="style">Стиль</string>
+    <string name="tablebodyhtmlClose">&lt;/table>&lt;/body>&lt;/html></string>
+    <string name="titlesMeta">&lt;tr>&lt;td>Названии:&lt;/td></string>
+    <string name="tocReference">&lt;tr>&lt;td>Оглавление:&lt;/td></string>
+    <string name="typesMeta">&lt;tr>&lt;td>Типы:&lt;/td></string>
+</resources>

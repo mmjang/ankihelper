@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <attr format="reference|color" name="defaultFontColor"/>
+    <attr format="reference|color" name="dividerColor"/>
+    <attr format="reference|color" name="highlightDeleteFillColor"/>
+    <attr format="reference|color" name="popUpWindowBackground"/>
+    <attr format="reference|color" name="searchItemHeaderBackgroundColor"/>
+    <attr format="reference|color" name="underlineIconFillColorTop"/>
+    <color name="app_gray">#bcbcbc</color>
+    <color name="app_green">#71C951</color>
+    <color name="black">#000000</color>
+    <color name="borders">#F1EFF2</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="dark_night">#090609</color>
+    <color name="day_default_font_color">#000000</color>
+    <color name="day_highlight_delete_fill_color">#333333</color>
+    <color name="day_popup_window_background">@color/white</color>
+    <color name="day_underline_icon_fill_color_top">#333333</color>
+    <color name="edit_text_hint_color">#AAAAAA</color>
+    <color name="gray_text">#B6B6B6</color>
+    <color name="grey_color">#a8a8a8</color>
+    <color name="highlight_blue">#ADD8FF</color>
+    <color name="highlight_green">#C0ED72</color>
+    <color name="highlight_pink">#FFB0CA</color>
+    <color name="highlight_yellow">#FFEB6B</color>
+    <color name="night">#322D32</color>
+    <color name="night_default_font_color">#767676</color>
+    <color name="night_highlight_delete_fill_color">#888888</color>
+    <color name="night_popup_window_background">#070707</color>
+    <color name="night_text_color">#767676</color>
+    <color name="night_title_text_color">#848484</color>
+    <color name="night_underline_icon_fill_color_top">#888888</color>
+    <color name="red">#ff0000</color>
+    <color name="transparent_black">#80000000</color>
+    <color name="underline">#F02814</color>
+    <color name="webview_night">#131313</color>
+    <color name="white">#FFFFFF</color>
+    <declare-styleable name="DirectionalViewpager"><attr format="string" name="direction">
+            
+        </attr></declare-styleable>
+    <declare-styleable name="LoadingView"><attr format="integer" name="maxVisibleDuration"/></declare-styleable>
+    <declare-styleable name="StyleableTextView"><attr format="string" name="folio_font"/></declare-styleable>
+    <declare-styleable name="UnderlinedTextView"><attr format="dimension" name="underlineWidth"/><attr format="color" name="underlineColor"/></declare-styleable>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <plurals name="numberOfSearchResults">
+        <item quantity="one">%d result</item>
+        <item quantity="other">%d results</item>
+    </plurals>
+    <string name="Cancel">Cancel</string>
+    <string name="LanguageChooserTitle">Choose two languages:</string>
+    <string name="OK">OK</string>
+    <string name="SetSizeTitle">Upper Panel Size:</string>
+    <string name="andada">Andada</string>
+    <string name="andada_font">fonts/andada/Andada-Regular.otf</string>
+    <string name="app_name">FolioReader</string>
+    <string name="audio_mark_id">javascript:alert(audioMarkID(\'epub-media-overlay-playing\',\'%s\'))</string>
+    <string name="authorsMeta">&lt;tr>&lt;td>Authors:&lt;/td></string>
+    <string name="back_compat" translatable="false">BackCompat</string>
+    <string name="black_rgb">#000000</string>
+    <string name="blue_rgb">#0000ff</string>
+    <string name="cannot_access_epub_message">Cannot open epub it needs storage access !</string>
+    <string name="changeStyle">Change Style</string>
+    <string name="change_Font">Change Font</string>
+    <string name="change_Font_Color">Font Color:</string>
+    <string name="contents">Contents</string>
+    <string name="contributorsMeta">&lt;tr>&lt;td>Contributors:&lt;/td></string>
+    <string name="copied">Copied</string>
+    <string name="copy">Copy</string>
+    <string name="css_tag"><![CDATA[<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\" />]]></string>
+    <string name="debug_start_drag">Starting drag!</string>
+    <string name="debug_start_unable_drag">Starting unable to drag!</string>
+    <string name="define">Define</string>
+    <string name="descriptionsMeta">&lt;tr>&lt;td>Descriptions:&lt;/td></string>
+    <string name="dictionary">Dictionary</string>
+    <string name="direction_horizontal">Horizontal</string>
+    <string name="direction_vertical">Vertical</string>
+    <string name="edit_notes">Save your note</string>
+    <string name="error_CannotChangeStyle">Cannot Change Style!</string>
+    <string name="error_goToPage">goToPage error:</string>
+    <string name="full_path">full-path</string>
+    <string name="go_to_anchor" translatable="false">javascript:goToAnchor(\'%s\')</string>
+    <string name="go_to_highlight" translatable="false">javascript:goToHighlight(\'%s\')</string>
+    <string name="green_rgb">#00ff00</string>
+    <string name="half_speed">1/2x</string>
+    <string name="half_speed_text"><![CDATA[<sup>1</sup>/<sub>2</sub>x]]></string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="helper">Helper</string>
+    <string name="highlight">Highlight</string>
+    <string name="highlight_search_result" translatable="false">javascript:highlightSearchResult(\"%s\", %d)</string>
+    <string name="highlights">Highlights</string>
+    <string name="htmlBodyTableOpen">&lt;html>&lt;body>&lt;table></string>
+    <string name="html_mime_type" translatable="false">text/html</string>
+    <string name="languageMeta">&lt;tr>&lt;td>Language:&lt;/td>&lt;td></string>
+    <string name="lato">Lato</string>
+    <string name="lato_font">fonts/lato/Lato-Regular.ttf</string>
+    <string name="less_than_minute">Less than a minute · </string>
+    <string name="loading">Loading</string>
+    <string name="lora">Lora</string>
+    <string name="lora_font">fonts/lora/Lora-Regular.ttf</string>
+    <string name="make_search_results_invisible" translatable="false">javascript:makeSearchResultsInvisible()</string>
+    <string name="menu_item_config">Configuration</string>
+    <string name="menu_item_search">Search</string>
+    <string name="menu_item_tts">Text To Speech</string>
+    <string name="minute_left">%1$d minute · </string>
+    <string name="minutes_left">%1$d minutes · </string>
+    <string name="one_and_half">1 1/2x</string>
+    <string name="one_and_half_speed"><![CDATA[1<sup>1</sup>/<sub>2</sub>x]]></string>
+    <string name="onex">1x</string>
+    <string name="page_left">%1$d page left</string>
+    <string name="pages_left">%1$d pages left</string>
+    <string name="parallelTextBool">parallelTextBool</string>
+    <string name="please_enter_note">please enter a note</string>
+    <string name="please_wait">please wait...</string>
+    <string name="please_wait_till_audio_is_parsed">please wait till audio is been parsed, Retry after some time</string>
+    <string name="publishersMeta">&lt;tr>&lt;td>Publishers:&lt;/td></string>
+    <string name="raleway">Raleway</string>
+    <string name="raleway_font">fonts/raleway/Raleway-Regular.ttf</string>
+    <string name="red_rgb">#ff0000</string>
+    <string name="reset_search_results" translatable="false">javascript:resetSearchResults()</string>
+    <string name="rightsMeta">&lt;tr>&lt;td>Rights:&lt;/td></string>
+    <string name="save_note">Save note</string>
+    <string name="script_tag"><![CDATA[<script type=\"text/javascript\" src=\"%s\"></script>]]></string>
+    <string name="script_tag_method_call"><![CDATA[<script type=\"text/javascript\">%s</script>]]></string>
+    <string name="search_empty_text">No results.</string>
+    <string name="search_failure_text">Something wen\'t wrong.</string>
+    <string name="search_hint">Search In Book</string>
+    <string name="send_to">Send to</string>
+    <string name="sethighlightstyle">javascript:setHighlightStyle(\'%s\');</string>
+    <string name="setmediaoverlaystyle">javascript:setMediaOverlayStyle(\'%s\')</string>
+    <string name="share">Share</string>
+    <string name="style">Style</string>
+    <string name="style_underline"><![CDATA[<u style=\" border-bottom: 1px dashed #bcbcbc;   text-decoration: none;\">Style</u>]]></string>
+    <string name="tablebodyhtmlClose">&lt;/table>&lt;/body>&lt;/html></string>
+    <string name="td_tag"><![CDATA[<td>%s</td></tr>]]></string>
+    <string name="titlesMeta">&lt;tr>&lt;td>Titles:&lt;/td></string>
+    <string name="tocReference">&lt;tr>&lt;td>Table of Contents:&lt;/td></string>
+    <string name="tr_tag"><![CDATA[<tr><td></td><td>%s</td></tr>]]></string>
+    <string name="two_x">2x</string>
+    <string name="typesMeta">&lt;tr>&lt;td>Types:&lt;/td></string>
+    <string name="underline_highlights">
+        <span style="border-bottom: 1px solid #ff0000;">%s</span>
+    </string>
+    <string name="white_rgb">#ffffff</string>
+    <string name="wikipedia">Wikipedia</string>
+    <string name="xhtml_mime_type" translatable="false">application/xhtml+xml</string>
+    <string name="zip">.zip</string>
+    <style name="ActionBarDayStyle" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="titleTextStyle">@style/ActionBarDayTitleTextStyle</item>
+    </style>
+    <style name="ActionBarDayTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="ActionBarNightStyle" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@color/black</item>
+    </style>
+    <style name="Animations"/>
+    <style name="Animations.PopDownMenu"/>
+    <style name="Animations.PopDownMenu.Center">
+        <item name="android:windowEnterAnimation">@anim/grow_from_top</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_bottom</item>
+    </style>
+    <style name="Animations.PopDownMenu.Left">
+        <item name="android:windowEnterAnimation">@anim/grow_from_topleft_to_bottomright</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_bottomright_to_topleft</item>
+    </style>
+    <style name="Animations.PopDownMenu.Reflect">
+        <item name="android:windowEnterAnimation">@anim/pump_top</item>
+        <item name="android:windowExitAnimation">@anim/disappear</item>
+    </style>
+    <style name="Animations.PopDownMenu.Right">
+        <item name="android:windowEnterAnimation">@anim/grow_from_topright_to_bottomleft</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_bottomleft_to_topright</item>
+    </style>
+    <style name="Animations.PopUpMenu"/>
+    <style name="Animations.PopUpMenu.Center">
+        <item name="android:windowEnterAnimation">@anim/grow_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_top</item>
+    </style>
+    <style name="Animations.PopUpMenu.Left">
+        <item name="android:windowEnterAnimation">@anim/grow_from_bottomleft_to_topright</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_topright_to_bottomleft</item>
+    </style>
+    <style name="Animations.PopUpMenu.Reflect">
+        <item name="android:windowEnterAnimation">@anim/pump_bottom</item>
+        <item name="android:windowExitAnimation">@anim/disappear</item>
+    </style>
+    <style name="Animations.PopUpMenu.Right">
+        <item name="android:windowEnterAnimation">@anim/grow_from_bottomright_to_topleft</item>
+        <item name="android:windowExitAnimation">@anim/shrink_from_topleft_to_bottomright</item>
+    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor" ns1:targetApi="lollipop">@color/black</item>
+    </style>
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+    <style name="DialogCustomTheme" parent="android:Theme.Holo.Dialog.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+    </style>
+    <style name="FolioActivityDayTheme" parent="Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/app_green</item>
+        <item name="actionBarStyle">@style/FolioActivityDayTheme.ActionBarStyle</item>
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+        <item name="android:statusBarColor" ns1:targetApi="lollipop">@color/black</item>
+    </style>
+    <style name="FolioActivityDayTheme.ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="titleTextStyle">@style/FolioActivityDayTheme.ActionBarStyle.TitleTextStyle
+        </item>
+    </style>
+    <style name="FolioActivityDayTheme.ActionBarStyle.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="FolioActivityNightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/app_green</item>
+        
+        <item name="colorControlHighlight">#666666</item>
+        <item name="actionBarStyle">@style/FolioActivityNightTheme.ActionBarStyle</item>
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+        <item name="android:windowBackground">@color/webview_night</item>
+    </style>
+    <style name="FolioActivityNightTheme.ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="titleTextStyle">@style/FolioActivityNightTheme.ActionBarStyle.TitleTextStyle
+        </item>
+        <item name="background">@color/black</item>
+    </style>
+    <style name="FolioActivityNightTheme.ActionBarStyle.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/night_title_text_color</item>
+    </style>
+    <style name="FolioDayTheme" parent="Theme.AppCompat.Light">
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/app_green</item>
+        <item name="actionBarStyle">@style/ActionBarDayStyle</item>
+        <item name="android:statusBarColor" ns1:targetApi="lollipop">@color/black</item>
+
+        <item name="defaultFontColor">@color/day_default_font_color</item>
+        <item name="android:textViewStyle">@style/TextViewStyle</item>
+        <item name="searchItemHeaderBackgroundColor">#DDDDDD</item>
+        <item name="dividerColor">#000000</item>
+
+        <item name="popUpWindowBackground">@color/day_popup_window_background</item>
+        <item name="highlightDeleteFillColor">@color/day_highlight_delete_fill_color</item>
+        <item name="underlineIconFillColorTop">@color/day_underline_icon_fill_color_top</item>
+
+    </style>
+    <style name="FolioNightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/app_green</item>
+        
+        <item name="colorControlHighlight">#666666</item>
+        <item name="actionBarStyle">@style/ActionBarNightStyle</item>
+        <item name="android:windowBackground">@color/webview_night</item>
+        <item name="android:navigationBarColor" ns1:targetApi="lollipop">@color/black</item>
+
+        <item name="defaultFontColor">@color/night_default_font_color</item>
+        <item name="android:textViewStyle">@style/TextViewStyle</item>
+        <item name="searchItemHeaderBackgroundColor">#222222</item>
+        <item name="dividerColor">#666666</item>
+
+        <item name="popUpWindowBackground">@color/night_popup_window_background</item>
+        <item name="highlightDeleteFillColor">@color/night_highlight_delete_fill_color</item>
+        <item name="underlineIconFillColorTop">@color/night_underline_icon_fill_color_top</item>
+
+    </style>
+    <style name="ImageViewTextSelectorMarker">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+    <style name="TextViewStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">?defaultFontColor</item>
+    </style>
+    <style name="TextViewTextSelector" parent="@android:style/Widget.TextView">
+        <item name="android:padding">16dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?defaultFontColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+    <style name="ToolbarStyle" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingEnd" ns1:targetApi="jelly_bean_mr1">4dp</item>
+    </style>
+    <style name="full_screen_dialog" parent="@style/Theme.AppCompat">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+</resources>

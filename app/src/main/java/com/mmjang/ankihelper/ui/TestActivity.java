@@ -4,10 +4,17 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.WebView;
 import android.widget.Toast;
 
+import com.folioreader.FolioReader;
+import com.folioreader.model.HighLight;
+import com.folioreader.model.ReadPosition;
+import com.folioreader.util.OnHighlightListener;
+import com.folioreader.util.ReadPositionListener;
 import com.ichi2.anki.FlashCardsContract;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
@@ -19,25 +26,36 @@ import com.mmjang.ankihelper.data.history.HistoryType;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
 import java.util.List;
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity  implements OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener{
+    private FolioReader folioReader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ExternalContent externalContent = new ExternalContent(this);
-        ContentEntity content = externalContent.getRandomContentAt(0, true);
-        ContentEntity content2 = externalContent.getRandomContentAt(0, true);
-        ContentEntity content3 = externalContent.getRandomContentAt(0, true);
+        WebView.setWebContentsDebuggingEnabled(true);
+        folioReader = FolioReader.get();
+        folioReader.setOnClosedListener(this);
+        folioReader.setOnHighlightListener(this);
+        folioReader.setReadPositionListener(this);
+        folioReader.openBook(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "god.epub");
+    }
 
-//        HistoryStat historyStat = new HistoryStat(30);
-//        int a = historyStat.getDayCount(HistoryType.POPUP_OPEN);
-//        int b = historyStat.getDayCount(HistoryType.WORD_LOOK_UP);
-//        int c = historyStat.getDayCount(HistoryType.NOTE_ADD);
-//        int[][] result = historyStat.getHourStatistics();
-//        int i = 1;
-//        int j =2 ;
+    @Override
+    public void onFolioReaderClosed() {
+
+    }
+
+    @Override
+    public void onHighlight(HighLight highlight, HighLight.HighLightAction type) {
+
+    }
+
+    @Override
+    public void saveReadPosition(ReadPosition readPosition) {
+
     }
 }

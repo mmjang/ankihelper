@@ -1,0 +1,95 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:1-42:12
+	package
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:4:5-30
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:1-42:12
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+	xmlns:tools
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:3:5-51
+	android:versionCode
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:1-42:12
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:6:5-81
+	android:name
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:6:22-78
+uses-permission#android.permission.INTERNET
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:7:5-67
+	android:name
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:7:22-64
+uses-sdk
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:9:5-88
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:9:5-88
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:9:5-88
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:9:5-88
+INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:9:5-88
+	tools:overrideLibrary
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:9:15-85
+	android:targetSdkVersion
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:9:5-88
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:9:5-88
+		INJECTED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml
+application
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:11:5-40:19
+	android:allowBackup
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:12:9-35
+	tools:replace
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:13:9-44
+provider#com.folioreader.AppContext
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:15:9-18:40
+	android:authorities
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:17:13-67
+	android:exported
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:18:13-37
+	android:name
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:16:13-39
+activity#com.folioreader.ui.folio.activity.FolioActivity
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:20:9-23:60
+	android:label
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:22:13-45
+	android:theme
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:23:13-57
+	android:name
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:21:13-60
+activity#com.folioreader.ui.folio.activity.ContentHighlightActivity
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:25:9-27:59
+	android:theme
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:27:13-56
+	android:name
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:26:13-71
+activity#com.folioreader.ui.folio.activity.SearchActivity
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:29:9-38:20
+	android:launchMode
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:31:13-43
+	android:name
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:30:13-61
+intent-filter#action:name:android.intent.action.SEARCH
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:32:13-34:29
+action#android.intent.action.SEARCH
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:33:17-71
+	android:name
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:33:25-68
+meta-data#android.app.searchable
+ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:35:13-37:54
+	android:resource
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:37:17-51
+	android:name
+		ADDED from D:\android\project\ankihelper\folioreader\AndroidManifest.xml:36:17-54

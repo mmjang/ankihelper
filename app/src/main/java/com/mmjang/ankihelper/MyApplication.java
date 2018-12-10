@@ -3,6 +3,7 @@ package com.mmjang.ankihelper;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
@@ -14,7 +15,7 @@ import org.litepal.LitePalApplication;
  * Created by liao on 2017/4/27.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     private static Context context;
     private static Application application;
     private static AnkiDroidHelper mAnkiDroid;

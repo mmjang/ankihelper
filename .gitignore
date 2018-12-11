@@ -9,5 +9,50 @@
 .DS_Store
 /build
 /captures
+/folioreader/build
 .externalNativeBuild
 .idea
+
+# Custom
+_site
+
+# Ant
+MANIFEST.MF
+./*.jar
+build.num
+build
+
+# ADT
+.classpath
+.project
+.settings
+local.properties
+bin
+gen
+_layouts
+proguard.cfg
+
+# OSX
+.DS_Store
+
+# Github
+gh-pages
+
+# Gradle
+.gradle
+build
+
+# IDEA
+*.iml
+*.ipr
+*.iws
+out
+.idea
+
+# Maven
+target
+release.properties
+pom.xml.*
+
+# Readium DRM LCP
+liblcp.aar

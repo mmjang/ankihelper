@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ExternalDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "ankihelper.db";
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
     Context mContext;
 
     private static final String SQL_CREATE_HISTORY = String.format(
@@ -34,6 +34,16 @@ public class ExternalDatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRY_TABLE = "CREATE TABLE IF NOT EXISTS entry" +
             "(dict_id integer, headword text, entry_texts text)";
 
+    private static final String SQL_CREATE_BOOK_TABLE = String.format(
+            "create table if not exists %s (%s integer, %s integer, %s text, %s text, %s text, %s text)",
+                DBContract.Book.TABLE_NAME,
+                DBContract.Book.COLUMN_ID,
+                DBContract.Book.COLUMN_LAST_OPEN_TIME,
+                DBContract.Book.COLUMN_BOOK_NAME,
+                DBContract.Book.COLUMN_AUTHOR,
+                DBContract.Book.COLUMN_BOOK_PATH,
+                DBContract.Book.COLUMN_READ_POSITION);
+
     public ExternalDatabaseHelper(Context context) {
         super(new ExternalDatabaseContext(context), DB_NAME, null, VERSION);
         mContext = context;
@@ -45,10 +55,13 @@ public class ExternalDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_PLAN);
         db.execSQL(SQL_CREATE_DICT_TABLE);
         db.execSQL(SQL_CREATE_ENTRY_TABLE);
+        db.execSQL(SQL_CREATE_BOOK_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if(oldVersion == 1 && newVersion == 2){
+            db.execSQL(SQL_CREATE_BOOK_TABLE);
+        }
     }
 }

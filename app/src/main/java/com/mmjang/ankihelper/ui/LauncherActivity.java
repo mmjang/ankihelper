@@ -38,6 +38,7 @@ import com.mmjang.ankihelper.ui.content.ContentActivity;
 import com.mmjang.ankihelper.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.popup.PopupActivity;
+import com.mmjang.ankihelper.ui.read.BookshelfActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
 import com.mmjang.ankihelper.util.Constant;
 
@@ -291,8 +292,8 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_about:
-                Intent intent = new Intent(this, AboutActivity.class);
+            case R.id.menu_item_book_shelf:
+                Intent intent = new Intent(this, BookshelfActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_stat:

@@ -24,4 +24,14 @@ public final class DBContract {
         public static final String COLUMN_OUTPUT_MODEL_ID = "outputmodelid";
         public static final String COLUMN_FIELDS_MAP = "fieldsmap";
     }
+
+    public static class Book{
+        public static final String TABLE_NAME = "book";
+        public static final String COLUMN_ID = "id"; //creation OPOCH time in millis
+        public static final String COLUMN_LAST_OPEN_TIME =  "lastopentime";
+        public static final String COLUMN_BOOK_NAME = "bookname";
+        public static final String COLUMN_AUTHOR = "author";
+        public static final String COLUMN_BOOK_PATH = "bookpath";
+        public static final String COLUMN_READ_POSITION = "readposition"; //stored in json format
+    }
 }

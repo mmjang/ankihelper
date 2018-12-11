@@ -1,6 +1,7 @@
 package com.folioreader.view
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -276,6 +277,11 @@ class FolioWebView : WebView {
             dismissPopupWindow()
             loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
         }
+
+        viewTextSelection.helperSelection.setOnClickListener{
+            dismissPopupWindow()
+            loadUrl("javascript:onHelperItemClicked()")
+        }
     }
 
     @JavascriptInterface
@@ -300,6 +306,23 @@ class FolioWebView : WebView {
             else -> {
                 Log.w(LOG_TAG, "-> onTextSelectionItemClicked -> unknown id = $id")
             }
+        }
+    }
+
+    @JavascriptInterface
+    fun onInvokingAnkihelper(word: String, sentence: String){
+        if(sentence.isNullOrBlank()){
+            return
+        }else{
+            var intent = Intent()
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setClassName("com.mmjang.ankihelper",
+                    "com.mmjang.ankihelper.ui.popup.PopupActivity")
+            intent.putExtra(Intent.EXTRA_TEXT, sentence)
+            intent.putExtra("com.mmjang.ankihelper.target_word", word)
+            intent.setType("text/plain")
+            context.startActivity(intent)
+            //onHighlightColorItemsClicked(HighlightStyle.Underline, false)
         }
     }
 

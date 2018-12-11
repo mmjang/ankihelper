@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="com.ichi2.anki.permission.READ_WRITE_DATABASE"/>
+    <uses-permission android:name="com.ichi2.anki.permission.READ_WRITE_DATABASE" />
 
     <application
         android:name=".MyApplication"
@@ -53,7 +53,7 @@
         <activity
             android:name=".ui.plan.PlanEditorActivity"
             android:label="@string/title_activity_plan_editor"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mmjang.ankihelper.ui.plan.PlansManagerActivity" />
@@ -111,18 +111,29 @@
             android:name=".ui.stat.StatActivity"
             android:exported="true"
             android:label="@string/title_activity_stat"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
         </activity>
-        <activity android:name=".ui.content.ContentActivity"
+        <activity
+            android:name=".ui.content.ContentActivity"
             android:label="@string/str_btn_open_random_quote"
             android:theme="@style/AppTheme">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
-            </activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+        </activity>
+        <activity android:name=".ui.read.BookshelfActivity"
+            android:icon="@drawable/ic_bookshelf"
+            android:label="划词阅读"
+            >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
     </application>
 
 </manifest>

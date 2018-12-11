@@ -197,6 +197,38 @@ function getSentenceWithIndex(className) {
     return text;
 }
 
+//for ankihelper
+function getSentenceWithSelection(){
+    var sentence;
+    var sel = getSelection();
+    var node = null;
+    var elements = document.querySelectorAll("span.sentence");
+
+    // Check for a selected text, if found start reading from it
+    var text;
+    if (sel.toString() != "") {
+        console.log(sel.anchorNode.parentNode);
+        node = sel.anchorNode.parentNode;
+
+        if (node.className == "sentence") {
+            sentence = node
+
+            for(var i = 0, len = elements.length; i < len; i++) {
+                if (elements[i] === sentence) {
+                    //currentIndex = i; //comment this line to make sure there's no global side effect
+                    break;
+                }
+            }
+        } else {
+            sentence = findSentenceWithIDInView(elements);
+        }
+    }else{
+        text = "";
+    }
+    text = sentence.innerText || sentence.textContent;
+    return text;
+}
+
 function wrappingSentencesWithinPTags(){
     currentIndex = -1;
     "use strict";
@@ -694,7 +726,8 @@ Scrolls the web page to particular span using id or index
 @param {number} value - if usingId true then span id else span index
 */
 function scrollToSpan(usingId, value) {
-
+    console.log("-> scroll to span")
+    console.log("usingId:" + usingId + "value: " + value);
     if (usingId) {
         var spanElement = document.getElementById(value);
         if (spanElement)
@@ -1188,3 +1221,21 @@ function onTextSelectionItemClicked(id) {
     }
     FolioWebView.onTextSelectionItemClicked(id, selectedText);
 }
+
+function onHelperItemClicked(){
+    console.log("-> onHelperItemClicked");
+    var word = window.getSelection().toString();
+    console.log("-> selected word!!!")
+    console.log(word)
+    var sentence = getSentenceWithSelection();
+    console.log("-> find sentence!!!");
+    console.log("-> " + sentence);
+    ssReader.highlightSelection('highlight_pink');
+    if(word.split(" ").length <= 2){
+        FolioWebView.onInvokingAnkihelper(word, sentence);
+    }else{
+        FolioWebView.onInvokingAnkihelper("", word);
+    }
+}
+
+console.log("Version 1");

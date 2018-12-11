@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.data.book.Book;
 import com.mmjang.ankihelper.data.dict.JiSho;
 import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryInformation;
 import com.mmjang.ankihelper.data.history.HistoryPOJO;
@@ -328,5 +329,59 @@ public class ExternalDatabase {
         return fieldsString.split(SPLITTER);
     }
 
+    //book operations
+    public long insertBook(Book book){
+        return mDatabase.insert(DBContract.Book.TABLE_NAME, null, book.getContentValues());
+    }
 
+    public long updateBook(Book book){
+        return mDatabase.update(DBContract.Book.TABLE_NAME, book.getContentValues(), "id=" + book.getId(), null);
+    }
+
+    public long deleteBook(Book book){
+        return mDatabase.delete(DBContract.Book.TABLE_NAME, "id=" + book.getId(), null);
+    }
+
+    public List<Book> getLastBooks(){
+        List<Book> bookList = new ArrayList<>();
+        Cursor cursor = mDatabase.query(
+            DBContract.Book.TABLE_NAME,
+            new String[]{DBContract.Book.COLUMN_ID, DBContract.Book.COLUMN_LAST_OPEN_TIME,
+                    DBContract.Book.COLUMN_BOOK_NAME, DBContract.Book.COLUMN_AUTHOR, DBContract.Book.COLUMN_BOOK_PATH, DBContract.Book.COLUMN_READ_POSITION},
+            null, null, null, null, DBContract.Book.COLUMN_LAST_OPEN_TIME + " desc");
+        while(cursor.moveToNext()){
+            bookList.add(
+                    new Book(
+                            cursor.getLong(0),
+                            cursor.getLong(1),
+                            cursor.getString(2),
+                            cursor.getString(3),
+                            cursor.getString(4),
+                            cursor.getString(5)
+                    )
+            );
+        }
+        return bookList;
+    }
+
+    public Book refreshBook(Book oldbook){
+        List<Book> bookList = new ArrayList<>();
+        Cursor cursor = mDatabase.query(
+                DBContract.Book.TABLE_NAME,
+                new String[]{DBContract.Book.COLUMN_ID, DBContract.Book.COLUMN_LAST_OPEN_TIME,
+                        DBContract.Book.COLUMN_BOOK_NAME, DBContract.Book.COLUMN_AUTHOR, DBContract.Book.COLUMN_BOOK_PATH, DBContract.Book.COLUMN_READ_POSITION},
+                "id=" + oldbook.getId(), null, null, null, null);
+        if(cursor.moveToFirst()) {
+            return new Book(
+                    cursor.getLong(0),
+                    cursor.getLong(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5)
+            );
+        }else{
+            return null;
+        }
+    }
 }

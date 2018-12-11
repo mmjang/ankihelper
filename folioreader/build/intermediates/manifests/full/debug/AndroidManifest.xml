@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.folioreader"
-    android:versionCode="113"
-    android:versionName="2.21.6" >
+    android:versionCode="114"
+    android:versionName="2.22.1" >
 
     <uses-sdk
         android:minSdkVersion="19"

@@ -192,7 +192,7 @@
         <item name="android:windowExitAnimation">@anim/shrink_from_topleft_to_bottomright</item>
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -231,7 +231,7 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/app_green</item>
-        
+        <!-- For ripple color -->
         <item name="colorControlHighlight">#666666</item>
         <item name="actionBarStyle">@style/FolioActivityNightTheme.ActionBarStyle</item>
         <item name="toolbarStyle">@style/ToolbarStyle</item>
@@ -272,7 +272,7 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/app_green</item>
-        
+        <!-- For ripple color -->
         <item name="colorControlHighlight">#666666</item>
         <item name="actionBarStyle">@style/ActionBarNightStyle</item>
         <item name="android:windowBackground">@color/webview_night</item>

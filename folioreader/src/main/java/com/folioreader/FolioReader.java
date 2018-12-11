@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.widget.Toast;
 
+import com.folioreader.model.BookMeta;
 import com.folioreader.model.HighLight;
 import com.folioreader.model.HighlightImpl;
 import com.folioreader.model.ReadPosition;
@@ -14,9 +16,15 @@ import com.folioreader.model.sqlite.DbAdapter;
 import com.folioreader.ui.base.OnSaveHighlight;
 import com.folioreader.ui.base.SaveReceivedHighlightTask;
 import com.folioreader.ui.folio.activity.FolioActivity;
+import com.folioreader.util.FileUtil;
 import com.folioreader.util.OnHighlightListener;
 import com.folioreader.util.ReadPositionListener;
 
+import org.readium.r2.shared.Contributor;
+import org.readium.r2.streamer.parser.EpubParser;
+import org.readium.r2.streamer.parser.PubBox;
+
+import java.io.File;
 import java.util.List;
 
 /**
@@ -39,6 +47,7 @@ public class FolioReader {
     public static final String ACTION_CLOSE_FOLIOREADER = "com.folioreader.action.CLOSE_FOLIOREADER";
     public static final String ACTION_FOLIOREADER_CLOSED = "com.folioreader.action.FOLIOREADER_CLOSED";
     public static final String EXTRA_READ_POSITION = "com.folioreader.extra.READ_POSITION";
+
 
     public interface OnClosedListener {
         /**
@@ -159,6 +168,27 @@ public class FolioReader {
         intent.putExtra(INTENT_BOOK_ID, bookId);
         context.startActivity(intent);
         return singleton;
+    }
+
+    public BookMeta getBookMeta(String path){
+        EpubParser epubParser = new EpubParser();
+        PubBox pubBox = epubParser.parse(path, "");
+        if(pubBox == null){
+            return null;
+        }
+        String title = pubBox.getPublication().getMetadata().getTitle();
+        if(title.trim().isEmpty()){
+            File file = new File(path);
+            title = file.getName();
+        }
+        String author;
+        List<Contributor> authors = pubBox.getPublication().getMetadata().getAuthors();
+        if(authors.size() == 0){
+            author = "";
+        }else{
+            author = authors.get(0).getName();
+        }
+        return new BookMeta(title, author);
     }
 
     private Intent getIntentFromUrl(String assetOrSdcardPath, int rawId) {

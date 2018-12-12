@@ -69,13 +69,15 @@ public class TextSplitter {
     }
 
     private static String preProcess(String str) {
-        if(!str.contains("<br/>")){
+        if(!str.contains("<br/>") && !str.contains("<br>")){
             return str; //plain text mode
         }else{
             //html mode
             String html = str.replace("\n", "")
                              .replace("<br/><br/>", "<br/>")
-                             .replace("<br/>", "\n");
+                             .replace("<br><br>","br/>")
+                             .replace("<br/>", "\n")
+                             .replace("<br>", "\n");
             return html;
         }
     }

@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:taskAffinity=".popup"
             android:name=".ui.popup.PopupActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
@@ -128,6 +129,7 @@
             android:icon="@drawable/ic_bookshelf"
             android:label="划词阅读"
             android:launchMode="singleTask"
+            android:taskAffinity=".reader"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

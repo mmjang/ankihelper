@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mmjang.ankihelper.R;
+import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.util.ConstantUtil;
 import com.mmjang.ankihelper.util.RegexUtil;
 import com.mmjang.ankihelper.util.StringUtil;
@@ -444,6 +445,7 @@ boolean autoAddBlanks = false;
             Line currentLine = null;
             int currentLineWidth = contentWidthSize;
             boolean isEnter = true;
+            boolean isBold = false;
             for (int i = 0; i < childCount; i++) {
                 View v = getChildAt(i);
                 if (mHeader == v) {
@@ -454,12 +456,23 @@ boolean autoAddBlanks = false;
                 content = ((TextView) child).getText().toString();
 
                 child.setVisibility(VISIBLE);
+
+                if(content.equals(Constant.LEFT_BOLD_SUBSTITUDE)){
+                    isBold = true;
+                    continue;
+                }
+                if(content.equals(Constant.RIGHT_BOLD_SUBSTITUDE)){
+                    isBold = false;
+                    continue;
+                }
+
                 if (!showSymbol) {
                     if (RegexUtil.isSymbol(content)) {
                         child.setVisibility(GONE);
                         continue;
                     }
                 }
+
                 if (!showSpace) {
                     if (StringUtil.isSpace(content)) {
                         child.setVisibility(GONE);
@@ -497,6 +510,10 @@ boolean autoAddBlanks = false;
                     int padding = child.getPaddingLeft();
                     child.setBackgroundResource(mTextBgRes);
                     child.setPadding(padding, mTextPaddingPort, padding, mTextPaddingPort);
+                    if(isBold){
+                        item.setSelected(true);
+                    }
+
                 } else if(item.isSymbol()){
                     child.setBackgroundResource(mSymbolTextBgRes);
                     child.setPadding(mSymbolTextPadding, mTextPaddingPort, mSymbolTextPadding, mTextPaddingPort);
@@ -504,6 +521,9 @@ boolean autoAddBlanks = false;
                     int padding = child.getPaddingLeft();
                     child.setBackgroundResource(mTextBgRes);
                     child.setPadding(padding, mTextPaddingPort, padding, mTextPaddingPort);
+                    if(isBold){
+                        item.setSelected(true);
+                    }
                 }
                 currentLine.addItem(item);
                 isEnter=false;

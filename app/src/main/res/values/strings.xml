@@ -148,4 +148,7 @@
     <string name="str_last_days_stat">By Days</string>
     <string name="str_show_already_read">不显示已阅内容</string>
     <string name="str_check_ankidroid_permisson">无法连接 Ankidroid 数据库，请检查并打开 Ankidroid 的自启动和应用间唤醒等权限</string>
+    <string name="epub_reader">EPUB Reader</string>
+    <string name="epub_reader_label">EPUB Reader</string>
+    <string name="menu_title_statistics">Statistics</string>
 </resources>

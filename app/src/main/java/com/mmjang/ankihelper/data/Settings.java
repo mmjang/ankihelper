@@ -32,9 +32,11 @@ public class Settings {
     private final static String PINK_THEME_Q = "pink_theme_q";
     private final static String OLD_DATA_MIGRATED = "old_data_migrated";
     private final static String SHOW_CONTENT_ALREADY_READ = "show_content_already_read";
+    private final static String FIRST_TIME_RUNNING_READER = "first_time_running_reader";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
+
 
     private Settings(Context context) {
         sp = context.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
@@ -205,7 +207,15 @@ public class Settings {
         editor.commit();
     }
 
-    /**************/
+    public boolean getFirstTimeRunningReader(){
+        return sp.getBoolean(FIRST_TIME_RUNNING_READER, true);
+    }
+
+    public void setFirstTimeRunningReader(boolean firstTimeRunningReader){
+        editor.putBoolean(FIRST_TIME_RUNNING_READER, firstTimeRunningReader);
+        editor.commit();
+    }
+
     boolean hasKey(String key) {
         return sp.contains(key);
     }

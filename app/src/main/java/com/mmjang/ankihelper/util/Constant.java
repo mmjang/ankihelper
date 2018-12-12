@@ -37,4 +37,6 @@ public class Constant {
 
     public static final String EXTERNAL_STORAGE_DIRECTORY = "ankihelper";
     public static final String EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY = "content";
+    public static final String LEFT_BOLD_SUBSTITUDE = "☾";
+    public static final String RIGHT_BOLD_SUBSTITUDE = "☽";
 }

@@ -27,6 +27,7 @@ import com.folioreader.util.ReadPositionListener;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.book.Book;
+import com.mmjang.ankihelper.data.book.DefaultBook;
 import com.mmjang.ankihelper.data.database.ExternalDatabase;
 import com.mmjang.ankihelper.ui.plan.PlansAdapter;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
@@ -90,8 +91,19 @@ public class BookshelfActivity extends AppCompatActivity implements
         super.onResume();
         List<Book> newList = ExternalDatabase.getInstance().getLastBooks();
         mBookList.clear();
+        onLoadingDefaultBooks(mBookList);
         mBookList.addAll(newList);
         mBooksAdapter.notifyDataSetChanged();
+    }
+
+    private void onLoadingDefaultBooks(List<Book> mBookList) {
+        if(Settings.getInstance(this).getFirstTimeRunningReader() && mBookList.size() == 0){
+            for(Book book : DefaultBook.getDefaultBook()){
+                mBookList.add(book);
+                ExternalDatabase.getInstance().insertBook(book);
+            }
+            Settings.getInstance(this).setFirstTimeRunningReader(false);
+        }
     }
 
     private void initBookList(){

@@ -34,7 +34,10 @@ public class TextSplitter {
 
                     ) {
                 s = s + first + DEVIDER;
-            } else if (RegexUtil.isSymbol(first) || StringUtil.isSpace(first)) {
+            } else if (RegexUtil.isSymbol(first) || StringUtil.isSpace(first) ||
+                    first == Constant.LEFT_BOLD_SUBSTITUDE.charAt(0) ||
+                    first == Constant.RIGHT_BOLD_SUBSTITUDE.charAt(0)
+                    ) {
                 s = s + DEVIDER + first + DEVIDER;
             } else {
                 s = s + first;
@@ -69,13 +72,15 @@ public class TextSplitter {
     }
 
     private static String preProcess(String str) {
+        str = str.replace("<b>", Constant.LEFT_BOLD_SUBSTITUDE)
+                .replace("</b>", Constant.RIGHT_BOLD_SUBSTITUDE);
         if(!str.contains("<br/>") && !str.contains("<br>")){
-            return str; //plain text mode
+            return str;
         }else{
             //html mode
             String html = str.replace("\n", "")
                              .replace("<br/><br/>", "<br/>")
-                             .replace("<br><br>","br/>")
+                             .replace("<br><br>","<br/>")
                              .replace("<br/>", "\n")
                              .replace("<br>", "\n");
             return html;

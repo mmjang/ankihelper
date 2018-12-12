@@ -17,6 +17,7 @@ public class TextSplitter {
 
     @NonNull
     public static List<String> getLocalSegments(String str) {
+        str = preProcess(str);
         List<String> txts = new ArrayList<String>();
         String s = "";
         for (int i = 0; i < str.length(); i++) {
@@ -65,6 +66,18 @@ public class TextSplitter {
             }
         }
         return txts;
+    }
+
+    private static String preProcess(String str) {
+        if(!str.contains("<br/>")){
+            return str; //plain text mode
+        }else{
+            //html mode
+            String html = str.replace("\n", "")
+                             .replace("<br/><br/>", "<br/>")
+                             .replace("<br/>", "\n");
+            return html;
+        }
     }
 
 }

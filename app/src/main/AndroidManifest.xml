@@ -127,12 +127,12 @@
         <activity android:name=".ui.read.BookshelfActivity"
             android:icon="@drawable/ic_bookshelf"
             android:label="划词阅读"
+            android:launchMode="singleTask"
             >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.content.ContentViewerActivity">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_refresh"
+        >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:textIsSelectable="true"
+                android:id="@+id/context_text"
+                android:elegantTextHeight="true"
+                android:paddingTop="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="70dp"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.5"
+                android:hyphenationFrequency="full"
+                />
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_add" />
+</android.support.design.widget.CoordinatorLayout>

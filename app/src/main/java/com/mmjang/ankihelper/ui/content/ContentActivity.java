@@ -83,27 +83,23 @@ public class ContentActivity extends AppCompatActivity {
                                     new Runnable() {
                                         @Override
                                         public void run() {
-                                            ContentEntity contentEntity = externalContent.getRandomContentAt(index,
-                                                    !settings.getShowContentAlreadyRead());
-                                            if(contentEntity == null){
-                                                ContentActivity.this.runOnUiThread(
-                                                        new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                Toast.makeText(ContentActivity.this, "加载失败！", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        }
-                                                );
-                                                return ;
-                                            }
-                                            Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
+//                                            ContentEntity contentEntity = externalContent.getRandomContentAt(index,
+//                                                    !settings.getShowContentAlreadyRead());
+//                                            if(contentEntity == null){
+//                                                ContentActivity.this.runOnUiThread(
+//                                                        new Runnable() {
+//                                                            @Override
+//                                                            public void run() {
+//                                                                Toast.makeText(ContentActivity.this, "加载失败！", Toast.LENGTH_SHORT).show();
+//                                                            }
+//                                                        }
+//                                                );
+//                                                return ;
+//                                            }
+                                            Intent intent = new Intent(getApplicationContext(), ContentViewerActivity.class);
                                             intent.setAction(Intent.ACTION_SEND);
                                             intent.setType("text/plain");
-                                            //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                            intent.putExtra(Intent.EXTRA_TEXT, contentEntity.getText());
-                                            intent.putExtra(Constant.INTENT_ANKIHELPER_NOTE, contentEntity.getNote());
+                                            intent.putExtra(Constant.INTENT_ANKIHELPER_CONTENT_INDEX, index);
                                             startActivity(intent);
                                         }
                                     }

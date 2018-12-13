@@ -39,4 +39,7 @@ public class Constant {
     public static final String EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY = "content";
     public static final String LEFT_BOLD_SUBSTITUDE = "☾";
     public static final String RIGHT_BOLD_SUBSTITUDE = "☽";
+
+    public static final String INTENT_ANKIHELPER_CONTENT_INDEX = "com.mmjang.ankihelper.content_index";
+
 }

@@ -47,6 +47,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ichi2.anki.FlashCardsContract;
+import com.ichi2.anki.api.NoteInfo;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
@@ -80,6 +82,7 @@ import java.net.URLDecoder;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -952,7 +955,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             }
                         }
                         else{//there's note id, so we need to retrieve note first
-                            String[] original = mAnkiDroid.getApi().getNote(mUpdateNoteId).getFields();
+                            NoteInfo note = mAnkiDroid.getApi().getNote(mUpdateNoteId);
+                            String[] original = note.getFields();
+                            Set<String> tags = note.getTags();
                             if(original == null || original.length != exportFields.length){
                                 Toast.makeText(PopupActivity.this, R.string.str_error_notetype_noncompatible, Toast.LENGTH_SHORT).show();
                                 return ;
@@ -977,9 +982,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                     }
                                 }
                             }
-
+                            //we need to check the tag used by user is already in the tags, if not, add it
+                            if(mTagEditedByUser.size() == 1){
+                                String userTag = mTagEditedByUser.iterator().next();
+                                tags.add(userTag);
+                            }
                             boolean success = mAnkiDroid.getApi().updateNoteFields(mUpdateNoteId, exportFields);
-                            boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, mTagEditedByUser);
+                            boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, tags);
                             if (success && successTag) {
                                 Toast.makeText(PopupActivity.this, R.string.str_note_updated, Toast.LENGTH_SHORT).show();
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

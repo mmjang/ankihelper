@@ -41,7 +41,7 @@ public class StatActivity extends AppCompatActivity {
     Spinner lastDaySpinner;
     ChipGroup mChipGroup;
     int mLastDays = 7;
-    int[] dayMap = new int[]{7, 30, 365, 3650};
+    int[] dayMap = new int[]{1, 7, 30, 365, 3650};
 
     private static final int DARK_GREEN = Color.parseColor("#2d6d4b");
     private static final int DARK_PINK = Color.parseColor("#b05154");
@@ -85,14 +85,17 @@ public class StatActivity extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(ChipGroup chipGroup, int i) {
                         switch (i){
-                            case R.id.chip_7:
+                            case R.id.chip_1:
                                 mLastDays = dayMap[0];
                                 break;
-                            case R.id.chip_30:
+                            case R.id.chip_7:
                                 mLastDays = dayMap[1];
                                 break;
-                            case R.id.chip_365:
+                            case R.id.chip_30:
                                 mLastDays = dayMap[2];
+                                break;
+                            case R.id.chip_365:
+                                mLastDays = dayMap[3];
                         }
                         mHistoryStat = new HistoryStat(mLastDays);
                         mLastDaysChart.clear();
@@ -129,6 +132,11 @@ public class StatActivity extends AppCompatActivity {
         for(int i = 0; i < data[0].length; i ++){
             lookupEntries.add(new Entry(i, data[1][i]));
             cardaddEntries.add(new Entry(i, data[2][i]));
+        }
+        if(lookupEntries.size() <= 1){
+            mLastDaysChart.setVisibility(View.INVISIBLE);
+        }else{
+            mLastDaysChart.setVisibility(View.VISIBLE);
         }
         float lineWidth = 2;
         LineDataSet lineDataSet2 = new LineDataSet(lookupEntries, "Lookups");
@@ -194,8 +202,8 @@ public class StatActivity extends AppCompatActivity {
                 }
         );
         mHourChart.getXAxis().setLabelCount(24);
-        mHourChart.getXAxis().setAxisMinimum(0);
-        mHourChart.getXAxis().setAxisMaximum(23);
+        mHourChart.getXAxis().setAxisMinimum(-0.5f);
+        mHourChart.getXAxis().setAxisMaximum(23.5f);
         mHourChart.getLegend().setEnabled(false);
         mHourChart.invalidate();
     }

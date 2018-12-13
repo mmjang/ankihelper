@@ -74,15 +74,15 @@ public class TextSplitter {
     private static String preProcess(String str) {
         str = str.replace("<b>", Constant.LEFT_BOLD_SUBSTITUDE)
                 .replace("</b>", Constant.RIGHT_BOLD_SUBSTITUDE);
-        if(!str.contains("<br/>") && !str.contains("<br>")){
+        if (!str.contains("<br/>") && !str.contains("<br>")) {
             return str;
-        }else{
+        } else {
             //html mode
             String html = str.replace("\n", "")
-                             .replace("<br/><br/>", "<br/>")
-                             .replace("<br><br>","<br/>")
-                             .replace("<br/>", "\n")
-                             .replace("<br>", "\n");
+                    .replace("<br/><br/>", "<br/>")
+                    .replace("<br><br>", "<br/>")
+                    .replace("<br/>", "\n")
+                    .replace("<br>", "\n");
             return html;
         }
     }

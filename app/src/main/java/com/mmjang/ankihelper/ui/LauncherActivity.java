@@ -68,7 +68,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         settings = Settings.getInstance(this);
-        if(settings.getPinkThemeQ()){
+        if (settings.getPinkThemeQ()) {
             setTheme(R.style.AppThemePink);
         }
         super.onCreate(savedInstanceState);
@@ -161,8 +161,7 @@ public class LauncherActivity extends AppCompatActivity {
                         if (mAnkiDroid.shouldRequestPermission()) {
                             mAnkiDroid.requestPermission(LauncherActivity.this, 0);
                             return;
-                        }
-                        else{
+                        } else {
 
                         }
                         Intent intent = new Intent(LauncherActivity.this, PlansManagerActivity.class);
@@ -218,8 +217,7 @@ public class LauncherActivity extends AppCompatActivity {
                         if (mAnkiDroid.shouldRequestPermission()) {
                             mAnkiDroid.requestPermission(LauncherActivity.this, 0);
                             return;
-                        }
-                        else{
+                        } else {
 
                         }
                         askIfAddDefaultPlan();
@@ -274,12 +272,10 @@ public class LauncherActivity extends AppCompatActivity {
 
         if (mAnkiDroid.shouldRequestPermission()) {
             mAnkiDroid.requestPermission(this, REQUEST_CODE_ANKI);
-        }
-        else{
+        } else {
             initStoragePermission();
         }
     }
-
 
 
     @Override
@@ -306,11 +302,11 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if(grantResults.length == 0){
-            return ;
+        if (grantResults.length == 0) {
+            return;
         }
 
-        if(requestCode == REQUEST_CODE_ANKI){
+        if (requestCode == REQUEST_CODE_ANKI) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initStoragePermission();
             } else {
@@ -325,7 +321,7 @@ public class LauncherActivity extends AppCompatActivity {
                         }).show();
             }
         }
-        if(requestCode == REQUEST_CODE_STORAGE) {
+        if (requestCode == REQUEST_CODE_STORAGE) {
             if (requestCode == REQUEST_CODE_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 ensureExternalDbDirectoryAndMigrate();
                 askIfAddDefaultPlan();
@@ -343,11 +339,11 @@ public class LauncherActivity extends AppCompatActivity {
         }
         //the content folder
         File f2 = new File(f, Constant.EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY);
-        if (!f2.exists()){
+        if (!f2.exists()) {
             f2.mkdir();
         }
 
-        if(!settings.getOldDataMigrated() && MigrationUtil.needMigration()){
+        if (!settings.getOldDataMigrated() && MigrationUtil.needMigration()) {
             Toast.makeText(this, "正在迁移旧版数据请稍等...", Toast.LENGTH_LONG).show();
             MigrationUtil.migrate();
             Toast.makeText(this, "旧版数据迁移完成！", Toast.LENGTH_SHORT).show();
@@ -364,11 +360,11 @@ public class LauncherActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CBWatcherService.class);
         stopService(intent);
     }
-    
-    void askIfAddDefaultPlan(){
+
+    void askIfAddDefaultPlan() {
         List<OutputPlanPOJO> plans = ExternalDatabase.getInstance().getAllPlan();
-        for(OutputPlanPOJO plan : plans){
-            if(plan.getPlanName().equals(DefaultPlan.DEFAULT_PLAN_NAME)){
+        for (OutputPlanPOJO plan : plans) {
+            if (plan.getPlanName().equals(DefaultPlan.DEFAULT_PLAN_NAME)) {
                 new AlertDialog.Builder(LauncherActivity.this)
                         .setMessage(R.string.duplicate_plan_name_complain)
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -377,10 +373,10 @@ public class LauncherActivity extends AppCompatActivity {
                                 return;
                             }
                         }).show();
-                return ;
+                return;
             }
         }
-        if(plans.size() == 0) {
+        if (plans.size() == 0) {
             new AlertDialog.Builder(LauncherActivity.this)
                     .setTitle(R.string.confirm_add_default_plan)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -392,9 +388,7 @@ public class LauncherActivity extends AppCompatActivity {
                         }
                     })
                     .setNegativeButton(android.R.string.no, null).show();
-        }
-
-        else{
+        } else {
             new AlertDialog.Builder(LauncherActivity.this)
                     .setMessage(R.string.confirm_add_default_plan_when_exists_already)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -414,7 +408,7 @@ public class LauncherActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    private void openSettingsPage(){
+    private void openSettingsPage() {
         Intent intent = new Intent();
         intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.fromParts("package", getPackageName(), null);
@@ -443,10 +437,10 @@ public class LauncherActivity extends AppCompatActivity {
         }
     }
 
-    public void setVersion(){
+    public void setVersion() {
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            TextView versionTextView =(TextView) findViewById(R.id.textview_version);
+            TextView versionTextView = (TextView) findViewById(R.id.textview_version);
             versionTextView.setText(
                     "Ver: " + versionName
             );
@@ -455,15 +449,15 @@ public class LauncherActivity extends AppCompatActivity {
         }
     }
 
-    private void initStoragePermission(){
-        if(Build.VERSION.SDK_INT >= 23){
+    private void initStoragePermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
             int result = ContextCompat.checkSelfPermission(LauncherActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if(result != PackageManager.PERMISSION_GRANTED){
+            if (result != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(LauncherActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 } else {
                     ActivityCompat.requestPermissions(LauncherActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
                 }
-            }else{
+            } else {
                 ensureExternalDbDirectoryAndMigrate();
             }
         }

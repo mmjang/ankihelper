@@ -3,6 +3,7 @@ package com.mmjang.ankihelper.data.content;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
@@ -45,6 +46,41 @@ public class ExternalContent {
             );
         }
         return list;
+    }
+
+    //first one is total count, second one is read count
+    public List<Long> getCountAt(int index){
+        if(helperList[index] == null){
+            String name = dbFileList.get(index).getName();
+            helperList[index] = new ExternalContentDatabaseHelper(mContext, name);
+        }
+        SQLiteDatabase database;
+        try {
+            database = helperList[index].getWritableDatabase();
+        }
+        catch (Exception e){
+            return null;
+        }
+        if(database == null){
+            return null;
+        }
+
+        List<Long> countList = new ArrayList<>();
+        countList.add(DatabaseUtils.queryNumEntries(
+                database,
+                "content",
+                null,
+                null
+        ));
+        countList.add(
+                DatabaseUtils.queryNumEntries(
+                        database,
+                        "content",
+                        "is_read=1",
+                        null
+                )
+        );
+        return countList;
     }
 
     public ContentEntity getRandomContentAt(int index, boolean filterRead){

@@ -951,7 +951,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 Toast.makeText(PopupActivity.this, R.string.str_failed_add, Toast.LENGTH_SHORT).show();
                             }
                         }
-                        else{
+                        else{//there's note id, so we need to retrieve note first
                             String[] original = mAnkiDroid.getApi().getNote(mUpdateNoteId).getFields();
                             if(original == null || original.length != exportFields.length){
                                 Toast.makeText(PopupActivity.this, R.string.str_error_notetype_noncompatible, Toast.LENGTH_SHORT).show();
@@ -968,14 +968,14 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
                             }
                             else {
-                                    //append
-                                    for(int j = 0; j < original.length; j++){
-                                        if(original[j].trim().isEmpty() || exportFields[j].trim().isEmpty()) {
-                                            exportFields[j] = original[j] + exportFields[j];
-                                        }else{
-                                            exportFields[j] = original[j] + "<br/>" + exportFields[j];
-                                        }
+                                //append
+                                for (int j = 0; j < original.length; j++) {
+                                    if (original[j].trim().isEmpty() || exportFields[j].trim().isEmpty()) {
+                                        exportFields[j] = original[j] + exportFields[j];
+                                    } else {
+                                        exportFields[j] = original[j] + "<br/>" + exportFields[j];
                                     }
+                                }
                             }
 
                             boolean success = mAnkiDroid.getApi().updateNoteFields(mUpdateNoteId, exportFields);

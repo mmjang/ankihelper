@@ -20,7 +20,7 @@
                         <TextView
                             android:id="@+id/textview_content_catagory"
                             android:layout_width="match_parent"
-                            android:textSize="30sp"
+                            android:textSize="25sp"
                             android:padding="10dp"
                             android:textAlignment="center"
                             android:gravity="center"

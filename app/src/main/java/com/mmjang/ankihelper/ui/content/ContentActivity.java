@@ -56,9 +56,13 @@ public class ContentActivity extends AppCompatActivity {
                 }
         );
         externalContent = new ExternalContent(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         List<String> contentDBList = externalContent.getContentDBList();
-        if(contentDBList.size() == 0){
+        if (contentDBList.size() == 0) {
             new AlertDialog.Builder(ContentActivity.this)
                     .setMessage("无内容可刷，请将 .db 数据库复制到 sdcard/ankihelper/content 文件夹下")
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -68,12 +72,19 @@ public class ContentActivity extends AppCompatActivity {
                         }
                     }).show();
         }
-        for(int i = 0; i < contentDBList.size(); i ++){
+
+        contentCatagoryContainer.removeAllViews();
+        for (int i = 0; i < contentDBList.size(); i++) {
             final int index = i;
             View view = LayoutInflater.from(this)
                     .inflate(R.layout.content_db_box, null);
             TextView tv = view.findViewById(R.id.textview_content_catagory);
-            tv.setText(contentDBList.get(i));
+            List<Long> counts = externalContent.getCountAt(index);
+            String countText = "";
+            if (counts != null) {
+                countText = counts.get(1) + "/" + counts.get(0);
+            }
+            tv.setText(contentDBList.get(i) + ": " + countText);
             tv.setOnClickListener(
                     new View.OnClickListener() {
                         @Override

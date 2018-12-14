@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="10dp"
     android:orientation="vertical">
 
@@ -16,8 +16,17 @@
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="作为默认标签"
+        android:text="@string/str_use_as_default_tags"
         android:id="@+id/checkbox_as_default_tag"
         />
+
+    <android.support.design.chip.ChipGroup
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tag_chip_list"
+        >
+
+    </android.support.design.chip.ChipGroup>
 
 </LinearLayout>

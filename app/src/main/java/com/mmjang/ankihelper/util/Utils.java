@@ -21,9 +21,11 @@ import com.mmjang.ankihelper.ui.LauncherActivity;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by liao on 2017/4/27.
@@ -202,5 +204,28 @@ public class Utils {
                         return;
                     }
                 }).show();
+    }
+
+    public static String fromTagSetToString(Set<String> tagSet){
+        String tags = "";
+        int size = tagSet.size();
+        int i = 0;
+        for(String tag : tagSet){
+            if(i < size - 1){
+                tags = tags + tag.trim() + ",";
+            }else{
+                tags = tags + tag.trim();
+            }
+            i ++;
+        }
+        return tags;
+    }
+
+    public static Set<String> fromStringToTagSet(String s){
+        Set<String> set = new HashSet<>();
+        for(String item : s.split(",")){
+            set.add(item);
+        }
+        return set;
     }
 }

@@ -16,7 +16,7 @@
     <string name="plan_already_exists">方案名冲突，请修改！</string>
     <string name="dialog_note">笔记</string>
     <string name="dialog_ok">确定</string>
-    <string name="dialog_tag">标签</string>
+    <string name="dialog_tag">标签(以\',\'分隔多项)</string>
     <string name="tag_cant_be_blank">标签不能为空！</string>
     <string name="definition_not_found">没查到</string>
     <string name="str_failed_add">出错！请检查方案设置，输出字段不能全部为“空”.</string>
@@ -63,5 +63,6 @@
     <string name="epub_reader">EPUB 阅读</string>
     <string name="epub_reader_label">划词 EPUB 阅读</string>
     <string name="menu_title_statistics">统计</string>
+    <string name="str_use_as_default_tags">作为默认标签</string>
 
 </resources>

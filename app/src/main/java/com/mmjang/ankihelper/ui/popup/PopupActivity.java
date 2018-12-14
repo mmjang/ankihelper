@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
+import android.support.design.chip.Chip;
+import android.support.design.chip.ChipGroup;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -37,6 +39,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -104,7 +107,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     String mCurrentKeyWord;
     TextSplitter mTextSplitter;
     String mNoteEditedByUser = "";
-    HashSet<String> mTagEditedByUser = new HashSet<>();
+    Set<String> mTagEditedByUser = new HashSet<>();
     //posiblle pre set target word
     String mTargetWord;
     //possible url from dedicated borwser
@@ -284,7 +287,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         //load tag
         boolean loadQ = settings.getSetAsDefaultTag();
         if (loadQ) {
-            mTagEditedByUser.add(settings.getDefaulTag());
+            mTagEditedByUser = Utils.fromStringToTagSet(settings.getDefaulTag());
         }
         //check if outputPlanList is empty
         if(outputPlanList.size() == 0){
@@ -667,6 +670,12 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             {
                     try{
                         mUpdateNoteId = Long.parseLong(updateId);
+                        if(mUpdateNoteId > 0){
+                            mTagEditedByUser =
+                                    MyApplication.getAnkiDroid()
+                                            .getApi().getNote(mUpdateNoteId)
+                                            .getTags();
+                        }
                     }
                     catch(Exception e){
 
@@ -983,10 +992,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 }
                             }
                             //we need to check the tag used by user is already in the tags, if not, add it
-                            if(mTagEditedByUser.size() == 1){
-                                String userTag = mTagEditedByUser.iterator().next();
-                                tags.add(userTag);
-                            }
+                            tags.addAll(mTagEditedByUser);
                             boolean success = mAnkiDroid.getApi().updateNoteFields(mUpdateNoteId, exportFields);
                             boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, tags);
                             if (success && successTag) {
@@ -1043,29 +1049,55 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         dialogBuilder.setView(dialogView);
         final AutoCompleteTextView editTag = (AutoCompleteTextView) dialogView.findViewById(R.id.edit_tag);
         final CheckBox checkBoxSetAsDefaultTag = (CheckBox) dialogView.findViewById(R.id.checkbox_as_default_tag);
+        final ChipGroup tagChipGroup = (ChipGroup) dialogView.findViewById(R.id.tag_chip_list);
         editTag.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        if (mTagEditedByUser.size() == 1) {
-            String text = (String) mTagEditedByUser.toArray()[0];
+        if (mTagEditedByUser.size() > 0) {
+            String text = Utils.fromTagSetToString(mTagEditedByUser);
             editTag.setText(text);
             editTag.setSelection(text.length());
         }
-        List<UserTag> userTags = DataSupport.findAll(UserTag.class);
-        String[] arr = new String[userTags.size()];
-        for (int i = 0; i < userTags.size(); i++) {
-            arr[i] = userTags.get(i).getTag();
-        }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(PopupActivity.this,
-                R.layout.support_simple_spinner_dropdown_item, arr);
-        editTag.setAdapter(arrayAdapter);
-        editTag.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (editTag.getText().toString().isEmpty()) {
-                    editTag.showDropDown();
-                }
-                return false;
+        tagChipGroup.setSingleSelection(false);
+        final List<UserTag> userTags = DataSupport.findAll(UserTag.class);
+        for(UserTag userTag : userTags){
+            final Chip chip = (Chip) inflater.inflate(R.layout.tag_chip_item, null);
+            chip.setText(userTag.getTag());
+            chip.setOnCheckedChangeListener(
+                    new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if(isChecked){
+                                mTagEditedByUser.add(chip.getText().toString());
+                            }else{
+                                mTagEditedByUser.remove(chip.getText().toString());
+                            }
+                            //tag1,tag2,tag3
+                            String text = Utils.fromTagSetToString(mTagEditedByUser);
+                            editTag.setText(text);
+                            editTag.setSelection(text.length());
+                        }
+                    }
+            );
+            if(mTagEditedByUser.contains(chip.getText().toString())){
+                chip.setChecked(true);
             }
-        });
+            tagChipGroup.addView(chip);
+        }
+//        String[] arr = new String[userTags.size()];
+//        for (int i = 0; i < userTags.size(); i++) {
+//            arr[i] = userTags.get(i).getTag();
+//        }
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(PopupActivity.this,
+//                R.layout.support_simple_spinner_dropdown_item, arr);
+//        editTag.setAdapter(arrayAdapter);
+//        editTag.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (editTag.getText().toString().isEmpty()) {
+//                    editTag.showDropDown();
+//                }
+//                return false;
+//            }
+//        });
         boolean setDefaultQ = settings.getSetAsDefaultTag();
         checkBoxSetAsDefaultTag.setChecked(setDefaultQ);
         dialogBuilder.setTitle(R.string.dialog_tag);
@@ -1083,12 +1115,15 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     }
                     return;
                 } else {
-                    mTagEditedByUser.clear();
-                    mTagEditedByUser.add(tag);
+                    mTagEditedByUser = Utils.fromStringToTagSet(editTag.getText().toString());
                     settings.setSetAsDefaultTag(checkBoxSetAsDefaultTag.isChecked());
-                    settings.setDefaultTag(tag);
-                    UserTag userTag = new UserTag(tag);
-                    userTag.save();
+                    settings.setDefaultTag(editTag.getText().toString());
+                    for(String t : mTagEditedByUser){
+                        if(!userTags.contains(t)){ //add new tag
+                            UserTag userTag = new UserTag(t);
+                            userTag.save();
+                        }
+                    }
                 }
 
             }

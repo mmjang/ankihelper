@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 
 import com.mmjang.ankihelper.domain.PronounceManager;
 
+import java.util.HashSet;
+
 /**
  * 单例，getInstance()得到实例
  */

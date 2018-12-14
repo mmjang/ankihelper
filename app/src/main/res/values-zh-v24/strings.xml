@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Anki 划词助手</string>
+    <string name="app_name">Duck Memo</string>
     <string name="title_activity_plans_manager">划词方案管理</string>
     <string name="tv_plan_name">方案名称:</string>
     <string name="title_activity_plan_editor">方案编辑器</string>

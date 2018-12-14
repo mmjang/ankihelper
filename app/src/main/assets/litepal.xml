@@ -22,9 +22,9 @@
     <version value="3" />
 
     <list>
-        <mapping class="com.mmjang.ankihelper.data.plan.OutputPlan"></mapping>
-        <mapping class="com.mmjang.ankihelper.data.model.UserTag"></mapping>
-        <mapping class="com.mmjang.ankihelper.data.history.History"></mapping>
+        <mapping class="com.mmjang.duckmemo.data.plan.OutputPlan"></mapping>
+        <mapping class="com.mmjang.duckmemo.data.model.UserTag"></mapping>
+        <mapping class="com.mmjang.duckmemo.data.history.History"></mapping>
     </list>
 
 

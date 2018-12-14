@@ -316,10 +316,10 @@ class FolioWebView : WebView {
         }else{
             var intent = Intent()
             intent.setAction(Intent.ACTION_SEND);
-            intent.setClassName("com.mmjang.ankihelper",
-                    "com.mmjang.ankihelper.ui.popup.PopupActivity")
+            intent.setClassName("com.mmjang.duckmemo",
+                    "com.mmjang.duckmemo.ui.popup.PopupActivity")
             intent.putExtra(Intent.EXTRA_TEXT, sentence)
-            intent.putExtra("com.mmjang.ankihelper.target_word", word)
+            intent.putExtra("com.mmjang.duckmemo.target_word", word)
             intent.setType("text/plain")
             context.startActivity(intent)
             //onHighlightColorItemsClicked(HighlightStyle.Underline, false)

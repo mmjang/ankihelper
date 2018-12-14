@@ -135,7 +135,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                        <com.mmjang.ankihelper.ui.widget.BigBangLayoutWrapper
+                        <com.mmjang.duckmemo.ui.widget.BigBangLayoutWrapper
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/bigbang_wrapper"/>

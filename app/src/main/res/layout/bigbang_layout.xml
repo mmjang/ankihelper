@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.mmjang.ankihelper.ui.widget.BigBangHeader
+    <com.mmjang.duckmemo.ui.widget.BigBangHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
@@ -28,7 +28,7 @@
             android:clipToPadding="false"
             android:layout_height="match_parent">
 
-            <com.mmjang.ankihelper.ui.widget.BigBangLayout
+            <com.mmjang.duckmemo.ui.widget.BigBangLayout
                 android:id="@+id/bigbang"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
@@ -41,7 +41,7 @@
 
     </ScrollView>
 
-    <com.mmjang.ankihelper.ui.widget.BigBangBottom
+    <com.mmjang.duckmemo.ui.widget.BigBangBottom
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"

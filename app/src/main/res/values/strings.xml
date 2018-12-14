@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Anki Helper</string>
+    <string name="app_name">Duck Memo</string>
     <string name="title_activity_plans_manager">Plan Manager</string>
     <string name="tv_plan_name">Plan Name:</string>
     <string name="title_activity_plan_editor">Plan Editor</string>

@@ -4,14 +4,14 @@ android {
     compileSdkVersion ANDROID_COMPILE_SDK_VERSION
     buildToolsVersion "28.0.3"
     defaultConfig {
-        applicationId "com.mmjang.ankihelper"
+        applicationId "com.mmjang.duckmemo"
         minSdkVersion ANDROID_MIN_SDK
         targetSdkVersion ANDROID_TARGET_SDK_VERSION
         versionCode VERSION_CODE
         versionName VERSION_NAME
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        setProperty("archivesBaseName", "Anki 划词助手" + " " + versionName)
+        setProperty("archivesBaseName", "duck memo" + " " + versionName)
     }
     buildTypes {
         release {

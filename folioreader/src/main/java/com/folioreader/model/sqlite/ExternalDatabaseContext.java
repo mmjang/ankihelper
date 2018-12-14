@@ -12,7 +12,7 @@ import java.io.File;
 public class ExternalDatabaseContext extends ContextWrapper {
 
     private static final String DEBUG_CONTEXT = "ExternalDatabaseContext";
-    private static final String EXTERNAL_STORAGE_DIRECTORY = "ankihelper";
+    private static final String EXTERNAL_STORAGE_DIRECTORY = "duckhelper";
 
     public ExternalDatabaseContext(Context base) {
         super(base);

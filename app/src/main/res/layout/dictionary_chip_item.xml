@@ -1,0 +1,12 @@
+<android.support.design.chip.Chip android:checked="false"
+    android:id="@+id/chip_item"
+    style="@style/Widget.MaterialComponents.Chip.Filter"
+    android:maxLines="1"
+    android:layout_width="40dp"
+    android:layout_height="wrap_content"
+    android:text=""
+    android:checkable="true"
+    android:textColor="#ffffff"
+    app:chipBackgroundColor="@drawable/bg_chip_state_list"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />

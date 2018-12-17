@@ -6,27 +6,21 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.wifi.hotspot2.omadm.PpsMoParser;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
-import android.support.annotation.RequiresApi;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +43,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.folioreader.model.dictionary.Dictionary;
 import com.mmjang.duckmemo.MyApplication;
 import com.mmjang.duckmemo.R;
 import com.mmjang.duckmemo.data.Settings;
@@ -92,11 +88,11 @@ import static com.mmjang.duckmemo.util.FieldUtil.getNormalSentence;
 
 public class PopupActivity extends Activity implements BigBangLayoutWrapper.ActionListener{
 
+    Button btnCancelBlankAboveCard;
+    CardView mCardViewPopup;
     List<IDictionary> dictionaryList;
+    ChipGroup mDictionaryChipGroup;
     IDictionary currentDicitonary;
-    List<OutputPlanPOJO> outputPlanList;
-    List<String> languageList;
-    OutputPlanPOJO currentOutputPlan;
     Settings settings;
     String mTextToProcess;
     String mPlanNameFromIntent;
@@ -108,14 +104,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     String mTargetWord;
     //possible url from dedicated borwser
     String mUrl = "";
-    //possible specific note id to update
-    Long mUpdateNoteId = 0L;
-    //!!!!!!!!!!!important!!! boolean, if the plan spinner is during init, forbid asyncsearch;
-    boolean isDuringPlanSpinnerInit = false;
-    //update action   replace/append    append is the default action, to prevent data loss;
-    String mUpdateAction;
-    //possible bookmark id from fbreader
-    String mFbReaderBookmarkId;
     //translation
     String mTranslatedResult = "";
     boolean needTranslation = false;
@@ -124,7 +112,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     Button btnSearch;
     ImageButton btnPronounce;
     Spinner planSpinner;
-    Spinner pronounceLanguageSpinner;
     //RecyclerView recyclerViewDefinitionList;
     ImageButton mBtnEditNote;
     ImageButton mBtnEditTag;
@@ -148,8 +135,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     private static final int TRANSLATION_DONE = 3;
     private static final int TRANSLATIOn_FAILED = 4;
 
-    //view tag
-    private static final int TAG_NOTE_ID_LONG = 5;
     //async
     @SuppressLint("HandlerLeak")
     final Handler mHandler = new Handler() {
@@ -194,7 +179,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         }
         super.onCreate(savedInstanceState);
         setStatusBarColor();
-        setContentView(R.layout.activity_popup);
+        setContentView(R.layout.activity_popup_new);
 //        getActionBar().hide();
         //set animation
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
@@ -202,10 +187,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         //
         assignViews();
+        setHeight();
         initBigBangLayout();
         loadData(); //dictionaryList;
-        populatePlanSpinner();
-        populateLanguageSpinner();
+        initDictionaries();
         setEventListener();
         handleIntent();
         if (settings.getMoniteClipboardQ()) {
@@ -216,12 +201,47 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             @Override
             public void run() {
                 setTargetWord();
-                if(Utils.containsTranslationField(currentOutputPlan)){
-                    asyncTranslate(mTextToProcess);
-                }
             }
         });
 
+    }
+
+    private void setHeight() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        btnCancelBlankAboveCard.getLayoutParams().height = height / 2;
+        mCardViewPopup.setMinimumHeight(height / 2);
+    }
+
+    private void initDictionaries() {
+        LayoutInflater inflater = PopupActivity.this.getLayoutInflater();
+        int i = 0;
+        for(final IDictionary dictionary : dictionaryList){
+            Chip chip = (Chip) inflater.inflate(R.layout.dictionary_chip_item, null);
+            chip.setText(dictionary.getDictionaryName().substring(0, 2));
+            mDictionaryChipGroup.addView(chip);
+            if(i == 0){
+                chip.setChecked(true);
+                currentDicitonary = dictionary;
+            }
+            i ++;
+        }
+
+        mDictionaryChipGroup.setOnCheckedChangeListener(
+                new ChipGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(ChipGroup chipGroup, int i) {
+                        for(int index = 0;;index ++){
+                            if(((Chip) chipGroup.getChildAt(index)).isChecked()){
+                                currentDicitonary = dictionaryList.get(index);
+                                asyncSearch(act.getText().toString());
+                                break;
+                            }
+                        }
+                    }
+                }
+        );
     }
 
     private void setTargetWord(){
@@ -255,11 +275,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     }
 
     private void assignViews() {
+        btnCancelBlankAboveCard = findViewById(R.id.btn_cancel_blank_above_card);
         act = (AutoCompleteTextView) findViewById(R.id.edit_text_hwd);
         btnSearch = (Button) findViewById(R.id.btn_search);
-        btnPronounce = ((ImageButton) findViewById(R.id.btn_pronounce));
-        planSpinner = (Spinner) findViewById(R.id.plan_spinner);
-        pronounceLanguageSpinner = (Spinner) findViewById(R.id.language_spinner);
+        mDictionaryChipGroup = findViewById(R.id.dictionary_chips_group);
         //recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
         viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
         mBtnEditNote = (ImageButton) findViewById(R.id.footer_note);
@@ -274,130 +293,17 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         mBtnFooterRotateLeft = (ImageButton) findViewById(R.id.footer_rotate_left);
         mBtnFooterRotateRight= (ImageButton) findViewById(R.id.footer_rotate_right);
         mBtnFooterScrollup = (ImageButton) findViewById(R.id.footer_scroll_up);
+        mCardViewPopup = findViewById(R.id.popup_card);
     }
 
     private void loadData() {
         dictionaryList = DictionaryRegister.getDictionaryObjectList();
-        outputPlanList = ExternalDatabase.getInstance().getAllPlan();
         settings = Settings.getInstance(this);
         //load tag
         boolean loadQ = settings.getSetAsDefaultTag();
         if (loadQ) {
             mTagEditedByUser = Utils.fromStringToTagSet(settings.getDefaulTag());
         }
-        //check if outputPlanList is empty
-        if(outputPlanList.size() == 0){
-            //Toast.makeText(this, , Toast.LENGTH_LONG).show();
-            Utils.showMessage(this, getResources().getString(R.string.toast_no_available_plan));
-        }
-    }
-
-    private void populatePlanSpinner() {
-        if(outputPlanList.size() == 0){
-            return;
-        }
-        final String[] planNameArr = new String[outputPlanList.size()];
-        for (int i = 0; i < outputPlanList.size(); i++) {
-            planNameArr[i] = outputPlanList.get(i).getPlanName();
-        }
-        ArrayAdapter<String> planSpinnerAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, planNameArr);
-        planSpinner.setAdapter(planSpinnerAdapter);
-        planSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //set plan to last selected plan
-        String lastSelectedPlan = settings.getLastSelectedPlan();
-        if (lastSelectedPlan.equals("")) //first use, set default plan to first one if any
-        {
-            if (outputPlanList.size() > 0) {
-                settings.setLastSelectedPlan(outputPlanList.get(0).getPlanName());
-                currentOutputPlan = outputPlanList.get(0);
-                currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
-                if(currentDicitonary == null){
-                    String message = String.format("方案\"%s\"所选词典\"%s\"不存在，请检查是否需要重新导入自定义词典",
-                            currentOutputPlan.getPlanName(),
-                            currentOutputPlan.getDictionaryKey());
-                    Utils.showMessage(PopupActivity.this, message);
-                }else {
-                    setActAdapter(currentDicitonary);
-                }
-            } else {
-                return ;
-            }
-        }
-
-        ///////////////if user add intent parameter to control which plan to use
-        mPlanNameFromIntent = getIntent().getStringExtra(Constant.INTENT_DUCKMEMO_PLAN_NAME);
-        if(mPlanNameFromIntent != null){
-            lastSelectedPlan = mPlanNameFromIntent;
-        }
-        ///////////////
-        int i = 0;
-        boolean find = false;
-        for (OutputPlanPOJO plan : outputPlanList) {
-            if (plan.getPlanName().equals(lastSelectedPlan)) {
-                isDuringPlanSpinnerInit = true;
-                planSpinner.setSelection(i);
-                currentOutputPlan = outputPlanList.get(i);
-                currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
-                if(currentDicitonary == null) {
-                    String message = String.format("方案\"%s\"所选词典\"%s\"不存在，请检查是否需要重新导入自定义词典",
-                            currentOutputPlan.getPlanName(),
-                            currentOutputPlan.getDictionaryKey());
-                    Utils.showMessage(PopupActivity.this, message);
-                    break;
-                }
-                setActAdapter(currentDicitonary);
-                find = true;
-                break;
-            }
-            //if not equal, compare next
-            i++;
-        }
-        if (!find) //if the saved last plan no longer in the plan list, reset to first one
-        {
-            if (outputPlanList.size() > 0) {
-                settings.setLastSelectedPlan(outputPlanList.get(0).getPlanName());
-                currentOutputPlan = outputPlanList.get(0);
-                currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
-                if(currentDicitonary == null) {
-                    String message = String.format("方案\"%s\"所选词典\"%s\"不存在，请检查是否需要重新导入自定义词典",
-                            currentOutputPlan.getPlanName(),
-                            currentOutputPlan.getDictionaryKey());
-                    Utils.showMessage(PopupActivity.this, message);
-                }
-                setActAdapter(currentDicitonary);
-            }
-        } else {
-            //if find, then current plan and dictionary must have been set above.
-        }
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            scrollView.setOnScrollChangeListener(
-//                    new View.OnScrollChangeListener() {
-//                        @Override
-//                        public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-//                            if(i1 > i3){
-//                                mFab.hide();
-//                            }else{
-//                                mFab.show();
-//                                //mFab.setAlpha(Constant.FLOAT_ACTION_BUTTON_ALPHA);
-//                            }
-//                        }
-//                    }
-//            );
-//        }
-    }
-
-    private void populateLanguageSpinner() {
-
-        String[] languages = PronounceManager.getAvailablePronounceLanguage();
-        ArrayAdapter<String> languagesSpinnerAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, languages);
-        languagesSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        pronounceLanguageSpinner.setAdapter(languagesSpinnerAdapter);
-        int lastPronounceLanguageIndex = settings.getLastPronounceLanguage();
-        pronounceLanguageSpinner.setSelection(lastPronounceLanguageIndex);
-
     }
 
     private void initBigBangLayout(){
@@ -415,17 +321,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     private void setEventListener() {
 
-        //auto finish
-        Button btnCancelBlank = (Button) findViewById(R.id.btn_cancel_blank);
-        Button btnCancelBlankAboveCard = (Button) findViewById(R.id.btn_cancel_blank_above_card);
-        btnCancelBlank.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                }
-        );
         btnCancelBlankAboveCard.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -434,45 +329,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     }
                 }
         );
-
-        planSpinner.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        currentOutputPlan = outputPlanList.get(position);
-                        currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
-                        setActAdapter(currentDicitonary);
-                        //memorise last selected plan
-                        settings.setLastSelectedPlan(currentOutputPlan.getPlanName());
-                        String actContent = act.getText().toString();
-
-                        if(isDuringPlanSpinnerInit){
-                            isDuringPlanSpinnerInit = false;
-                        }else {
-                            if(!actContent.trim().isEmpty()) {
-                                asyncSearch(actContent);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                }
-        );
-
-        pronounceLanguageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                settings.setLastPronounceLanguage(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         btnSearch.setOnClickListener(
                 new View.OnClickListener() {
@@ -486,14 +342,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     }
                 }
         );
-
-        btnPronounce.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String word = act.getText().toString();
-                PlayAudioManager.playPronounceVoice(PopupActivity.this, word);
-            }
-        });
 
         mBtnEditNote.setOnClickListener(
                 new View.OnClickListener() {
@@ -544,20 +392,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int mPlanSize = outputPlanList.size();
-                        int currentPos = planSpinner.getSelectedItemPosition();
-                        if(mPlanSize > 1){
-                            if(currentPos < mPlanSize - 1){
-                                planSpinner.setSelection(currentPos + 1);
-                            }
-                            else if(currentPos == mPlanSize - 1){
-                                planSpinner.setSelection(0);
-                            }
-                            vibarate(Constant.VIBRATE_DURATION);
-                            //scrollView.fullScroll(ScrollView.FOCUS_UP);
-                        }else{
-                            Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();
-                        }
+
                     }
                 }
         );
@@ -566,20 +401,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int mPlanSize = outputPlanList.size();
-                        int currentPos = planSpinner.getSelectedItemPosition();
-                        if(mPlanSize > 1){
-                            if(currentPos > 0){
-                                planSpinner.setSelection(currentPos - 1);
-                            }
-                            else if(currentPos == 0){
-                                planSpinner.setSelection(mPlanSize - 1);
-                            }
-                            vibarate(Constant.VIBRATE_DURATION);
-                            //scrollView.fullScroll(ScrollView.FOCUS_UP);
-                        }else{
-                            Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();
-                        }
+
                     }
                 }
         );
@@ -661,17 +483,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 mNoteEditedByUser = noteEditedByUser;
             }
             String updateId = intent.getStringExtra(Constant.INTENT_DUCKMEMO_NOTE_ID);
-            mUpdateAction = intent.getStringExtra(Constant.INTENT_DUCKMEMO_UPDATE_ACTION);
-            if(updateId != null && !updateId.isEmpty())
-            {
-                    try{
-                        mUpdateNoteId = Long.parseLong(updateId);
-                    }
-                    catch(Exception e){
 
-                    }
         }
-}
         if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
                 mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
                 }
@@ -697,7 +510,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             showPronounce(false);
             return;
         }
-        if(currentDicitonary == null || currentOutputPlan == null){
+        if(currentDicitonary == null){
             return;
         }
         showProgressBar();
@@ -890,22 +703,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             }
             tagChipGroup.addView(chip);
         }
-//        String[] arr = new String[userTags.size()];
-//        for (int i = 0; i < userTags.size(); i++) {
-//            arr[i] = userTags.get(i).getTag();
-//        }
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(PopupActivity.this,
-//                R.layout.support_simple_spinner_dropdown_item, arr);
-//        editTag.setAdapter(arrayAdapter);
-//        editTag.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (editTag.getText().toString().isEmpty()) {
-//                    editTag.showDropDown();
-//                }
-//                return false;
-//            }
-//        });
+
         boolean setDefaultQ = settings.getSetAsDefaultTag();
         checkBoxSetAsDefaultTag.setChecked(setDefaultQ);
         dialogBuilder.setTitle(R.string.dialog_tag);
@@ -989,7 +787,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     }
 
     private void showPronounce(boolean shouldShow) {
-        btnPronounce.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
     }
 
     private void showTranslateNormal(){

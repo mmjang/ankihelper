@@ -9,25 +9,11 @@
     android:fitsSystemWindows="true"
     >
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="48dp"
-    android:orientation="vertical">
-
-    <Button
-        android:id="@+id/btn_cancel_blank"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/transparent" />
-
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -38,15 +24,18 @@
 
             <Button
                 android:id="@+id/btn_cancel_blank_above_card"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="1dp"
                 android:background="@color/transparent" />
 
             <android.support.v7.widget.CardView
+                android:id="@+id/popup_card"
+                android:minHeight="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 app:cardBackgroundColor="?attr/color_popup_background"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="10dp">
@@ -63,70 +52,13 @@
                     android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <android.support.v7.widget.AppCompatCheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:buttonTint="#000000"
-                                android:visibility="gone" />
-
-                            <Spinner
-                                android:id="@+id/plan_spinner"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:scrollbarSize="20dp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"
-                            >
-
-                            <Spinner
-                                android:id="@+id/language_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:scrollbarSize="20dp" />
-                        </LinearLayout>
-
-                        <ImageButton
-                            android:id="@+id/btn_pronounce"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="0"
-                            android:layout_marginRight="5dp"
-                            android:layout_gravity="center"
-                            android:adjustViewBounds="true"
-                            android:scaleType="centerInside"
-                            android:src="?attr/icon_play"
-                            android:background="?attr/button_background_selector"
-                            android:visibility="gone" />
-
-                    </LinearLayout>
-
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="12dp"
+                        android:layout_marginTop="12dp"
                         android:layout_gravity="center"
                         app:cardElevation="2dp"
                         app:cardCornerRadius="4dp">
@@ -170,6 +102,7 @@
 
 
                     <android.support.v7.widget.CardView
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
@@ -220,21 +153,45 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
 
-                    <LinearLayout
-                        android:id="@+id/view_definition_list"
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:animateLayoutChanges="true"
-                        android:orientation="vertical">
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginTop="0dp"
+                        app:cardElevation="1dp"
+                        app:cardCornerRadius="4dp">
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            >
+                            <android.support.design.chip.ChipGroup
+                                android:layout_margin="4dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:singleLine="true"
+                                app:singleSelection="true"
+                                android:id="@+id/dictionary_chips_group"
+                                >
+                            </android.support.design.chip.ChipGroup>
+                        </HorizontalScrollView>
+
+                    </android.support.v7.widget.CardView>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/view_definition_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                     </LinearLayout>
-
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
 
 <android.support.v7.widget.CardView
     android:layout_width="match_parent"

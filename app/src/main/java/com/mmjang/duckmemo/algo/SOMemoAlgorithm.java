@@ -37,7 +37,7 @@ public class SOMemoAlgorithm implements MemoAlgorithm {
         float easiness = card.getEasinessFactor();
         int interval = card.getInterval();
 
-        int[] initialSteps = card.getInitialSteps();
+        int[] initialSteps = card.getInitialStepsArray();
 
         if(interval > 0) {//interval < 0, minutes, interval > 0 days;
             //the card has graduated

@@ -54,6 +54,10 @@ import com.mmjang.duckmemo.data.dict.DictionaryRegister;
 import com.mmjang.duckmemo.data.dict.IDictionary;
 import com.mmjang.duckmemo.data.history.HistoryUtil;
 import com.mmjang.duckmemo.data.model.UserTag;
+import com.mmjang.duckmemo.data.note.Addable;
+import com.mmjang.duckmemo.data.note.DBExporter;
+import com.mmjang.duckmemo.data.note.Exporter;
+import com.mmjang.duckmemo.data.note.Note;
 import com.mmjang.duckmemo.data.plan.OutputPlan;
 import com.mmjang.duckmemo.data.plan.OutputPlanPOJO;
 import com.mmjang.duckmemo.domain.CBWatcherService;
@@ -107,6 +111,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     //translation
     String mTranslatedResult = "";
     boolean needTranslation = false;
+    //export
+    Exporter mExporter = new DBExporter();
     //views
     AutoCompleteTextView act;
     Button btnSearch;
@@ -223,6 +229,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             mDictionaryChipGroup.addView(chip);
             if(i == 0){
                 chip.setChecked(true);
+                chip.setClickable(false);
                 currentDicitonary = dictionary;
             }
             i ++;
@@ -232,13 +239,19 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 new ChipGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(ChipGroup chipGroup, int i) {
-                        for(int index = 0;;index ++){
-                            if(((Chip) chipGroup.getChildAt(index)).isChecked()){
-                                currentDicitonary = dictionaryList.get(index);
-                                asyncSearch(act.getText().toString());
-                                break;
-                            }
-                        }
+//                        for(int index = 0; index < chipGroup.getChildCount(); index ++){
+//                            Chip chip = (Chip) chipGroup.getChildAt(index);
+//                            if(chip.getId() == i){
+//                                chip.setChecked(true);
+//                                chip.setClickable(false);
+//                                currentDicitonary = dictionaryList.get(index);
+//                                asyncSearch(act.getText().toString());
+//                                break;
+//                            }else{
+//                                chip.setChecked(false);
+//                                chip.setClickable(true);
+//                            }
+//                        }
                     }
                 }
         );
@@ -432,28 +445,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         if (definitionList.isEmpty()) {
             Toast.makeText(this, R.string.definition_not_found, Toast.LENGTH_SHORT).show();
         } else {
-//            DefinitionAdapter defAdapter = new DefinitionAdapter(PopupActivity.this, definitionList, mTextSplitter, currentOutputPlan);
-//            LinearLayoutManager llm = new LinearLayoutManager(this);
-//            //llm.setAutoMeasureEnabled(true);
-//            recyclerViewDefinitionList.setLayoutManager(llm);
-//            //recyclerViewDefinitionList.getRecycledViewPool().setMaxRecycledViews(0,0);
-//            //recyclerViewDefinitionList.setHasFixedSize(true);
-//            //recyclerViewDefinitionList.setNestedScrollingEnabled(false);
-//            recyclerViewDefinitionList.setAdapter(defAdapter);
             viewDefinitionList.removeAllViewsInLayout();
             for (Definition def : definitionList) {
                 viewDefinitionList.addView(getCardFromDefinition(def));
             }
-            viewDefinitionList.post(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            if(scrollView.getScrollY() > 10) {
-                                //scrollView.fullScroll(ScrollView.FOCUS_UP);
-                            }
-                        }
-                    }
-            );
         }
     }
 
@@ -591,19 +586,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             view = LayoutInflater.from(PopupActivity.this)
                     .inflate(R.layout.definition_item, null);
         }
-        //toggle fab with clicks
-//        view.setOnClickListener(
-//                new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        if(mFab.getVisibility() == View.VISIBLE){
-//                            mFab.hide();
-//                        }else{
-//                            mFab.show();
-//                        }
-//                    }
-//                }
-//        );
         final TextView textVeiwDefinition = (TextView) view.findViewById(R.id.textview_definition);
         final ImageButton btnAddDefinition = (ImageButton) view.findViewById(R.id.btn_add_definition);
         final LinearLayout btnAddDefinitionLarge = (LinearLayout) view.findViewById(R.id.btn_add_definition_large);
@@ -630,6 +612,22 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Addable note = new Note();
+                        note.setDefinition(def.getCombinedDefinition());
+                        note.setLanguage("en");
+                        note.setSentence(getBoldSentence(bigBangLayout.getLines()));
+                        StringBuilder sb = new StringBuilder();
+                        for(String tag : mTagEditedByUser) {
+                            sb.append(tag);
+                            sb.append(" ");
+                        }
+                        note.setExtra(mNoteEditedByUser);
+                        note.setTag(sb.toString());
+                        note.setWord(def.getWord());
+                        note.setTranslation(mTranslatedResult);
+                        if(mExporter.add(note).successful){
+                            Toast.makeText(PopupActivity.this, "Added", Toast.LENGTH_SHORT).show();
+                        }
                         vibarate(Constant.VIBRATE_DURATION);
                     }
                 });

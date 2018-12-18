@@ -8,12 +8,21 @@ import java.util.Map;
 
 public class Definition {
 
+    private String word = "";
     private Map<String, String> exportElements;
-    private String displayHtml;
+    private String displayHtml = "";
+    private String combinedDefinition = "";
 
     public Definition(Map<String, String> expEle, String dspHtml) {
         exportElements = expEle;
         displayHtml = dspHtml;
+    }
+
+    public Definition(String word, Map<String, String> expEle, String dspHtml, String combined) {
+        this.word = word;
+        exportElements = expEle;
+        displayHtml = dspHtml;
+        combinedDefinition = combined;
     }
 
     public String getExportElement(String key) {
@@ -26,5 +35,13 @@ public class Definition {
 
     public String getDisplayHtml() {
         return displayHtml;
+    }
+
+    public String getCombinedDefinition(){
+        return combinedDefinition;
+    }
+
+    public String getWord(){
+        return word;
     }
 }

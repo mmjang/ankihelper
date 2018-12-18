@@ -201,7 +201,7 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
             displayHtml = sb.toString();
         }
 
-        return new Definition(eleMap, displayHtml);
+        return new Definition(EXP_ELE_LIST[0], eleMap, displayHtml, EXP_ELE_LIST[5]);
     }
 
     private String[] getForms(String q) {
@@ -262,7 +262,7 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
         exp.put(EXP_ELE_LIST[4], getYoudaoAudioTag(youdaoResult.returnPhrase, 1));
         exp.put(EXP_ELE_LIST[5], getCombined(exp));
 
-        return new Definition(exp, notiString + definition);
+        return new Definition(EXP_ELE_LIST[0], exp, notiString + definition, EXP_ELE_LIST[5]);
     }
 
     String getYoudaoAudioTag(String word, int voiceType){

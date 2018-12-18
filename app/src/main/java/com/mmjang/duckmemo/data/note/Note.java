@@ -1,25 +1,34 @@
 package com.mmjang.duckmemo.data.note;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
+import org.greenrobot.greendao.annotation.Generated;
 
+@Entity
 public class Note implements Addable{
+    @Id
     private long id;
     private long lastedEditTime;
     private String language;
     private String word;
     private String sentence;
     private String translation;
-    private List<String> definition;
+    private String definition;
     private String extra;
-    private Set<String> tag;
+    private String tag; //space separated
     private String data; //for storing additional data;
 
-    public Note(long id, long lastedEditTime, String language, String word, String sentence, String
-            translation, List<String> definition, String extra, Set<String> tag, String data) {
+
+    @Generated(hash = 925823766)
+    public Note(long id, long lastedEditTime, String language, String word,
+            String sentence, String translation, String definition, String extra,
+            String tag, String data) {
         this.id = id;
         this.lastedEditTime = lastedEditTime;
         this.language = language;
@@ -31,6 +40,11 @@ public class Note implements Addable{
         this.tag = tag;
         this.data = data;
     }
+
+    @Generated(hash = 1272611929)
+    public Note() {
+    }
+    
 
     public long getId() {
         return id;
@@ -80,11 +94,11 @@ public class Note implements Addable{
         this.translation = translation;
     }
 
-    public List<String> getDefinition() {
+    public String getDefinition() {
         return definition;
     }
 
-    public void setDefinition(List<String> definition) {
+    public void setDefinition(String definition) {
         this.definition = definition;
     }
 
@@ -96,11 +110,11 @@ public class Note implements Addable{
         this.extra = extra;
     }
 
-    public Set<String> getTag() {
+    public String getTag() {
         return tag;
     }
 
-    public void setTag(Set<String> tag) {
+    public void setTag(String tag) {
         this.tag = tag;
     }
 

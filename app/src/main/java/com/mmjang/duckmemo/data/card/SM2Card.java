@@ -5,7 +5,7 @@ public interface SM2Card {
     int getRepetitions();
     int getInterval(); // < 0 not graduated minutes, > 0 graduated days
     float getEasinessFactor();
-    int[] getInitialSteps();//in data base this separated by comma
+    int[] getInitialStepsArray();//in data base this separated by comma
 
     void setNextReviewTime(long time);
     void setRepetitions(int repetitions);

@@ -49,7 +49,9 @@ public final class DBContract {
         public static final String COLUMN_SENTENCE = "sentence"; //
         public static final String COLUMN_TRANSLATION = "translation"; //may be empty
         public static final String COLUMN_DEFINITION = "definition"; //support empty value and multiple definitions
+        public static final String COLUMN_EXTRA = "extra"; //extra information, maybe note
         public static final String COLUMN_TAG = "tag"; //store tag id list, separated by comma or something else
+        public static final String COLUMN_DATA = "data"; //for store json information
     }
 
     /**
@@ -59,13 +61,12 @@ public final class DBContract {
         public static final String TABLE_NAME = "card";
         public static final String COLUMN_ID = "id"; //unique unix epoch time
         public static final String COLUMN_NOTE_ID = "noteid"; //note id corresponding to this card
-
         public static final String COLUMN_CARD_TYPE = "cardtype"; //integer enum, predefined front and back templates
-
         public static final String COLUMN_NEXT_REVIEW_TIME = "nextreviewtime"; // 0 if it was never reviewed
-        public static final String COLUMN_IS_GRADUATED = "isgraduated"; //0 not, 1 yes.
-        public static final String COLUMN_CURRENT_REVIEW_SPAN = "current_review_span"; // integer days
-        public static final String COLUMN_CURRENT_LEARNING_STEP = "currentlearningstep"; //integer minutes
+        public static final String COLUMN_INTERVAL = "interval"; //0 not, 1 yes.
+        public static final String COLUMN_REPETITIONS = "repetitions"; // integer days
+        public static final String COLUMN_EASINESSFACTOR = "easinessfactor"; //integer minutes
+        public static final String COLUMN_INITIAL_STEPS = "initialsteps";// 1, 10
     }
 
     /**
@@ -75,7 +76,7 @@ public final class DBContract {
         public static final String TABLE_NAME = "review";
         public static final String COLUMN_ID = "id"; //unique unix epoch time
         public static final String COLUMN_CARD_ID = "card_id";
-        public static final String COLUMN_ACTION = "action"; //fail, good, great, enum
+        public static final String COLUMN_QUALITY = "quality"; //review quality, from 1 - 5
     }
 
 

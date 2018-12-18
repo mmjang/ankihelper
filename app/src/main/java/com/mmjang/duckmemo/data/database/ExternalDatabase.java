@@ -11,11 +11,15 @@ import com.mmjang.duckmemo.data.book.Book;
 import com.mmjang.duckmemo.data.dict.JiSho;
 import com.mmjang.duckmemo.data.dict.customdict.CustomDictionaryInformation;
 import com.mmjang.duckmemo.data.history.HistoryPOJO;
+import com.mmjang.duckmemo.data.note.Note;
 import com.mmjang.duckmemo.data.plan.OutputPlan;
 import com.mmjang.duckmemo.data.plan.OutputPlanPOJO;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ExternalDatabase {
     private static final String TB_DICT = "dict";
@@ -384,4 +388,49 @@ public class ExternalDatabase {
             return null;
         }
     }
+
+    //
+    // Note operations
+    //
+    private static final String ELEMENTS_SEPARATOR = "__DEF_SEPARATOR__";
+
+    private static List<String> fromDBStringToDefinition(String dbString){
+        String[] splitted = dbString.split(ELEMENTS_SEPARATOR);
+        List<String> result = new ArrayList<>();
+        for(String item : splitted){
+            result.add(item);
+        }
+        return result;
+    }
+
+    private static String fromDefinitionToDBString(List<String> defnitions){
+        StringBuilder sb = new StringBuilder();
+        if(defnitions.size() > 0){
+            sb.append(defnitions.get(0));
+            for(int i = 1; i < defnitions.size(); i ++){
+                sb.append(ELEMENTS_SEPARATOR);
+                sb.append(defnitions.get(i));
+            }
+            return sb.toString();
+        }else{
+            return "";
+        }
+    }
+
+    private static Set<String> fromDBStringToTagSet(String tags){
+        String[] splitted = tags.split(ELEMENTS_SEPARATOR);
+        Set<String> set = new HashSet<>();
+        set.addAll(Arrays.asList(splitted));
+        return set;
+    }
+
+    private static String fromTagSetToDBString(Set<String> tags){
+        StringBuilder sb = new StringBuilder();
+        for(String tag : tags){
+            sb.append(tag);
+            sb.append(ELEMENTS_SEPARATOR);
+        }
+        return sb.toString();
+    }
+
 }

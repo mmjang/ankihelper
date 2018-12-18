@@ -134,10 +134,13 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".ui.content.ContentViewerActivity"
+        <activity
+            android:name=".ui.content.ContentViewerActivity"
             android:label="@string/str_btn_open_random_quote"
-            android:parentActivityName=".ui.content.ContentActivity"
-            ></activity>
+            android:parentActivityName=".ui.content.ContentActivity" />
+        <activity
+            android:name=".ui.TabbedLauncherActivity"
+            android:label="@string/title_activity_tabbed_launcher"></activity>
     </application>
 
 </manifest>

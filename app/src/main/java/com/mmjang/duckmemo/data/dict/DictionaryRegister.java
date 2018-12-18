@@ -24,12 +24,12 @@ public class DictionaryRegister {
 //            Dedict.class,
 //            Cloze.class,
 //            JiSho.class,
-            VocabCom.class,
+//            VocabCom.class,
 //            Mnemonic.class,
             WebsterLearners.class,
 //            HujiangJapanese.class,
 //            Handian.class,
-            BingOxford.class,
+//            BingOxford.class,
             DictionaryDotCom.class
     };
 

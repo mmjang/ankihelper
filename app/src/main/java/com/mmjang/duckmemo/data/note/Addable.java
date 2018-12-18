@@ -8,6 +8,7 @@ public interface Addable {
     void setWord(String word);
     void setSentence(String sentence);
     void setTranslation(String translation);
-    void setDefinition(List<String> definition);
-    void setTag(Set<String> tag);
+    void setDefinition(String definition);
+    void setExtra(String extra);
+    void setTag(String tag);
 }

@@ -119,10 +119,10 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
                             sense, labels, def_text
                             ));
                     String displayedHtml =
-                            String.format("<span><b>%s</b> <font color='%s'><i>%s</i></font> %s</span><span>%s</span>",
-                                    headword, getSenseColor(sense), sense, labels, def_text
+                            String.format("<span><b>%s</b> %s<font color='%s'><i>%s</i></font> %s</span><span>%s</span>",
+                                    headword, phonetic, getSenseColor(sense), sense, labels, def_text
                             );
-                    definitionList.add(new Definition(defMap, displayedHtml));
+                    definitionList.add(new Definition(headword, defMap, displayedHtml, displayedHtml));
                 }
 
                 for(Element phrase : entry.select(".dros > .dro")) {
@@ -142,7 +142,7 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
                                 String.format("<span><font color=blue><b>%s</b></font> %s</span><span>%s</span>",
                                         phrase_headword, phrase_gram, def_text
                                 );
-                        definitionList.add(new Definition(defMap, displayedHtml));
+                        definitionList.add(new Definition(phrase_headword, defMap, displayedHtml, displayedHtml));
                     }
                 }
             }

@@ -152,4 +152,8 @@
     <string name="epub_reader_label">EPUB Reader</string>
     <string name="menu_title_statistics">Statistics</string>
     <string name="str_use_as_default_tags">作为默认标签</string>
+    <string name="title_activity_tabbed_launcher">TabbedLauncherActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

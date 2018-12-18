@@ -101,7 +101,7 @@ public class DictionaryDotCom implements IDictionary {
                         else{
                             exportedHtml = defHtml;
                         }
-                        Definition d = new Definition(expele, exportedHtml);
+                        Definition d = new Definition(headWord, expele, exportedHtml, EXP_ELE[4]);
                         defList.add(d);
                     }
                 }

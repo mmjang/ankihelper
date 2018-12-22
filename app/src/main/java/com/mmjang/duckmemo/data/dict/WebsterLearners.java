@@ -139,8 +139,8 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
                                 phrase_gram, def_text
                                 ));
                         String displayedHtml =
-                                String.format("<span><font color=blue><b>%s</b></font> %s</span><span>%s</span>",
-                                        phrase_headword, phrase_gram, def_text
+                                String.format("<span><font color=blue><b>%s</b></font> %s %s</span><span>%s</span>",
+                                        phrase_headword, phonetic, phrase_gram, def_text
                                 );
                         definitionList.add(new Definition(phrase_headword, defMap, displayedHtml, displayedHtml));
                     }

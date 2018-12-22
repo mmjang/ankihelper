@@ -202,12 +202,12 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
             displayHtml = sb.toString();
         }
 
-        return new Definition(EXP_ELE_LIST[0], eleMap, displayHtml, EXP_ELE_LIST[5]);
+        return new Definition(eleMap.get(EXP_ELE_LIST[0]), eleMap, displayHtml, eleMap.get(EXP_ELE_LIST[5]));
     }
 
     private String getCombined(Map<String, String> eleMap) {
         return "<div class='div_collins'><div class='collins_hwd'>" + eleMap.get(EXP_ELE_LIST[0]) + "</div> " +
-                "<div class='collins_ipa'>" +  eleMap.get(EXP_ELE_LIST[1]) + eleMap.get(EXP_ELE_LIST[3])  + "</div>"
+                "<div class='collins_ipa'>" +  eleMap.get(EXP_ELE_LIST[1]) + "</div>"
                 + "<div class='collins_def'>"  + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>"," ")
                 +"</div></div>";
     }
@@ -269,7 +269,7 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
         exp.put(EXP_ELE_LIST[3], getYoudaoAudioTag(youdaoResult.returnPhrase, 2));
         exp.put(EXP_ELE_LIST[4], getYoudaoAudioTag(youdaoResult.returnPhrase, 1));
         exp.put(EXP_ELE_LIST[5], getCombined(exp));
-        return new Definition(EXP_ELE_LIST[0], exp, notiString + definition, EXP_ELE_LIST[5]);
+        return new Definition(exp.get(EXP_ELE_LIST[0]), exp, notiString + definition, exp.get(EXP_ELE_LIST[5]));
     }
 
     String getYoudaoAudioTag(String word, int voiceType){

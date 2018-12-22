@@ -34,6 +34,7 @@ import com.mmjang.duckmemo.ui.content.ContentActivity;
 import com.mmjang.duckmemo.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.duckmemo.ui.plan.PlansManagerActivity;
 import com.mmjang.duckmemo.ui.read.BookshelfActivity;
+import com.mmjang.duckmemo.ui.review.ReviewerActivity;
 import com.mmjang.duckmemo.ui.stat.StatActivity;
 import com.mmjang.duckmemo.util.Constant;
 
@@ -48,8 +49,6 @@ public class LauncherActivity extends AppCompatActivity {
     Switch switchCancelAfterAdd;
     Switch switchLeftHandMode;
     Switch switchPinkTheme;
-    TextView textViewOpenPlanManager;
-    TextView textViewCustomDictionary;
     TextView textViewAbout;
     TextView textViewHelp;
     TextView textViewAddDefaultPlan;
@@ -73,11 +72,11 @@ public class LauncherActivity extends AppCompatActivity {
         switchCancelAfterAdd = (Switch) findViewById(R.id.switch_cancel_after_add);
         switchLeftHandMode = (Switch) findViewById(R.id.left_hand_mode);
         switchPinkTheme = (Switch) findViewById(R.id.pink_theme_switch);
-        textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
-        textViewCustomDictionary = (TextView) findViewById(R.id.btn_open_custom_dictionary);
+//        textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
+//        textViewCustomDictionary = (TextView) findViewById(R.id.btn_open_custom_dictionary);
         textViewAbout = (TextView) findViewById(R.id.btn_about_and_support);
         textViewHelp = (TextView) findViewById(R.id.btn_help);
-        textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
+//        textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
         textViewAddQQGroup = (TextView) findViewById(R.id.btn_qq_group);
         textViewRandomQuote = (TextView) findViewById(R.id.btn_show_random_content);
 
@@ -140,25 +139,6 @@ public class LauncherActivity extends AppCompatActivity {
                 }
         );
 
-        textViewOpenPlanManager.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(LauncherActivity.this, PlansManagerActivity.class);
-                        startActivity(intent);
-                    }
-                }
-        );
-
-        textViewCustomDictionary.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(LauncherActivity.this, CustomDictionaryActivity.class);
-                        startActivity(intent);
-                    }
-                }
-        );
 
         textViewAbout.setOnClickListener(
                 new View.OnClickListener() {
@@ -178,15 +158,6 @@ public class LauncherActivity extends AppCompatActivity {
                         Intent i = new Intent(Intent.ACTION_VIEW);
                         i.setData(Uri.parse(url));
                         startActivity(i);
-                    }
-                }
-        );
-
-        textViewAddDefaultPlan.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
                     }
                 }
         );
@@ -250,6 +221,11 @@ public class LauncherActivity extends AppCompatActivity {
             case R.id.menu_item_stat:
                 Intent intent2 = new Intent(this, StatActivity.class);
                 startActivity(intent2);
+                break;
+            case R.id.menu_item_reviewer:
+                Intent intent3 = new Intent(this, ReviewerActivity.class);
+                startActivity(intent3);
+                break;
         }
         return true;
     }

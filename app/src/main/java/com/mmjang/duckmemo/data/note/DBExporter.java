@@ -40,7 +40,8 @@ public class DBExporter implements Exporter{
         long time2 = System.currentTimeMillis() + 1;
         card2.setId(time2);
         card2.setNoteId(note.getId());
-        card2.setNextReviewTime(System.currentTimeMillis() + 1000L * 60L * 60L * 24L);
+//        card2.setNextReviewTime(System.currentTimeMillis() + 1000L * 60L * 60L * 24L);
+        card2.setNextReviewTime(System.currentTimeMillis());
         card2.setCardType(CardType.CLOZE);
         card2.setEasinessFactor(2.5f);
         card2.setInterval(-1);

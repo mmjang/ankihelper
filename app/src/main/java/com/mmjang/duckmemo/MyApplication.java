@@ -34,15 +34,16 @@ public class MyApplication extends MultiDexApplication {
         LitePalApplication.initialize(context);
         CrashReport.initCrashReport(getApplicationContext(), "398dc6145b", false);
         AndroidThreeTen.init(this);
-
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this,
-                Environment.getExternalStorageDirectory() + File.separator + Constant.EXTERNAL_STORAGE_DIRECTORY
-                + File.separator + "duckmemo_greendao.db");
-        Database db = helper.getWritableDb();
-        daoSession = new DaoMaster(db).newSession();
     }
 
     public static DaoSession getDaoSession() {
+        if(daoSession == null){
+            DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(application,
+                    Environment.getExternalStorageDirectory() + File.separator + Constant.EXTERNAL_STORAGE_DIRECTORY
+                            + File.separator + "duckmemo_greendao.db");
+            Database db = helper.getWritableDb();
+            daoSession = new DaoMaster(db).newSession();
+        }
         return daoSession;
     }
 

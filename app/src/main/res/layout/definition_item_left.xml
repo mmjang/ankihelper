@@ -5,42 +5,31 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="12dp"
-    android:layout_marginRight="12dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginBottom="2dp"
-    app:cardElevation="1dp"
-    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal"
         >
-       <LinearLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:id="@+id/btn_add_definition_large"
             android:layout_height="wrap_content">
-           <ImageButton
-               android:id="@+id/btn_add_definition"
-               android:layout_width="25dp"
-               android:layout_height="25dp"
-               android:layout_margin="5dp"
-               android:padding="10dp"
-               android:background="?attr/icon_add"
-               />
+            <CheckBox
+                android:layout_margin="4dp"
+                android:id="@+id/def_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                />
         </LinearLayout>
-         <TextView
+        <TextView
             android:id="@+id/textview_definition"
-             android:textIsSelectable="true"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textColor="#101010"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
-</android.support.v7.widget.CardView>
+    <View style="@style/Divider"/>
 </LinearLayout>

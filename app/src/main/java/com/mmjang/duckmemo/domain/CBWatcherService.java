@@ -73,6 +73,7 @@ public class CBWatcherService extends Service {
                 .setContentTitle(getResources().getText(R.string.app_name))
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
+                .setVibrate(new long[]{0L})
                 .build();
         noti.flags |= Notification.FLAG_FOREGROUND_SERVICE;
         startForeground(2333, noti);

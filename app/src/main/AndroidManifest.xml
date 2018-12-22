@@ -140,7 +140,11 @@
             android:parentActivityName=".ui.content.ContentActivity" />
         <activity
             android:name=".ui.TabbedLauncherActivity"
-            android:label="@string/title_activity_tabbed_launcher"></activity>
+            android:label="@string/title_activity_tabbed_launcher" />
+        <activity android:name=".ui.review.ReviewerActivity"
+            android:label="Review"
+            android:exported="true"
+            ></activity>
     </application>
 
 </manifest>

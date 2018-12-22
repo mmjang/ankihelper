@@ -12,4 +12,10 @@
         android:title="@string/epub_reader"
         app:showAsAction="always"
         />
+
+    <item
+        android:id="@+id/menu_item_reviewer"
+        android:title="REVIEW"
+        app:showAsAction="always"
+        />
 </menu>

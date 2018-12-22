@@ -201,7 +201,7 @@ public class Utils {
         int i = 0;
         for(String tag : tagSet){
             if(i < size - 1){
-                tags = tags + tag.trim() + ",";
+                tags = tags + tag.trim() + " ";
             }else{
                 tags = tags + tag.trim();
             }
@@ -212,7 +212,7 @@ public class Utils {
 
     public static Set<String> fromStringToTagSet(String s){
         Set<String> set = new HashSet<>();
-        for(String item : s.split(",")){
+        for(String item : s.split(" ")){
             set.add(item);
         }
         return set;

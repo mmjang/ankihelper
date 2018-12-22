@@ -27,7 +27,7 @@ public class SOMemoAlgorithm implements MemoAlgorithm {
     }
 
     @Override
-    public void calculate(SM2Card card, int quality, long reviewTime) {
+    public int getIntervalByQuality(SM2Card card, int quality, long reviewTime){
         if (quality < 0 || quality > 5) {
             throw new IllegalArgumentException("quality is between 1 and 5");
         }
@@ -61,27 +61,101 @@ public class SOMemoAlgorithm implements MemoAlgorithm {
             }
 
         }else{
-            //1, 10 as the default step
-            int positiveMinuteInteval = -interval;
-            int currentPosition = Ints.indexOf(initialSteps, positiveMinuteInteval);
-            if(currentPosition < 0){
-                //not found
-                card.setInterval(-initialSteps[0]);
+            //don't use initial steps now
+            if(quality < QUALITY_T){
+                interval = 0;
             }else{
-                if(currentPosition == initialSteps.length - 1){
-                    //last interval
-                    card.setInterval(mFirstInteval);
-                }else{
-                    if(quality < QUALITY_T){
-                        //failed, set interval to initial state
-                        card.setInterval(-initialSteps[0]);
-                    }else{
-                        int nextStep = -initialSteps[currentPosition + 1];
-                        card.setInterval(nextStep);
-                    }
-                }
+                interval = 1;
             }
+            //1, 10 as the default step
+//            int positiveMinuteInteval = -interval;
+//            int currentPosition = Ints.indexOf(initialSteps, positiveMinuteInteval);
+//            if(currentPosition < 0){
+//                //not found
+//                card.setInterval(-initialSteps[0]);
+//            }else{
+//                if(currentPosition == initialSteps.length - 1){
+//                    //last interval
+//                    card.setInterval(mFirstInteval);
+//                }else{
+//                    if(quality < QUALITY_T){
+//                        //failed, set interval to initial state
+//                        card.setInterval(-initialSteps[0]);
+//                    }else{
+//                        int nextStep = -initialSteps[currentPosition + 1];
+//                        card.setInterval(nextStep);
+//                    }
+//                }
+//            }
         }
+        return interval;
+    }
+
+    @Override
+    public void calculate(SM2Card card, int quality, long reviewTime) {
+
+        if (quality < 0 || quality > 5) {
+            throw new IllegalArgumentException("quality is between 1 and 5");
+        }
+
+        // retrieve the stored values (default values if new cards)
+        int repetitions = card.getRepetitions();
+        float easiness = card.getEasinessFactor();
+        int interval = card.getInterval();
+
+        int[] initialSteps = card.getInitialStepsArray();
+
+        if(interval > 0) {//interval < 0, minutes, interval > 0 days;
+            //the card has graduated
+            // easiness factor
+            easiness = (float) Math.max(1.3, easiness + 0.1 - (5.0 - quality) * (0.08 + (5.0 - quality) * 0.02));
+
+            // repetitions
+            if (quality < QUALITY_T) {
+                repetitions = 0;
+            } else {
+                repetitions += 1;
+            }
+
+            // interval
+            if (repetitions <= 1) {
+                interval = mFirstInteval;
+            } else if (repetitions == 2) {
+                interval = mSecondInteval;
+            } else {
+                interval = Math.round(interval * easiness);
+            }
+
+        }else{
+            //don't use initial steps now
+            if(quality < QUALITY_T){
+                interval = -1;
+            }else{
+                interval = 1;
+            }
+            //1, 10 as the default step
+//            int positiveMinuteInteval = -interval;
+//            int currentPosition = Ints.indexOf(initialSteps, positiveMinuteInteval);
+//            if(currentPosition < 0){
+//                //not found
+//                card.setInterval(-initialSteps[0]);
+//            }else{
+//                if(currentPosition == initialSteps.length - 1){
+//                    //last interval
+//                    card.setInterval(mFirstInteval);
+//                }else{
+//                    if(quality < QUALITY_T){
+//                        //failed, set interval to initial state
+//                        card.setInterval(-initialSteps[0]);
+//                    }else{
+//                        int nextStep = -initialSteps[currentPosition + 1];
+//                        card.setInterval(nextStep);
+//                    }
+//                }
+//            }
+        }
+
+        card.setInterval(interval);
 
         if(card.getInterval() > 0) {
             // next practice

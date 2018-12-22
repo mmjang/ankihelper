@@ -9,8 +9,6 @@ import android.content.SharedPreferences;
 
 import com.mmjang.duckmemo.domain.PronounceManager;
 
-import java.util.HashSet;
-
 /**
  * 单例，getInstance()得到实例
  */
@@ -26,7 +24,7 @@ public class Settings {
     private final static String MONITE_CLIPBOARD_Q = "show_clipboard_notification_q";   //是否监听剪切板
     private final static String AUTO_CANCEL_POPUP_Q = "auto_cancel_popup";              //点加号后是否退出
     private final static String DEFAULT_PLAN = "default_plan";
-    private final static String LAST_SELECTED_PLAN = "last_selected_plan";
+    private final static String LAST_SELECTED_DICT = "last_selected_plan";
     private final static String DEFAULT_TAG = "default_tag";
     private final static String SET_AS_DEFAULT_TAG = "set_as_default_tag";
     private final static String LAST_PRONOUNCE_LANGUAGE = "last_pronounce_language";
@@ -135,12 +133,12 @@ public class Settings {
 
     /******************/
 
-    public String getLastSelectedPlan() {
-        return sp.getString(LAST_SELECTED_PLAN, "");
+    public String getLastSelectedDict() {
+        return sp.getString(LAST_SELECTED_DICT, "");
     }
 
-    public void setLastSelectedPlan(String lastSelectedPlan) {
-        editor.putString(LAST_SELECTED_PLAN, lastSelectedPlan);
+    public void setLastSelectedDict(String lastSelectedPlan) {
+        editor.putString(LAST_SELECTED_DICT, lastSelectedPlan);
         editor.commit();
     }
 

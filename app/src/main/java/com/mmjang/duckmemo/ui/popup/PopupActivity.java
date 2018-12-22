@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,6 +61,8 @@ import com.mmjang.duckmemo.data.note.Exporter;
 import com.mmjang.duckmemo.data.note.Note;
 import com.mmjang.duckmemo.data.plan.OutputPlan;
 import com.mmjang.duckmemo.data.plan.OutputPlanPOJO;
+import com.mmjang.duckmemo.data.tag.Tag;
+import com.mmjang.duckmemo.data.tag.TagDao;
 import com.mmjang.duckmemo.domain.CBWatcherService;
 import com.mmjang.duckmemo.domain.PlayAudioManager;
 import com.mmjang.duckmemo.domain.PronounceManager;
@@ -75,9 +78,11 @@ import com.mmjang.duckmemo.util.Translator;
 import com.mmjang.duckmemo.util.Utils;
 
 import org.litepal.crud.DataSupport;
+import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -92,10 +97,13 @@ import static com.mmjang.duckmemo.util.FieldUtil.getNormalSentence;
 
 public class PopupActivity extends Activity implements BigBangLayoutWrapper.ActionListener{
 
+    CardView mActContainer;
+    CardView mBigBangContainer;
+    CardView mDictAndDefContainer;
     Button btnCancelBlankAboveCard;
     CardView mCardViewPopup;
     List<IDictionary> dictionaryList;
-    ChipGroup mDictionaryChipGroup;
+    LinearLayout mDictionaryTabGroup;
     IDictionary currentDicitonary;
     Settings settings;
     String mTextToProcess;
@@ -122,8 +130,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     ImageButton mBtnEditNote;
     ImageButton mBtnEditTag;
     ImageButton mBtnTranslation;
-    ImageButton mBtnFooterRotateLeft;
-    ImageButton mBtnFooterRotateRight;
+    ImageButton mBtnFooterAdd;
     ImageButton mBtnFooterScrollup;
     ProgressBar progressBar;
 
@@ -135,11 +142,14 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     //plan b
     LinearLayout viewDefinitionList;
     List<Definition> mDefinitionList;
+    TextView lastSelectedDictTab;
     //async event
     private static final int PROCESS_DEFINITION_LIST = 1;
     private static final int ASYNC_SEARCH_FAILED = 2;
     private static final int TRANSLATION_DONE = 3;
     private static final int TRANSLATIOn_FAILED = 4;
+    //dao
+    private TagDao tagDao;
 
     //async
     @SuppressLint("HandlerLeak")
@@ -210,6 +220,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             }
         });
 
+        tagDao = MyApplication.getDaoSession().getTagDao();
     }
 
     private void setHeight() {
@@ -221,40 +232,47 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     }
 
     private void initDictionaries() {
+        String lastSelectedDict = settings.getLastSelectedDict();
         LayoutInflater inflater = PopupActivity.this.getLayoutInflater();
-        int i = 0;
         for(final IDictionary dictionary : dictionaryList){
-            Chip chip = (Chip) inflater.inflate(R.layout.dictionary_chip_item, null);
-            chip.setText(dictionary.getDictionaryName().substring(0, 2));
-            mDictionaryChipGroup.addView(chip);
-            if(i == 0){
-                chip.setChecked(true);
-                chip.setClickable(false);
-                currentDicitonary = dictionary;
-            }
-            i ++;
-        }
+            final TextView dictTab = (TextView) inflater.inflate(R.layout.dict_tab_textview, null);
+            dictTab.setText(dictionary.getDictionaryName());
+            mDictionaryTabGroup.addView(dictTab);
+            dictTab.setBackgroundResource(R.drawable.dict_tab);
 
-        mDictionaryChipGroup.setOnCheckedChangeListener(
-                new ChipGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(ChipGroup chipGroup, int i) {
-//                        for(int index = 0; index < chipGroup.getChildCount(); index ++){
-//                            Chip chip = (Chip) chipGroup.getChildAt(index);
-//                            if(chip.getId() == i){
-//                                chip.setChecked(true);
-//                                chip.setClickable(false);
-//                                currentDicitonary = dictionaryList.get(index);
-//                                asyncSearch(act.getText().toString());
-//                                break;
-//                            }else{
-//                                chip.setChecked(false);
-//                                chip.setClickable(true);
-//                            }
-//                        }
+            dictTab.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dictTab.setBackgroundResource(R.drawable.dict_tab_selected);
+                            dictTab.setClickable(false);
+                            currentDicitonary = getDictionaryFromName(dictTab.getText().toString());
+                            act.setAdapter((SimpleCursorAdapter) currentDicitonary.getAutoCompleteAdapter(PopupActivity.this, android.R.layout.simple_spinner_dropdown_item));
+                            if(lastSelectedDictTab != null){
+                                lastSelectedDictTab.setClickable(true);
+                                lastSelectedDictTab.setBackgroundResource(R.drawable.dict_tab);
+                            }
+                            lastSelectedDictTab = dictTab;
+                            settings.setLastSelectedDict(currentDicitonary.getDictionaryName());
+                            asyncSearch(act.getText().toString());
+                        }
                     }
-                }
-        );
+            );
+        }
+        for(int i = 0; i < mDictionaryTabGroup.getChildCount(); i ++){
+            TextView tv =(TextView) mDictionaryTabGroup.getChildAt(i);
+            if(tv.getText().toString().equals(lastSelectedDict)){
+                lastSelectedDictTab = tv;
+            }
+        }
+        if(lastSelectedDictTab == null){
+            lastSelectedDictTab = (TextView) mDictionaryTabGroup.getChildAt(0);
+        }
+        lastSelectedDictTab.setBackgroundResource(R.drawable.dict_tab_selected);
+        lastSelectedDictTab.setClickable(false);
+        currentDicitonary = getDictionaryFromName(lastSelectedDictTab.getText().toString());
+        settings.setLastSelectedDict(currentDicitonary.getDictionaryName());
+        act.setAdapter((SimpleCursorAdapter) currentDicitonary.getAutoCompleteAdapter(PopupActivity.this, android.R.layout.simple_spinner_dropdown_item));
     }
 
     private void setTargetWord(){
@@ -270,7 +288,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             act.setText(mTargetWord);
             asyncSearch(mTargetWord);
         }else{
-            if(mTextToProcess.matches("[a-zA-Z\\-]*")){
+            if(mTextToProcess.matches("[!-~]*")){
+                mBigBangContainer.setVisibility(View.GONE);
                 act.setText(mTextToProcess);
                 asyncSearch(mTextToProcess);
             }
@@ -291,7 +310,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         btnCancelBlankAboveCard = findViewById(R.id.btn_cancel_blank_above_card);
         act = (AutoCompleteTextView) findViewById(R.id.edit_text_hwd);
         btnSearch = (Button) findViewById(R.id.btn_search);
-        mDictionaryChipGroup = findViewById(R.id.dictionary_chips_group);
+        mDictionaryTabGroup = findViewById(R.id.dictionary_tabs_countainer);
         //recyclerViewDefinitionList = (RecyclerView) findViewById(R.id.recycler_view_definition_list);
         viewDefinitionList = (LinearLayout) findViewById(R.id.view_definition_list);
         mBtnEditNote = (ImageButton) findViewById(R.id.footer_note);
@@ -303,10 +322,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         mBtnTranslation = (ImageButton) findViewById(R.id.footer_translate);
         mEditTextTranslation = (EditText) findViewById(R.id.edittext_translation);
         //mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mBtnFooterRotateLeft = (ImageButton) findViewById(R.id.footer_rotate_left);
-        mBtnFooterRotateRight= (ImageButton) findViewById(R.id.footer_rotate_right);
+//        mBtnFooterRotateLeft = (ImageButton) findViewById(R.id.footer_rotate_left);
+        mBtnFooterAdd = findViewById(R.id.footer_add);
         mBtnFooterScrollup = (ImageButton) findViewById(R.id.footer_scroll_up);
         mCardViewPopup = findViewById(R.id.popup_card);
+        mActContainer = findViewById(R.id.act_container);
+        mBigBangContainer = findViewById(R.id.bigbang_container);
+        mDictAndDefContainer = findViewById(R.id.dict_and_def_container);
     }
 
     private void loadData() {
@@ -401,20 +423,60 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     }
                 }
         );
-        mBtnFooterRotateRight.setOnClickListener(
+
+        mBtnFooterAdd.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View v) {
+                        String word = "";
+                        String defString = "";
+                        List<Definition> checkedDefinition = new ArrayList<>();
+                        boolean isNothingChecked = false;
+                        //there's definition
+                        if(mDefinitionList != null && mDefinitionList.size() > 0){
+                            for(int i = 0; i < viewDefinitionList.getChildCount(); i ++){
+                                View view = viewDefinitionList.getChildAt(i);
+                                CheckBox checkBox = (CheckBox) view.findViewById(R.id.def_checkbox);
+                                if(checkBox.isChecked()){
+                                    checkedDefinition.add(mDefinitionList.get(i));
+                                }
+                            }
+                            //there's more than one def, but nothing is checked
+                            if(mDefinitionList.size() > 1 && checkedDefinition.size() == 0){
+                                isNothingChecked = true;
+                            }
 
-                    }
-                }
-        );
+                            //nothing checked, use all
+                            if(checkedDefinition.size() == 0){
+                                checkedDefinition = mDefinitionList;
+                            }
 
-        mBtnFooterRotateLeft.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                            for(Definition def : checkedDefinition){
+                                defString += def.getCombinedDefinition();
+                            }
+                            //use the first check def as headword
+                            word = checkedDefinition.get(0).getWord();
+                        }
 
+                        Addable addable = new Note();
+                        addable.setWord(word);
+                        addable.setTag(Utils.fromTagSetToString(mTagEditedByUser));
+                        if(mBigBangContainer.getVisibility() == View.VISIBLE) {
+                            //there's sentence, use it;
+                            addable.setSentence(FieldUtil.getBoldSentence(bigBangLayout.getLines()));
+                        }else{
+                            addable.setSentence("");
+                        }
+                        addable.setExtra(mNoteEditedByUser);
+                        addable.setDefinition(defString);
+                        addable.setLanguage("en");
+                        addable.setTranslation(mTranslatedResult);
+                        mExporter.add(addable);
+                        if(isNothingChecked){
+                            Toast.makeText(PopupActivity.this, "未勾选释义，已保存全部释义", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(PopupActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
         );
@@ -431,10 +493,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         );
     }
 
-    private IDictionary getDictionaryFromOutputPlan(OutputPlanPOJO outputPlan) {
-        String dictionaryName = outputPlan.getDictionaryKey();
+    private IDictionary getDictionaryFromName(String name) {
         for (IDictionary dict : dictionaryList) {
-            if (dict.getDictionaryName().equals(dictionaryName)) {
+            if (dict.getDictionaryName().equals(name)) {
                 return dict;
             }
         }
@@ -508,6 +569,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         if(currentDicitonary == null){
             return;
         }
+        mActContainer.setVisibility(View.VISIBLE);
+        mDictAndDefContainer.setVisibility(View.VISIBLE);
         showProgressBar();
         showPronounce(true);
         Thread thread = new Thread(new Runnable() {
@@ -587,13 +650,12 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     .inflate(R.layout.definition_item, null);
         }
         final TextView textVeiwDefinition = (TextView) view.findViewById(R.id.textview_definition);
-        final ImageButton btnAddDefinition = (ImageButton) view.findViewById(R.id.btn_add_definition);
-        final LinearLayout btnAddDefinitionLarge = (LinearLayout) view.findViewById(R.id.btn_add_definition_large);
-        btnAddDefinitionLarge.setOnClickListener(
+        final CheckBox defCheckbox = (CheckBox) view.findViewById(R.id.def_checkbox);
+        view.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        btnAddDefinition.callOnClick();
+                        defCheckbox.toggle();
                     }
                 }
         );
@@ -605,32 +667,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
 
         }
-
-        //set custom action for the textView
-        makeTextViewSelectAndSearch(textVeiwDefinition);
-        btnAddDefinition.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Addable note = new Note();
-                        note.setDefinition(def.getCombinedDefinition());
-                        note.setLanguage("en");
-                        note.setSentence(getBoldSentence(bigBangLayout.getLines()));
-                        StringBuilder sb = new StringBuilder();
-                        for(String tag : mTagEditedByUser) {
-                            sb.append(tag);
-                            sb.append(" ");
-                        }
-                        note.setExtra(mNoteEditedByUser);
-                        note.setTag(sb.toString());
-                        note.setWord(def.getWord());
-                        note.setTranslation(mTranslatedResult);
-                        if(mExporter.add(note).successful){
-                            Toast.makeText(PopupActivity.this, "Added", Toast.LENGTH_SHORT).show();
-                        }
-                        vibarate(Constant.VIBRATE_DURATION);
-                    }
-                });
+        if(mDefinitionList.size() == 1){
+            defCheckbox.setVisibility(View.INVISIBLE);
+        }
         return view;
     }
 
@@ -676,10 +715,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             editTag.setSelection(text.length());
         }
         tagChipGroup.setSingleSelection(false);
-        final List<UserTag> userTags = DataSupport.findAll(UserTag.class);
-        for(UserTag userTag : userTags){
+        //final List<UserTag> userTags = DataSupport.findAll(UserTag.class);
+        final List<Tag> userTags = tagDao.queryBuilder().orderDesc(TagDao.Properties.LastUsedTime).list();
+        for(Tag userTag : userTags){
             final Chip chip = (Chip) inflater.inflate(R.layout.tag_chip_item, null);
-            chip.setText(userTag.getTag());
+            chip.setText(userTag.getName());
             chip.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
@@ -722,16 +762,27 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     mTagEditedByUser = Utils.fromStringToTagSet(editTag.getText().toString());
                     settings.setSetAsDefaultTag(checkBoxSetAsDefaultTag.isChecked());
                     settings.setDefaultTag(editTag.getText().toString());
-                    for(String t : mTagEditedByUser){
-                        if(!userTags.contains(t)){ //add new tag
-                            UserTag userTag = new UserTag(t);
-                            userTag.save();
+                    for (String t : mTagEditedByUser) {
+                        boolean newOne = true;
+                        for (Tag tagInDb : userTags) {
+                            if (tagInDb.getName().equals(t)) {
+                                newOne = false;
+                                break;
+                            }
+                        }
+
+                        if (newOne) {
+                            Tag newTag = new Tag();
+                            newTag.setName(t);
+                            newTag.setId(System.currentTimeMillis());
+                            newTag.setLastUsedTime(0);
+                            tagDao.insert(newTag);
                         }
                     }
                 }
-
             }
-        });
+            }
+        );
         AlertDialog b = dialogBuilder.create();
         b.show();
     }

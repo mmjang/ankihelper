@@ -18,11 +18,11 @@ public class CardHtmlGenerator {
 
     private static String[] makeClozeCard(Note note) {
         String front = String.format(
-                "<h2>%s</h2> <h3>%s</h3>", note.getSentence().replaceAll("<b>(.*?)</b>", "<b>____</b>"),
+                "<p>%s</p> <br/> <p>%s</p>", note.getSentence().replaceAll("<b>(.*?)</b>", "<b>____</b>"),
                 note.getTranslation()
         );
         String back = String.format(
-                "<h2>%s</h2><h3>%s</h3>%s<br/>%s",
+                "<p>%s</p><br/><p>%s</p><br/>%s<br/>%s",
                 note.getSentence(), note.getTranslation(), note.getDefinition(), note.getExtra()
         );
         return new String[] {front, back};
@@ -30,10 +30,10 @@ public class CardHtmlGenerator {
 
     private static String[] makeSenDefCard(Note note) {
         String front = String.format(
-                "<h2>%s</h2>", note.getSentence()
+                "<p>%s</p>", note.getSentence()
         );
         String back = String.format(
-                "<h2>%s</h2><h3>%s</h3>%s<br/>%s",
+                "<p>%s</p><br/><p>%s</p><br/><p>%s<p/><br/><p>%s<p/>",
                 note.getSentence(), note.getTranslation(), note.getDefinition(), note.getExtra()
         );
         return new String[] {front, back};

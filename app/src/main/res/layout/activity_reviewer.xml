@@ -35,6 +35,18 @@
             />
     </android.support.v7.widget.CardView>
 
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:gravity="bottom|end"
+        android:layout_marginBottom="70dp"
+        android:text="原文"
+        android:enabled="false"
+        android:id="@+id/btn_jump_to_source"
+        >
+
+    </Button>
+
     <android.support.v7.widget.CardView
         android:layout_gravity="bottom"
         android:id="@+id/reviewer_bottom_panel"

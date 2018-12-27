@@ -42,4 +42,9 @@ public class Constant {
 
     public static final String INTENT_DUCKMEMO_CONTENT_INDEX = "com.mmjang.duckmemo.content_index";
 
+    public static final String INTENT_DUCKMEMO_NEWS_ID = "com.mmjang.duckmemo.news_id";
+    public static final String INTENT_DUCKMEMO_NEWS_ENTRY_POSITION_ID = "com.mmjang.duckmemo.news_entry_position_id";
+    public static final String INTENT_DUCKMEMO_NEWS_POSITION_INDEX = "com.mmjang.duckmemo.news_position_index";
+
+
 }

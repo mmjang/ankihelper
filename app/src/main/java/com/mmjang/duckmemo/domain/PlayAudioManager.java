@@ -22,15 +22,37 @@ public class PlayAudioManager {
 
     private static void playAudio(final Context context, final String url) throws Exception {
         if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(context, Uri.parse(url));
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setDataSource(context, Uri.parse(url));
+            mediaPlayer.prepareAsync();
         }
+
+        mediaPlayer.setOnPreparedListener(
+                new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mediaPlayer.start();
+                    }
+                }
+        );
+
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                killMediaPlayer();
+                mediaPlayer.reset();
             }
         });
-        mediaPlayer.start();
+
+        mediaPlayer.setOnErrorListener(
+                new MediaPlayer.OnErrorListener() {
+                    @Override
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+                        mp.reset();
+                        return false;
+                    }
+                }
+        );
+//        mediaPlayer.start();
     }
 
     private static void killMediaPlayer() {

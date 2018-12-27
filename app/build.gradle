@@ -32,7 +32,7 @@ android {
 }
 
 greendao {
-    schemaVersion 2
+    schemaVersion 4
 }
 
 dependencies {
@@ -66,5 +66,7 @@ dependencies {
     implementation 'com.tencent.bugly:crashreport:latest.release'
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
     implementation 'org.greenrobot:greendao:3.2.2' // add library
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     testImplementation 'junit:junit:4.12'
 }

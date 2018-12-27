@@ -11,4 +11,5 @@ public interface Addable {
     void setDefinition(String definition);
     void setExtra(String extra);
     void setTag(String tag);
+    void setNewsEntryPositionId(long id);
 }

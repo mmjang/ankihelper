@@ -1,5 +1,6 @@
 package com.mmjang.duckmemo.ui.review;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.text.Html;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,8 +21,11 @@ import com.mmjang.duckmemo.algo.Scheduler;
 import com.mmjang.duckmemo.data.card.Card;
 import com.mmjang.duckmemo.data.card.CardHtmlGenerator;
 import com.mmjang.duckmemo.data.card.CardType;
+import com.mmjang.duckmemo.data.news.NewsEntryPosition;
 import com.mmjang.duckmemo.domain.PlayAudioManager;
 import com.mmjang.duckmemo.filter.CardFilter;
+import com.mmjang.duckmemo.ui.news.NewsReaderActivity;
+import com.mmjang.duckmemo.util.Constant;
 import com.mmjang.duckmemo.util.Utils;
 
 import java.util.List;
@@ -41,6 +46,7 @@ public class ReviewerActivity extends AppCompatActivity implements View.OnClickL
     TextView mPanelButtonOldGood;
     TextView mPanelButtonOldEasy;
     ProgressBar mProgressBar;
+    Button mBtnJumpSource;
     ///////
     Scheduler mScheduler;
     CardFilter mCardFilter;
@@ -53,8 +59,10 @@ public class ReviewerActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_reviewer);
         assaignViews();
         initViews();
-        loadCards();
-        showNextCard();
+        if(loadCards()){
+            showCard();
+            showNextCard();
+        }
     }
 
     private void assaignViews() {
@@ -71,6 +79,7 @@ public class ReviewerActivity extends AppCompatActivity implements View.OnClickL
         mPanelButtonOldGood = findViewById(R.id.review_button_good_old);
         mPanelButtonOldEasy = findViewById(R.id.review_button_easy_old);
         mProgressBar = findViewById(R.id.reviewer_progress_bar);
+        mBtnJumpSource = findViewById(R.id.btn_jump_to_source);
     }
 
     private void initViews() {
@@ -81,16 +90,19 @@ public class ReviewerActivity extends AppCompatActivity implements View.OnClickL
         mPanelButtonOldFail.setOnClickListener(this);
         mPanelButtonOldGood.setOnClickListener(this);
         mPanelButtonOldEasy.setOnClickListener(this);
+        mBtnJumpSource.setOnClickListener(this);
     }
 
-    private void loadCards(){
+    private boolean loadCards(){
         mCardFilter = new CardFilter();
         List<Card> cardList = mCardFilter.getCardList(System.currentTimeMillis());
         mScheduler = new Scheduler(cardList, new SOMemoAlgorithm());
         if(cardList.size() > 0){
-            showCard();
+            return true;
         }else{
+            mProgressBar.setVisibility(View.GONE);
             Utils.showMessage(this, "no card to review");
+            return false;
         }
     }
 
@@ -98,6 +110,11 @@ public class ReviewerActivity extends AppCompatActivity implements View.OnClickL
         mCurrentCard = mScheduler.getCard();
         Toast.makeText(this, "new:" + mScheduler.getNumberOfNewCard() + "old:" + mScheduler.getNumberOfOldCard(), Toast.LENGTH_SHORT).show();
         if(mCurrentCard != null) {
+            if(mCurrentCard.getNote().getNewsEntryPosition() != null){
+                mBtnJumpSource.setEnabled(true);
+            }else{
+                mBtnJumpSource.setEnabled(false);
+            }
             mCurrentContent = CardHtmlGenerator.getCard(mCurrentCard.getNote(), mCurrentCard.getCardType());
             setCardHtml(mCurrentContent[0]);
             showShowAnswerPanel();
@@ -209,6 +226,14 @@ public class ReviewerActivity extends AppCompatActivity implements View.OnClickL
                 mScheduler.doReview(mCurrentCard, 5);
                 showNextCard();
                 break;
+            case R.id.btn_jump_to_source:
+                Intent intent = new Intent(this, NewsReaderActivity.class);
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                NewsEntryPosition newsEntryPosition = mCurrentCard.getNote().getNewsEntryPosition();
+                intent.putExtra(Constant.INTENT_DUCKMEMO_NEWS_ID, newsEntryPosition.getNewsEntry().getId());
+                intent.putExtra(Constant.INTENT_DUCKMEMO_NEWS_POSITION_INDEX, newsEntryPosition.getSentenceIndex());
+                startActivity(intent);
         }
     }
 }

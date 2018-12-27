@@ -9,7 +9,7 @@
 
     <item
         android:id="@+id/menu_item_book_shelf"
-        android:title="@string/epub_reader"
+        android:title="News"
         app:showAsAction="always"
         />
 

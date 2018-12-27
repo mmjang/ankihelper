@@ -32,6 +32,7 @@ import com.mmjang.duckmemo.data.Settings;
 import com.mmjang.duckmemo.ui.about.AboutActivity;
 import com.mmjang.duckmemo.ui.content.ContentActivity;
 import com.mmjang.duckmemo.ui.customdict.CustomDictionaryActivity;
+import com.mmjang.duckmemo.ui.news.NewsListActivity;
 import com.mmjang.duckmemo.ui.plan.PlansManagerActivity;
 import com.mmjang.duckmemo.ui.read.BookshelfActivity;
 import com.mmjang.duckmemo.ui.review.ReviewerActivity;
@@ -215,7 +216,7 @@ public class LauncherActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_book_shelf:
-                Intent intent = new Intent(this, BookshelfActivity.class);
+                Intent intent = new Intent(this, NewsListActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_item_stat:

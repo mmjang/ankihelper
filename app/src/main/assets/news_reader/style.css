@@ -1,0 +1,117 @@
+.highlight {
+    background:#add8ff;
+    border-radius: 3px;
+    padding: 0 2px;
+    margin: 0 -2px;
+}
+
+#article{
+    margin-left:3%;
+    margin-right:3%;
+}
+
+#title{
+    font-size:1.5rem;
+    margin-bottom:1em;
+    margin-top:1em;
+}
+
+#image img{
+    width:95%;
+    margin-left: auto;
+    margin-right:auto;
+    display:block;
+}
+
+#article img{
+    width:95%;
+    margin-left: auto;
+    margin-right:auto;
+    display:block;
+}
+
+#image .caption{
+    margin-top:0.2em;
+    margin-left:3%;
+    margin-right:3%;
+    color:808080;
+    font-size:0.6rem;
+}
+
+#content p{
+    font-family: 'Caecilia', serif;
+    font-size:1.1rem;
+    text-align: justify;
+    text-justify: inter-word;
+    line-height:150%;
+}
+
+.font-serif{
+    font-family: serif;
+}
+
+.font-sans-serif{
+    font-family: sans-serif;
+}
+
+.font-georgia{
+    font-family: 'Georgia';
+}
+
+.font-caecilia{
+    font-family: 'Caecilia';
+}
+
+.size1{
+    font-size:0.8rem;
+}
+
+.size2{
+    font-size:0.9rem;
+}
+
+.size3{
+    font-size:1.0rem;
+}
+
+.size4{
+    font-size:1.1rem;
+}
+
+.size5{
+    font-size:1.2rem;
+}
+
+#content p a {
+    color:#5076b8;
+    pointer-events:none;
+}
+
+@font-face {
+    font-family:'Georgia';
+    src:url('font/georgia.ttf');
+}
+
+@font-face {
+    font-family:'Georgia';
+    src:url('font/georgiab.ttf');
+    font-weight:bold;
+}
+
+@font-face {
+    font-family:'Georgia';
+    src:url('font/georgiai.ttf');
+    font-style:italic;
+}
+
+@font-face {
+    font-family:'Georgia';
+    src:url('font/georgiaz.ttf');
+    font-style:italic;
+    font-weight:bold;
+}
+
+@font-face {
+    font-family:'Caecilia';
+    src:url('font/Caecilia.otf')
+}

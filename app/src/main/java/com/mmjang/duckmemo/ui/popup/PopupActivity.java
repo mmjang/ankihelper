@@ -97,6 +97,7 @@ import static com.mmjang.duckmemo.util.FieldUtil.getNormalSentence;
 
 public class PopupActivity extends Activity implements BigBangLayoutWrapper.ActionListener{
 
+    Long mNewsEntryPositionId = -1l;
     CardView mActContainer;
     CardView mBigBangContainer;
     CardView mDictAndDefContainer;
@@ -471,6 +472,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         addable.setDefinition(defString);
                         addable.setLanguage("en");
                         addable.setTranslation(mTranslatedResult);
+                        if(mNewsEntryPositionId >= 0) {
+                            addable.setNewsEntryPositionId(mNewsEntryPositionId);
+                        }
                         mExporter.add(addable);
                         if(isNothingChecked){
                             Toast.makeText(PopupActivity.this, "未勾选释义，已保存全部释义", Toast.LENGTH_SHORT).show();
@@ -533,6 +537,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             }
             mTargetWord = intent.getStringExtra(Constant.INTENT_DUCKMEMO_TARGET_WORD);
             mUrl = intent.getStringExtra(Constant.INTENT_DUCKMEMO_TARGET_URL);
+            mNewsEntryPositionId = intent.getLongExtra(Constant.INTENT_DUCKMEMO_NEWS_ENTRY_POSITION_ID, -1l);
             //mFbReaderBookmarkId = intent.getStringExtra(Constant.INTENT_ANKIHELPER_FBREADER_BOOKMARK_ID);
             String noteEditedByUser = intent.getStringExtra(Constant.INTENT_DUCKMEMO_NOTE);
             if(noteEditedByUser != null){

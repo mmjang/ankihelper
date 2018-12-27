@@ -141,9 +141,18 @@
         <activity
             android:name=".ui.TabbedLauncherActivity"
             android:label="@string/title_activity_tabbed_launcher" />
-        <activity android:name=".ui.review.ReviewerActivity"
-            android:label="Review"
+        <activity
+            android:name=".ui.review.ReviewerActivity"
             android:exported="true"
+            android:label="Review" />
+        <activity
+            android:name=".ui.news.NewsListActivity"
+            android:theme="@style/NewsListTheme"
+            android:exported="true"
+            android:label="News" />
+        <activity android:name=".ui.news.NewsReaderActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/NewsListTheme"
             ></activity>
     </application>
 

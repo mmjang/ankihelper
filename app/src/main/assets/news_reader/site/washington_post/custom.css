@@ -1,0 +1,9 @@
+.inline-photo{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.inline-photo .pb-caption{
+    color:#8b8b8b;
+    font-size:0.8re
+}

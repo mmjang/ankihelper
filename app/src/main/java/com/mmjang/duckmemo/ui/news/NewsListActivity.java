@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.mmjang.duckmemo.R;
+import com.mmjang.duckmemo.data.Settings;
 import com.mmjang.duckmemo.data.news.NewsEntry;
 import com.mmjang.duckmemo.data.news.NewsLoader;
 import com.mmjang.duckmemo.data.news.NewsLoaderUtils;
@@ -80,7 +81,8 @@ public class NewsListActivity extends AppCompatActivity {
         for(int i = 0; i < sourceNameList.length; i ++){
             sourceNameList[i] = mNewsLoaderList.get(i).getSourceName();
         }
-        mNewsSourceSpinner.setAdapter(new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, sourceNameList));
+        mNewsSourceSpinner.setAdapter(new ArrayAdapter<String>(this, R.layout.news_source_dropdown_item, sourceNameList));
+        mNewsSourceSpinner.setSelection(Settings.getInstance(this).getLastNewsSourceIndex());
         mNewsSourceSpinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -96,6 +98,7 @@ public class NewsListActivity extends AppCompatActivity {
                                     }
                                 }
                         );
+                        Settings.getInstance(NewsListActivity.this).setLastNewsSourceIndex(position);
                     }
 
                     @Override

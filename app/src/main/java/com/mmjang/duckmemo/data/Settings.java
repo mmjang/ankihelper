@@ -33,6 +33,9 @@ public class Settings {
     private final static String OLD_DATA_MIGRATED = "old_data_migrated";
     private final static String SHOW_CONTENT_ALREADY_READ = "show_content_already_read";
     private final static String FIRST_TIME_RUNNING_READER = "first_time_running_reader";
+    private final static String READER_FONT_CLASS = "reader_font_class";
+    private final static String READER_BACKGROUND_INDEX = "reader_background_index";
+    private final static String LAST_NEWS_SOURCE_INDEX = "last_news_source_index";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -214,6 +217,37 @@ public class Settings {
     public void setFirstTimeRunningReader(boolean firstTimeRunningReader){
         editor.putBoolean(FIRST_TIME_RUNNING_READER, firstTimeRunningReader);
         editor.commit();
+    }
+
+    public String getReaderFontClass(){
+        return sp.getString(READER_FONT_CLASS, "font-serif size3");
+    }
+
+    public void setReaderFontClass(String readerFontClass){
+        editor.putString(READER_FONT_CLASS, readerFontClass);
+        editor.commit();
+    }
+
+    public int getReaderBackgroundIndex(){
+        return sp.getInt(READER_BACKGROUND_INDEX, 0);
+    }
+
+    public void setReaderBackgroundIndex(int readerBackgroundIndex){
+        editor.putInt(READER_BACKGROUND_INDEX, readerBackgroundIndex);
+        editor.commit();
+    }
+
+    public int getLastNewsSourceIndex(){
+        return sp.getInt(LAST_NEWS_SOURCE_INDEX, 0);
+    }
+
+    public void setLastNewsSourceIndex(int lastNewsSourceIndex){
+        editor.putInt(LAST_NEWS_SOURCE_INDEX, lastNewsSourceIndex);
+        editor.commit();
+    }
+
+    public String getDefaultTag(){
+        return sp.getString(READER_FONT_CLASS, "");
     }
 
     boolean hasKey(String key) {

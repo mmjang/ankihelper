@@ -39,8 +39,6 @@
 }
 
 #content p{
-    font-family: 'Caecilia', serif;
-    font-size:1.1rem;
     text-align: justify;
     text-justify: inter-word;
     line-height:150%;
@@ -60,6 +58,14 @@
 
 .font-caecilia{
     font-family: 'Caecilia';
+}
+
+.font-faricynew{
+    font-family: 'FaricyNew';
+}
+
+.font-theinhardt{
+    font-family: "Theinhardt";
 }
 
 .size1{
@@ -114,4 +120,52 @@
 @font-face {
     font-family:'Caecilia';
     src:url('font/Caecilia.otf')
+}
+
+@font-face {
+    font-family:'FaricyNew';
+    src:url('font/FaricyNew-Regular.otf');
+}
+
+@font-face {
+    font-family:'FaricyNew';
+    src:url('font/FaricyNew-Bold.otf');
+    font-weight:bold;
+}
+
+@font-face {
+    font-family:'FaricyNew';
+    src:url('font/FaricyNew-Italic.otf');
+    font-style:italic;
+}
+
+@font-face {
+    font-family:'FaricyNew';
+    src:url('font/FaricyNew-BoldItalic.otf');
+    font-style:italic;
+    font-weight:bold;
+}
+
+@font-face {
+    font-family:'Theinhardt';
+    src:url('font/theinhardt-regular.ttf');
+}
+
+@font-face {
+    font-family:'Theinhardt';
+    src:url('font/theinhardt-bold.ttf');
+    font-weight:bold;
+}
+
+@font-face {
+    font-family:'Theinhardt';
+    src:url('font/theinhardt-regularitaita.ttf');
+    font-style:italic;
+}
+
+@font-face {
+    font-family:'Theinhardt';
+    src:url('font/theinhardt-boldita.ttf');
+    font-style:italic;
+    font-weight:bold;
 }

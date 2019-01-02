@@ -109,3 +109,8 @@ function jumpToSentence(senIndex){
     sen_node.scrollIntoView();
 }
 
+function setArticleFont(className){
+    var article = document.querySelector("#article");
+    article.setAttribute('class', className);
+}
+

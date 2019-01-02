@@ -19,6 +19,8 @@ import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Request;
+
 public class AtlanticLoader implements NewsLoader {
     public String mSourceName;
     public String mSourceUrl;
@@ -84,11 +86,9 @@ public class AtlanticLoader implements NewsLoader {
 
     @Override
     public void getContent(NewsEntry newsEntry) throws IOException {
-        Document doc = Jsoup.connect(newsEntry.getUrl())
-                .userAgent("Mozilla")
-                .cookie("auth", "token")
-                .timeout(10000)
-                .get();
+        Request request = new Request.Builder().url(newsEntry.getUrl()).build();
+        String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+        Document doc = Jsoup.parse(rawhtml);
         String imageUrl = "";
         String imageCaption = "";
         String content = "";
@@ -122,11 +122,9 @@ public class AtlanticLoader implements NewsLoader {
     }
 
     List<NewsEntry> getSectionEntryList(String url) throws JSONException, IOException{
-        Document doc = Jsoup.connect(url)
-                .userAgent("Mozilla")
-                .cookie("auth", "token")
-                .timeout(10000)
-                .get();
+        Request request = new Request.Builder().url(url).build();
+        String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+        Document doc = Jsoup.parse(rawhtml);
         Elements feeds = doc.select("li.article.blog-article");
         List<NewsEntry> newsEntries = new ArrayList<>();
         //start from the end, make the most important news on the top

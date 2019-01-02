@@ -24,24 +24,29 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         >
-        <TextView
-            android:layout_margin="20dp"
-            android:fontFamily="serif"
-            android:textSize="16sp"
-            android:layout_gravity="center"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/flash_card_textView"
-            />
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_margin="20dp"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/flash_card_textView"
+                android:lineSpacingMultiplier="1.5"
+                />
+        </ScrollView>
     </android.support.v7.widget.CardView>
 
     <Button
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:gravity="bottom|end"
+        android:layout_gravity="bottom|end"
         android:layout_marginBottom="70dp"
-        android:text="原文"
+        android:text="Source"
         android:enabled="false"
+        android:visibility="gone"
         android:id="@+id/btn_jump_to_source"
         >
 

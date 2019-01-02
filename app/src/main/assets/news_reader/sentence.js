@@ -537,8 +537,8 @@ function getSentenceWithSelection(){
     var senIndex = 0;
     if (sel.toString() != "") {
         console.log("anchornode:")
-        console.log(sel.anchorNode);
-        node = sel.anchorNode;
+        console.log(sel.focusNode);
+        node = sel.focusNode;
         while(node.className != "sentence"){
             node = node.parentNode;
             if(!node){
@@ -569,67 +569,4 @@ function getSentenceWithSelection(){
         "sen_index":senIndex
         };
 }
-
-// var getTitle = function(){
-//     var host = "";
-//     if(location.hostname){
-//         host = location.hostname;
-//     }
-
-//     var title = "";
-
-//     var titleNode = document.querySelector("title");
-//     if(titleNode){
-//         title = titleNode.text;
-//     }
-
-//     return " ( " + title + " )";
-// }
-
-// var showPopup = function(){
-//     var selection = getSelectionText();
-//     if(selection)
-//     {
-//         if(selection.indexOf(" ") > -1)
-//         {
-//             selection = selection.replace(/(\r\n|\n|\r)/gm,"");
-//             android.showToast(selection + getTitle(), "", window.location.href);
-//         }
-//         else{
-//             var textSource = textSourceFromPoint({x:cursorXXX, y:cursorYYY});
-//                 	var sentence = extractSentence(textSource, 400);
-//                 	console.log(sentence);
-//                 	sentence = sentence.replace(/(\r\n|\n|\r)/gm,"");
-//                 	android.showToast(sentence + getTitle(), selection, window.location.href);
-//         }
-
-//     }
-// }
-
-// var timeout;
-
-// document.addEventListener("selectionchange", function(e) {
-//     if(timeout){
-//         clearTimeout(timeout);
-//     }
-//     timeout = setTimeout(showPopup, 500);
-//     //window.alert("touchend");
-//     //showPopup();
-// });
-
-
-
-// console.log("javascript injected");
-
-// //for webnovel
-
-// var makeSelectable = function(){
-// if(location.hostname == "m.webnovel.com"){
-//     document.querySelectorAll("div").forEach( p => p.style.userSelect="text");
-//     document.querySelectorAll("p").forEach( p => p.style.userSelect="text");
-
-// }
-// }
-
-// makeSelectable();
 

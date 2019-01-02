@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_font_settings"
+        android:title="Font Settings"
+        android:icon="@drawable/ic_font"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/menu_open_with_browser"
+        android:title="Open with Browser"
+        android:icon="@drawable/ic_link"
+        app:showAsAction="always"
+        />
+</menu>

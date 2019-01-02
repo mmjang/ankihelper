@@ -2,10 +2,14 @@ package com.mmjang.duckmemo.ui.review;
 
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -15,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mmjang.duckmemo.MyApplication;
 import com.mmjang.duckmemo.R;
 import com.mmjang.duckmemo.algo.SOMemoAlgorithm;
 import com.mmjang.duckmemo.algo.Scheduler;
@@ -24,11 +29,13 @@ import com.mmjang.duckmemo.data.card.CardType;
 import com.mmjang.duckmemo.data.news.NewsEntryPosition;
 import com.mmjang.duckmemo.domain.PlayAudioManager;
 import com.mmjang.duckmemo.filter.CardFilter;
+import com.mmjang.duckmemo.ui.editor.NoteEditorActivity;
 import com.mmjang.duckmemo.ui.news.NewsReaderActivity;
 import com.mmjang.duckmemo.util.Constant;
 import com.mmjang.duckmemo.util.Utils;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class ReviewerActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -52,6 +59,8 @@ public class ReviewerActivity extends AppCompatActivity implements View.OnClickL
     CardFilter mCardFilter;
     Card mCurrentCard;
     String[] mCurrentContent;
+
+    private static final int REQUEST_CODE_EDIT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +121,10 @@ public class ReviewerActivity extends AppCompatActivity implements View.OnClickL
         if(mCurrentCard != null) {
             if(mCurrentCard.getNote().getNewsEntryPosition() != null){
                 mBtnJumpSource.setEnabled(true);
+                mBtnJumpSource.setVisibility(View.VISIBLE);
             }else{
                 mBtnJumpSource.setEnabled(false);
+                mBtnJumpSource.setVisibility(View.INVISIBLE);
             }
             mCurrentContent = CardHtmlGenerator.getCard(mCurrentCard.getNote(), mCurrentCard.getCardType());
             setCardHtml(mCurrentContent[0]);
@@ -234,6 +245,61 @@ public class ReviewerActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtra(Constant.INTENT_DUCKMEMO_NEWS_ID, newsEntryPosition.getNewsEntry().getId());
                 intent.putExtra(Constant.INTENT_DUCKMEMO_NEWS_POSITION_INDEX, newsEntryPosition.getSentenceIndex());
                 startActivity(intent);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.activity_reviewer_menu_entry, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.reviewer_menu_edit:
+                onEditNote();
+                break;
+            case R.id.reviewer_menu_delete:
+                onDeleteCard();
+        }
+        return true;
+    }
+
+    private void onDeleteCard() {
+        if(mCurrentCard == null){
+            Utils.showMessage(this, "no card to delete");
+        }else{
+            mScheduler.removeCardAt(0);
+            showNextCard();
+        }
+    }
+
+    private void onEditNote() {
+        if(mCurrentCard == null){
+            Utils.showMessage(this, "no card to edit");
+        }else{
+            Intent intent = new Intent(this, NoteEditorActivity.class);
+            intent.putExtra(Constant.INTENT_DUCKMEMO_NOTE_ID, mCurrentCard.getNoteId());
+            intent.setAction(Intent.ACTION_SEND);
+            startActivityForResult(intent, REQUEST_CODE_EDIT);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CODE_EDIT){
+            if(resultCode == Constant.RESULT_SAVED){
+                MyApplication.getDaoSession().getNoteDao().refresh(mCurrentCard.getNote());
+                mCurrentContent = CardHtmlGenerator.getCard(mCurrentCard.getNote(), mCurrentCard.getCardType());
+                if(mPanelShowAnswer.getVisibility() == View.VISIBLE)//front
+                {
+                    setCardHtml(mCurrentContent[0]);
+                }else{
+                    setCardHtml(mCurrentContent[1]);
+                }
+            }
         }
     }
 }

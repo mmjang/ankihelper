@@ -19,6 +19,8 @@ import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Request;
+
 public class NPRLoader implements NewsLoader {
     public String mSourceName;
     public String mSourceUrl;
@@ -46,7 +48,7 @@ public class NPRLoader implements NewsLoader {
             "        </div>\n" +
             "\n" +
             "        <div id=\"image\">\n" +
-            "            <image class=\"img\" src=\"{{imageUrl}}\"></image>\n" +
+            "            <img class=\"img\" src=\"{{imageUrl}}\"></img>\n" +
             "            <div class=\"caption\">{{imageCaption}}</div>\n" +
             "        </div>\n" +
             "    \n" +
@@ -78,11 +80,9 @@ public class NPRLoader implements NewsLoader {
 
     @Override
     public void getContent(NewsEntry newsEntry) throws IOException {
-        Document doc = Jsoup.connect(newsEntry.getUrl())
-                .userAgent("Mozilla")
-                .cookie("auth", "token")
-                .timeout(10000)
-                .get();
+        Request request = new Request.Builder().url(newsEntry.getUrl()).build();
+        String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+        Document doc = Jsoup.parse(rawhtml);
         String imageUrl = "";
         String imageCaption = "";
         String content = "";
@@ -112,8 +112,16 @@ public class NPRLoader implements NewsLoader {
         newsEntry.setContent(newsContent);
     }
 
-    List<NewsEntry> getSectionEntryList(String url) throws JSONException{
-        String doc = HttpGet.get(url, null);
+    List<NewsEntry> getSectionEntryList(String url) throws JSONException {
+        Request request = new Request.Builder().url(url).build();
+        String doc = null;
+        try {
+            doc = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
         if(doc == null){
             return null;
         }
@@ -131,7 +139,7 @@ public class NPRLoader implements NewsLoader {
             if(item.has("image")) {
                 imageUrl = item.getString("image");
             }
-            imageUrl = imageUrl.replace(".jpg","-s400-c85.jpg");
+            //imageUrl = imageUrl.replace(".jpg","-s400-c85.jpg");
             newsEntry.setTitleImageUrl(imageUrl);
             newsEntry.setDate(item.getString("date_published"));
             newsEntry.setDescription(item.getString("summary"));

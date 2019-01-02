@@ -3,6 +3,7 @@ package com.mmjang.duckmemo.algo;
 import com.mmjang.duckmemo.MyApplication;
 import com.mmjang.duckmemo.data.card.Card;
 import com.mmjang.duckmemo.data.card.CardDao;
+import com.mmjang.duckmemo.data.note.NoteDao;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -95,6 +96,22 @@ public class Scheduler {
             }
         }
         cardDao.update(card);
+    }
+
+    public void removeCardAt(int index){
+        Card card = mCardQueue.get(index);
+        if(card.getInterval() < 0){
+            numNew --;
+        }else{
+            numOld --;
+        }
+        cardDao.delete(card);
+        //there's no card attached to this note, delete it
+        if(cardDao.queryBuilder().where(CardDao.Properties.NoteId.eq(card.getNoteId())).buildCount().count() == 0){
+            MyApplication.getDaoSession().getNoteDao()
+                    .queryBuilder().where(NoteDao.Properties.Id.eq(card.getNoteId()));
+        }
+        mCardQueue.remove(index);
     }
 
     public void doReview(Card card, int quality){

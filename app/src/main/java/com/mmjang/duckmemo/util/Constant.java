@@ -46,5 +46,8 @@ public class Constant {
     public static final String INTENT_DUCKMEMO_NEWS_ENTRY_POSITION_ID = "com.mmjang.duckmemo.news_entry_position_id";
     public static final String INTENT_DUCKMEMO_NEWS_POSITION_INDEX = "com.mmjang.duckmemo.news_position_index";
 
+    public static final String INTENT_DUCKMEMO_NEWS_NOTE_ID = "com.mmjang.duckmemo.note_id";
 
+    public static final int RESULT_ABORTED = 0;
+    public static final int RESULT_SAVED = 1;
 }

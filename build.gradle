@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.kotlin_version = '1.2.71'
     ext.KOTLIN_VERSION='1.2.71'
 
     repositories {
@@ -16,7 +17,8 @@ buildscript {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // add plugin
     }
 }
 
@@ -35,7 +37,7 @@ ext {
     R2_STREAMER_KOTLIN_VERSION = '1.0.3-5'
     R2_SHARED_KOTLIN_VERSION = '1.0.3-2'
 
-    VERSION_NAME = "0.0.4"
+    VERSION_NAME = "0.0.8"
     VERSION_CODE = 124
 
     ANDROID_MIN_SDK = 19

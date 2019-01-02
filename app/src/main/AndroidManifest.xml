@@ -147,13 +147,14 @@
             android:label="Review" />
         <activity
             android:name=".ui.news.NewsListActivity"
-            android:theme="@style/NewsListTheme"
             android:exported="true"
-            android:label="News" />
-        <activity android:name=".ui.news.NewsReaderActivity"
+            android:label="News"
+            android:theme="@style/NewsListTheme" />
+        <activity
+            android:name=".ui.news.NewsReaderActivity"
             android:launchMode="singleTop"
-            android:theme="@style/NewsListTheme"
-            ></activity>
+            android:theme="@style/NewsListTheme" />
+        <activity android:name=".ui.editor.NoteEditorActivity" />
     </application>
 
 </manifest>

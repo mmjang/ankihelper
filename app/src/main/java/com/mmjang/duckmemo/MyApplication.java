@@ -17,6 +17,8 @@ import org.litepal.LitePalApplication;
 
 import java.io.File;
 
+import okhttp3.OkHttpClient;
+
 /**
  * Created by liao on 2017/4/27.
  */
@@ -25,6 +27,7 @@ public class MyApplication extends MultiDexApplication {
     private static Context context;
     private static Application application;
     private static DaoSession daoSession;
+    private static OkHttpClient okHttpClient;
 
     @Override
     public void onCreate() {
@@ -53,5 +56,12 @@ public class MyApplication extends MultiDexApplication {
 
     public static Application getApplication(){
         return application;
+    }
+
+    public static OkHttpClient getOkHttpClient(){
+        if(okHttpClient == null){
+            okHttpClient = new OkHttpClient();
+        }
+        return okHttpClient;
     }
 }

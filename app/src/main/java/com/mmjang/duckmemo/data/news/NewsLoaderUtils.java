@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.mmjang.duckmemo.data.news.loader.AtlanticLoader;
 import com.mmjang.duckmemo.data.news.loader.NPRLoader;
+import com.mmjang.duckmemo.data.news.loader.SCMPLoader;
 import com.mmjang.duckmemo.data.news.loader.ScientificAmericanLoader;
 import com.mmjang.duckmemo.data.news.loader.WPLoader;
 
@@ -16,6 +17,9 @@ import java.util.ListIterator;
 public class NewsLoaderUtils {
     public static List<NewsLoader> getLoaderList(){
         List<NewsLoader> newsLoaderList = new ArrayList<>();
+
+        newsLoaderList.add(new SCMPLoader(SCMPLoader.SECTION_CHINA, "SCMP China"));
+
         newsLoaderList.add(new NPRLoader(NPRLoader.SECTION_NATIONAL, "NPR National"));
         newsLoaderList.add(new NPRLoader(NPRLoader.SECTION_WORLD, "NPR World"));
         newsLoaderList.add(new NPRLoader(NPRLoader.SECTION_SCIENCE, "NPR Science"));
@@ -33,11 +37,16 @@ public class NewsLoaderUtils {
 
         String atPrefix= "Atlantic-";
         newsLoaderList.add(new AtlanticLoader(AtlanticLoader.SECTION_POLITICS, atPrefix +"Politics"));
-        newsLoaderList.add(new AtlanticLoader(AtlanticLoader.SECTION_TECH, atPrefix +"Tech"));
+        //newsLoaderList.add(new AtlanticLoader(AtlanticLoader.SECTION_TECH, atPrefix +"Tech"));
         newsLoaderList.add(new AtlanticLoader(AtlanticLoader.SECTION_ENTERTAINMENT, atPrefix +"Entertainment"));
         newsLoaderList.add(new AtlanticLoader(AtlanticLoader.SECTION_IDEAS, atPrefix +"Ideas"));
 
         newsLoaderList.add(new ScientificAmericanLoader(ScientificAmericanLoader.SECTION_SCIENCES, "Scientific American - Sciences"));
+        newsLoaderList.add(new ScientificAmericanLoader(ScientificAmericanLoader.SECTION_HEALTH, "Scientific American - Health"));
+        newsLoaderList.add(new ScientificAmericanLoader(ScientificAmericanLoader.SECTION_MIND, "Scientific American - Mind"));
+        newsLoaderList.add(new ScientificAmericanLoader(ScientificAmericanLoader.SECTION_TECH, "Scientific American - Tech"));
+        newsLoaderList.add(new ScientificAmericanLoader(ScientificAmericanLoader.SECTION_SUSTAINABILITY, "Scientific American - Sustainability"));
+
         return newsLoaderList;
     }
 

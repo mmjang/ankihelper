@@ -155,6 +155,7 @@
             android:launchMode="singleTop"
             android:theme="@style/NewsListTheme" />
         <activity android:name=".ui.editor.NoteEditorActivity" />
+        <activity android:name=".ui.browser.NoteBrowserActivity"></activity>
     </application>
 
 </manifest>

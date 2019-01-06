@@ -52,7 +52,7 @@ dependencies {
     //api 'com.ichi2.anki:api:1.1.0alpha5'
     //noinspection GradleDynamicVersion
     api 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
-    api 'org.litepal.android:core:1.5.1'
+    //api 'org.litepal.android:core:1.5.1'
     implementation 'com.android.support:design:28.0.0'
     implementation 'me.everything:overscroll-decor-android:1.0.4'
     implementation 'org.apmem.tools:layouts:1.10@aar'

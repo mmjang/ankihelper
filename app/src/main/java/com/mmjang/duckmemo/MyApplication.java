@@ -13,8 +13,6 @@ import com.mmjang.duckmemo.util.Constant;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.greendao.database.Database;
-import org.litepal.LitePalApplication;
-
 import java.io.File;
 
 import okhttp3.OkHttpClient;
@@ -34,7 +32,6 @@ public class MyApplication extends MultiDexApplication {
         super.onCreate();
         context = getApplicationContext();
         application = this;
-        LitePalApplication.initialize(context);
         CrashReport.initCrashReport(getApplicationContext(), "398dc6145b", false);
         AndroidThreeTen.init(this);
     }

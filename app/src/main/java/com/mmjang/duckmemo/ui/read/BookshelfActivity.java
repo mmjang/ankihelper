@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -28,11 +27,7 @@ import com.mmjang.duckmemo.R;
 import com.mmjang.duckmemo.data.Settings;
 import com.mmjang.duckmemo.data.book.Book;
 import com.mmjang.duckmemo.data.book.DefaultBook;
-import com.mmjang.duckmemo.data.database.ExternalDatabase;
-import com.mmjang.duckmemo.ui.plan.PlansAdapter;
-import com.mmjang.duckmemo.ui.plan.PlansManagerActivity;
 import com.mmjang.duckmemo.util.FileUtils;
-import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +56,7 @@ public class BookshelfActivity extends AppCompatActivity implements
                     break;
                 case BOOK_IMPORT_SUCCESSFUL:
                     Book book = (Book) msg.obj;
-                    ExternalDatabase.getInstance().insertBook(book);
+                    //ExternalDatabase.getInstance().insertBook(book);
                     mBookList.add(0, book);
                     mBooksAdapter.notifyDataSetChanged();
                     break;
@@ -89,18 +84,18 @@ public class BookshelfActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        List<Book> newList = ExternalDatabase.getInstance().getLastBooks();
-        mBookList.clear();
-        onLoadingDefaultBooks(mBookList);
-        mBookList.addAll(newList);
-        mBooksAdapter.notifyDataSetChanged();
+//        //List<Book> newList = ExternalDatabase.getInstance().getLastBooks();
+//        mBookList.clear();
+//        onLoadingDefaultBooks(mBookList);
+//        mBookList.addAll(newList);
+//        mBooksAdapter.notifyDataSetChanged();
     }
 
     private void onLoadingDefaultBooks(List<Book> mBookList) {
         if(Settings.getInstance(this).getFirstTimeRunningReader() && mBookList.size() == 0){
             for(Book book : DefaultBook.getDefaultBook()){
                 mBookList.add(book);
-                ExternalDatabase.getInstance().insertBook(book);
+          //      ExternalDatabase.getInstance().insertBook(book);
             }
             Settings.getInstance(this).setFirstTimeRunningReader(false);
         }
@@ -184,15 +179,15 @@ public class BookshelfActivity extends AppCompatActivity implements
     }
 
     void onOpenBook(final Book book){
-        mCurrentBook = ExternalDatabase.getInstance().refreshBook(book);
-        mCurrentBook.setLastOpenTime(System.currentTimeMillis());
-        if(!book.getReadPosition().isEmpty()){
-            ReadPosition readPosition = ReadPositionImpl.createInstance(mCurrentBook.getReadPosition());
-            //Toast.makeText(this, readPosition.toJson(), Toast.LENGTH_SHORT).show();
-            folioReader.setReadPosition(readPosition);
-        }
-        ExternalDatabase.getInstance().updateBook(mCurrentBook);
-        folioReader.openBook(book.getBookPath());
+//        mCurrentBook = ExternalDatabase.getInstance().refreshBook(book);
+//        mCurrentBook.setLastOpenTime(System.currentTimeMillis());
+//        if(!book.getReadPosition().isEmpty()){
+//            ReadPosition readPosition = ReadPositionImpl.createInstance(mCurrentBook.getReadPosition());
+//            //Toast.makeText(this, readPosition.toJson(), Toast.LENGTH_SHORT).show();
+//            folioReader.setReadPosition(readPosition);
+//        }
+//        ExternalDatabase.getInstance().updateBook(mCurrentBook);
+//        folioReader.openBook(book.getBookPath());
     }
 
     @Override
@@ -207,8 +202,8 @@ public class BookshelfActivity extends AppCompatActivity implements
 
     @Override
     public void saveReadPosition(ReadPosition readPosition) {
-        //Toast.makeText(this, readPosition.toJson(), Toast.LENGTH_SHORT).show();
-        mCurrentBook.setReadPosition(readPosition.toJson());
-        ExternalDatabase.getInstance().updateBook(mCurrentBook);
+//        //Toast.makeText(this, readPosition.toJson(), Toast.LENGTH_SHORT).show();
+//        mCurrentBook.setReadPosition(readPosition.toJson());
+//        ExternalDatabase.getInstance().updateBook(mCurrentBook);
     }
 }

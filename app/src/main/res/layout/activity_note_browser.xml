@@ -12,4 +12,11 @@
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/note_list_progressbar"
+        android:layout_margin="40dp"
+        />
+
 </android.support.design.widget.CoordinatorLayout>

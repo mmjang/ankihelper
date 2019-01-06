@@ -1,24 +1,16 @@
 package com.mmjang.duckmemo.util;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
-import android.util.TypedValue;
 import android.view.inputmethod.InputMethodManager;
-import com.mmjang.duckmemo.MyApplication;
-import com.mmjang.duckmemo.R;
+
 import com.mmjang.duckmemo.data.dict.Definition;
-import com.mmjang.duckmemo.data.plan.OutputPlan;
-import com.mmjang.duckmemo.data.plan.OutputPlanPOJO;
-import com.mmjang.duckmemo.ui.LauncherActivity;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -146,18 +138,18 @@ public class Utils {
         return sb.toString();
     }
 
-    public static boolean containsTranslationField(OutputPlanPOJO outputPlan){
-        if(outputPlan == null){
-            return false;
-        }
-        Map<String, String> map = outputPlan.getFieldsMap();
-        for(String key : map.keySet()){
-            if(map.get(key).equals("句子翻译")){
-                return true;
-            }
-        }
-        return false;
-    }
+//    public static boolean containsTranslationField(OutputPlanPOJO outputPlan){
+//        if(outputPlan == null){
+//            return false;
+//        }
+//        Map<String, String> map = outputPlan.getFieldsMap();
+//        for(String key : map.keySet()){
+//            if(map.get(key).equals("句子翻译")){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     public static int getResIdFromAttribute(final Activity activity,final int attr)
     {

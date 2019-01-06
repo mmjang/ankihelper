@@ -1,8 +1,5 @@
 package com.mmjang.duckmemo.data.history;
 
-import com.mmjang.duckmemo.data.database.ExternalDatabase;
-
-import org.litepal.crud.DataSupport;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -28,7 +25,7 @@ public class HistoryStat {
                 .toInstant(OffsetDateTime.now().getOffset()).toEpochMilli();
 //        dataOfLastDays = DataSupport.where("timestamp > ?", Long.toString(startOfLastDays))
 //                .find(History.class);
-        dataOfLastDays = ExternalDatabase.getInstance().getHistoryAfter(startOfLastDays);
+//        dataOfLastDays = ExternalDatabase.getInstance().getHistoryAfter(startOfLastDays);
     }
 
 //    public int getDayCount(int type){

@@ -7,7 +7,6 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
-import com.mmjang.duckmemo.data.database.ExternalDatabase;
 import com.mmjang.duckmemo.util.Constant;
 
 import java.io.File;

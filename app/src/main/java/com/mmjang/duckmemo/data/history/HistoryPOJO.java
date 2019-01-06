@@ -1,8 +1,5 @@
 package com.mmjang.duckmemo.data.history;
 
-import org.litepal.annotation.Column;
-import org.litepal.crud.DataSupport;
-
 public class HistoryPOJO {
     private long timeStamp;
     private int type;

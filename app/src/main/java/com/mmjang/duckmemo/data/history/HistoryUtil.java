@@ -1,7 +1,5 @@
 package com.mmjang.duckmemo.data.history;
 
-import com.mmjang.duckmemo.data.database.ExternalDatabase;
-
 //private long timeStamp;
 //private int type;
 //private String word;
@@ -18,7 +16,6 @@ public class HistoryUtil {
         history.setType(HistoryType.POPUP_OPEN);
         history.setTimeStamp(System.currentTimeMillis());
         history.setSentence(sentence);
-        ExternalDatabase.getInstance().insertHistory(history);
         }
 
     public static void saveWordlookup(String sentence, String word){
@@ -27,7 +24,7 @@ public class HistoryUtil {
         history.setTimeStamp(System.currentTimeMillis());
         history.setSentence(sentence);
         history.setWord(word);
-        ExternalDatabase.getInstance().insertHistory(history);
+//        ExternalDatabase.getInstance().insertHistory(history);
     }
 
     public static void saveNoteAdd(String sentence, String word,
@@ -43,6 +40,6 @@ public class HistoryUtil {
         history.setTranslation(translation);
         history.setNote(note);
         history.setTag(tag);
-        ExternalDatabase.getInstance().insertHistory(history);
+  //      ExternalDatabase.getInstance().insertHistory(history);
     }
 }

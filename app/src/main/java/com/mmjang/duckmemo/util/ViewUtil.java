@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -17,8 +18,11 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.mmjang.duckmemo.MyApplication;
+
+import org.w3c.dom.Text;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -136,6 +140,15 @@ public class ViewUtil {
 
     public static int getSceenHeight(Activity activity) {
         return activity.getWindowManager().getDefaultDisplay().getHeight() + getNavigationBarHeight(activity);
+    }
+
+    public static void setCardHtml(TextView tv, String s) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            tv.setText(Html.fromHtml(s, Html.FROM_HTML_MODE_COMPACT));
+        }
+        else{
+            tv.setText(Html.fromHtml(s));
+        }
     }
 
 

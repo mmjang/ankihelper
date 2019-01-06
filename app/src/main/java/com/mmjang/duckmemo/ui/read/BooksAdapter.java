@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import com.mmjang.duckmemo.R;
 import com.mmjang.duckmemo.data.book.Book;
-import com.mmjang.duckmemo.data.database.ExternalDatabase;
-import com.mmjang.duckmemo.data.plan.OutputPlanPOJO;
 import com.mmjang.duckmemo.ui.plan.helper.ItemTouchHelperAdapter;
 import com.mmjang.duckmemo.ui.plan.helper.ItemTouchHelperViewHolder;
 
@@ -90,7 +88,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         int pos = holder.getAdapterPosition();
                                         //mBookList.get(pos).delete();
-                                        ExternalDatabase.getInstance().deleteBook(mBookList.get(pos));
+//                                        ExternalDatabase.getInstance().deleteBook(mBookList.get(pos));
                                         mBookList.remove(pos);
                                         notifyItemRemoved(pos);
                                     }

@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/menu_item_stat"
-        android:title="@string/menu_title_statistics"
-        app:showAsAction="always"
-        />
+    <!--<item-->
+        <!--android:id="@+id/menu_item_stat"-->
+        <!--android:title="@string/menu_title_statistics"-->
+        <!--app:showAsAction="always"-->
+        <!--/>-->
 
     <item
-        android:id="@+id/menu_item_book_shelf"
-        android:title="News"
-        app:showAsAction="always"
-        />
-
-    <item
-        android:id="@+id/menu_item_reviewer"
+        android:id="@+id/drawer_reviewer"
         android:title="REVIEW"
+        android:icon="@drawable/ic_review"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/drawer_note_list"
+        android:title="BROWSE"
+        android:icon="@drawable/ic_browse"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/drawer_settings"
+        android:title="SETTINGS"
+        android:icon="@drawable/ic_settings"
         app:showAsAction="always"
         />
 </menu>

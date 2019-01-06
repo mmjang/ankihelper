@@ -1,14 +1,9 @@
 package com.mmjang.duckmemo.ui;
 
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.folioreader.FolioReader;
 import com.folioreader.model.HighLight;
@@ -16,16 +11,7 @@ import com.folioreader.model.ReadPosition;
 import com.folioreader.util.OnHighlightListener;
 import com.folioreader.util.ReadPositionListener;
 import com.mmjang.duckmemo.R;
-import com.mmjang.duckmemo.data.content.ContentEntity;
-import com.mmjang.duckmemo.data.content.ExternalContent;
-import com.mmjang.duckmemo.data.database.ExternalDatabaseHelper;
-import com.mmjang.duckmemo.data.history.HistoryStat;
-import com.mmjang.duckmemo.data.history.HistoryType;
-import com.mmjang.duckmemo.data.plan.OutputPlan;
-import org.litepal.crud.DataSupport;
-
 import java.io.File;
-import java.util.List;
 
 public class TestActivity extends AppCompatActivity  implements OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener{
     private FolioReader folioReader;

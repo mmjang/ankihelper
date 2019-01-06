@@ -1,10 +1,5 @@
 package com.mmjang.duckmemo.data.dict.customdict;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
-import com.mmjang.duckmemo.data.dict.CustomDictionary;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;

@@ -54,10 +54,11 @@
                     android:orientation="vertical">
 
                     <android.support.v7.widget.CardView
+                        android:visibility="visible"
                         android:id="@+id/bigbang_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="7dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="12dp"
                         android:layout_gravity="center"
@@ -67,8 +68,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
-
+                            <!--<LinearLayout-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="30dp">-->
+                                <!--<ImageButton-->
+                                    <!--android:layout_width="match_parent"-->
+                                    <!--android:layout_height="match_parent"-->
+                                    <!--android:src="@drawable/ic_circle_arrow_down"-->
+                                    <!--android:background="@color/transparent"-->
+                                    <!--android:scaleType="centerInside"-->
+                                    <!--android:layout_gravity="center"-->
+                                    <!--android:layout_marginTop="3dp"-->
+                                    <!--android:layout_marginBottom="3dp"-->
+                                    <!--/>-->
+                            <!--</LinearLayout>-->
                         <com.mmjang.duckmemo.ui.widget.BigBangLayoutWrapper
+                            android:visibility="visible"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/bigbang_wrapper"/>

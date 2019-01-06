@@ -6,8 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,7 +28,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -45,29 +42,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.folioreader.model.dictionary.Dictionary;
 import com.mmjang.duckmemo.MyApplication;
 import com.mmjang.duckmemo.R;
 import com.mmjang.duckmemo.data.Settings;
-import com.mmjang.duckmemo.data.database.ExternalDatabase;
 import com.mmjang.duckmemo.data.dict.Definition;
 import com.mmjang.duckmemo.data.dict.DictionaryRegister;
 import com.mmjang.duckmemo.data.dict.IDictionary;
 import com.mmjang.duckmemo.data.history.HistoryUtil;
-import com.mmjang.duckmemo.data.model.UserTag;
 import com.mmjang.duckmemo.data.note.Addable;
 import com.mmjang.duckmemo.data.note.DBExporter;
 import com.mmjang.duckmemo.data.note.Exporter;
 import com.mmjang.duckmemo.data.note.Note;
-import com.mmjang.duckmemo.data.plan.OutputPlan;
-import com.mmjang.duckmemo.data.plan.OutputPlanPOJO;
 import com.mmjang.duckmemo.data.tag.Tag;
 import com.mmjang.duckmemo.data.tag.TagDao;
 import com.mmjang.duckmemo.domain.CBWatcherService;
-import com.mmjang.duckmemo.domain.PlayAudioManager;
-import com.mmjang.duckmemo.domain.PronounceManager;
-import com.mmjang.duckmemo.ui.LauncherActivity;
-import com.mmjang.duckmemo.ui.plan.PlanEditorActivity;
 import com.mmjang.duckmemo.ui.widget.BigBangLayout;
 import com.mmjang.duckmemo.ui.widget.BigBangLayoutWrapper;
 import com.mmjang.duckmemo.util.Constant;
@@ -76,23 +64,12 @@ import com.mmjang.duckmemo.util.RegexUtil;
 import com.mmjang.duckmemo.util.TextSplitter;
 import com.mmjang.duckmemo.util.Translator;
 import com.mmjang.duckmemo.util.Utils;
-
-import org.litepal.crud.DataSupport;
-import org.w3c.dom.Text;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
-
-import static com.mmjang.duckmemo.util.FieldUtil.getBlankSentence;
-import static com.mmjang.duckmemo.util.FieldUtil.getBoldSentence;
-import static com.mmjang.duckmemo.util.FieldUtil.getNormalSentence;
 
 
 public class PopupActivity extends Activity implements BigBangLayoutWrapper.ActionListener{
@@ -175,6 +152,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         Toast.makeText(PopupActivity.this, result, Toast.LENGTH_SHORT).show();
                         break;
                     }
+                    mTranslatedResult = result;
                     mEditTextTranslation.setText((result));
                     showTranslateDone();
                     showTranslationCardView(true);
@@ -480,6 +458,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             Toast.makeText(PopupActivity.this, "未勾选释义，已保存全部释义", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(PopupActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                        }
+
+                        if(Settings.getInstance(PopupActivity.this).getAutoCancelPopupQ()){
+                            finish();
                         }
                     }
                 }

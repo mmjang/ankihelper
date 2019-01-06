@@ -23,24 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mmjang.duckmemo.R;
-import com.mmjang.duckmemo.data.database.ExternalDatabase;
-import com.mmjang.duckmemo.data.database.MigrationUtil;
-import com.mmjang.duckmemo.data.plan.OutputPlanPOJO;
 import com.mmjang.duckmemo.domain.CBWatcherService;
-import com.mmjang.duckmemo.MyApplication;
 import com.mmjang.duckmemo.data.Settings;
 import com.mmjang.duckmemo.ui.about.AboutActivity;
+import com.mmjang.duckmemo.ui.browser.NoteBrowserActivity;
 import com.mmjang.duckmemo.ui.content.ContentActivity;
-import com.mmjang.duckmemo.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.duckmemo.ui.news.NewsListActivity;
-import com.mmjang.duckmemo.ui.plan.PlansManagerActivity;
-import com.mmjang.duckmemo.ui.read.BookshelfActivity;
 import com.mmjang.duckmemo.ui.review.ReviewerActivity;
 import com.mmjang.duckmemo.ui.stat.StatActivity;
 import com.mmjang.duckmemo.util.Constant;
 
 import java.io.File;
-import java.util.List;
 
 public class LauncherActivity extends AppCompatActivity {
 
@@ -205,31 +198,35 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_about_menu_entry, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.activity_about_menu_entry, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_book_shelf:
-                Intent intent = new Intent(this, NewsListActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.menu_item_stat:
-                Intent intent2 = new Intent(this, StatActivity.class);
-                startActivity(intent2);
-                break;
-            case R.id.menu_item_reviewer:
-                Intent intent3 = new Intent(this, ReviewerActivity.class);
-                startActivity(intent3);
-                break;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menu_item_book_shelf:
+//                Intent intent = new Intent(this, NewsListActivity.class);
+//                startActivity(intent);
+//                break;
+////            case R.id.menu_item_stat:
+////                Intent intent2 = new Intent(this, StatActivity.class);
+////                startActivity(intent2);
+////                break;
+//            case R.id.menu_item_reviewer:
+//                Intent intent3 = new Intent(this, ReviewerActivity.class);
+//                startActivity(intent3);
+//                break;
+//            case R.id.menu_item_note_list:
+//                Intent intent4 = new Intent(this, NoteBrowserActivity.class);
+//                startActivity(intent4);
+//                break;
+//        }
+//        return true;
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -238,21 +235,6 @@ public class LauncherActivity extends AppCompatActivity {
             return;
         }
 
-        if (requestCode == REQUEST_CODE_ANKI) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                initStoragePermission();
-            } else {
-                //Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
-                new AlertDialog.Builder(LauncherActivity.this)
-                        .setMessage(R.string.permission_denied)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                openSettingsPage();
-                            }
-                        }).show();
-            }
-        }
         if (requestCode == REQUEST_CODE_STORAGE) {
             if (requestCode == REQUEST_CODE_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 ensureExternalDbDirectoryAndMigrate();
@@ -261,7 +243,6 @@ public class LauncherActivity extends AppCompatActivity {
                 Toast.makeText(this, "storage permission denied, go to the settings and grant it manually!", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
     private void ensureExternalDbDirectoryAndMigrate() {
@@ -275,12 +256,12 @@ public class LauncherActivity extends AppCompatActivity {
             f2.mkdir();
         }
 
-        if (!settings.getOldDataMigrated() && MigrationUtil.needMigration()) {
-            Toast.makeText(this, "正在迁移旧版数据请稍等...", Toast.LENGTH_LONG).show();
-            MigrationUtil.migrate();
-            Toast.makeText(this, "旧版数据迁移完成！", Toast.LENGTH_SHORT).show();
-            settings.setOldDataMigrated(true);
-        }
+//        if (!settings.getOldDataMigrated() && MigrationUtil.needMigration()) {
+//            Toast.makeText(this, "正在迁移旧版数据请稍等...", Toast.LENGTH_LONG).show();
+//            MigrationUtil.migrate();
+//            Toast.makeText(this, "旧版数据迁移完成！", Toast.LENGTH_SHORT).show();
+//            settings.setOldDataMigrated(true);
+//        }
     }
 
     private void startCBService() {

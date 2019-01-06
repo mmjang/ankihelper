@@ -8,13 +8,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/icon_light"
+        android:icon="@drawable/icon_duck_2"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icon_light"
+        android:roundIcon="@drawable/ic_duck"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -41,22 +42,6 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.plan.PlansManagerActivity"
-            android:label="@string/title_activity_plans_manager"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.duckmemo.ui.LauncherActivity" />
-        </activity>
-        <activity
-            android:name=".ui.plan.PlanEditorActivity"
-            android:label="@string/title_activity_plan_editor"
-            android:windowSoftInputMode="stateAlwaysHidden">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.duckmemo.ui.plan.PlansManagerActivity" />
-        </activity>
 
         <service
             android:name=".domain.CBWatcherService"
@@ -66,22 +51,12 @@
 
         <activity
             android:name=".ui.LauncherActivity"
+            android:label="Settings"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".ui.about.AboutActivity" />
-        <activity
-            android:name=".ui.customdict.CustomDictionaryActivity"
-            android:label="@string/btn_open_custom_dicitonary_str"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.duckmemo.ui.LauncherActivity" />
-        </activity>
+        <activity android:name=".ui.about.AboutActivity"
+            android:label="@string/btn_about_and_support_str"
+            />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -148,14 +123,20 @@
         <activity
             android:name=".ui.news.NewsListActivity"
             android:exported="true"
-            android:label="News"
-            android:theme="@style/NewsListTheme" />
+            android:theme="@style/NewsListTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.news.NewsReaderActivity"
             android:launchMode="singleTop"
             android:theme="@style/NewsListTheme" />
         <activity android:name=".ui.editor.NoteEditorActivity" />
-        <activity android:name=".ui.browser.NoteBrowserActivity"></activity>
+        <activity android:name=".ui.browser.NoteBrowserActivity"
+            android:label="Note Browser"
+            ></activity>
     </application>
 
 </manifest>

@@ -36,6 +36,7 @@ public class Settings {
     private final static String READER_FONT_CLASS = "reader_font_class";
     private final static String READER_BACKGROUND_INDEX = "reader_background_index";
     private final static String LAST_NEWS_SOURCE_INDEX = "last_news_source_index";
+    private final static String LAST_NOTE_BROWSER_VISIBILITY_STATE = "last_note_browser_visibility_state";
 
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -243,6 +244,15 @@ public class Settings {
 
     public void setLastNewsSourceIndex(int lastNewsSourceIndex){
         editor.putInt(LAST_NEWS_SOURCE_INDEX, lastNewsSourceIndex);
+        editor.commit();
+    }
+
+    public boolean getLastNoteBrowserVisibilityState(){
+        return sp.getBoolean(LAST_NOTE_BROWSER_VISIBILITY_STATE, true);
+    }
+
+    public void setLastNoteBrowserVisibilityState(boolean lastNoteBrowserVisibilityState){
+        editor.putBoolean(LAST_NOTE_BROWSER_VISIBILITY_STATE, lastNoteBrowserVisibilityState);
         editor.commit();
     }
 

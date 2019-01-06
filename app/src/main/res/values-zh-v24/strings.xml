@@ -22,7 +22,7 @@
     <string name="str_failed_add">出错！请检查方案设置，输出字段不能全部为“空”.</string>
     <string name="str_plan_name_should_not_be_blank">方案名不能为空</string>
     <string name="str_about">About</string>
-    <string name="about_message">本项目在 GPL-3.0 协议下开源。 <a href="https://github.com/mmjang/ankihelper">GitHub 主页</a>\n快揭不开锅了，跪求打赏 ( ´•̥̥̥ω•̥̥̥` )</string>
+    <string name="about_message">本项目在 GPL-3.0 协议下开源。 <a href="https://github.com/mmjang/ankihelper/tree/duck">GitHub 主页</a>\n图标由❤ @瓦独鱼 设计\n快揭不开锅了，跪求打赏 ( ´•̥̥̥ω•̥̥̥` )</string>
     <string name="confirm_deletion">确认删除？</string>
     <string name="save_plan_error_all_blank">保存失败，输出字段不能全部为空！</string>
     <!--Plan-->
@@ -33,7 +33,7 @@
     <string name="confirm_add_default_plan">您还没有任何划词方案，是否写入默认方案(柯林斯词典)？</string>
     <string name="default_plan_added">默认方案已添加，可在方案管理器中查看</string>
     <string name="btn_help_str">❓帮助</string>
-    <string name="btn_about_and_support_str">打赏(´,,•ω•,,)♡</string>
+    <string name="btn_about_and_support_str">关于</string>
     <string name="confirm_add_default_plan_when_exists_already">已存在划词方案，确认添加默认方案（柯林斯词典）？</string>
     <string name="btn_add_default_plan_str">♻️添加默认方案</string>
     <string name="duplicate_plan_name_complain">已存在默认方案，不得重复添加。可在方案管理器中删除后再添加。</string>

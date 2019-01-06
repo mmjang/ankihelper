@@ -21,7 +21,7 @@
     <string name="tag_cant_be_blank">Tag can\'t be blank!</string>
     <string name="definition_not_found">Definition not found</string>
     <string name="str_about">About</string>
-    <string name="about_message">I\'m Zha Maomiao(aka mmjang), this project is open-sourced. <a href="https://github.com/mmjang/ankihelper">Check it out on github.</a></string>
+    <string name="about_message">I\'m Zha Maomiao(aka mmjang), this project is open-sourced. <a href="https://github.com/mmjang/ankihelper/tree/duck">Check it out on github.</a> \n App icon designed by ❤ @瓦独鱼</string>
     <string name="confirm_deletion">Delete?</string>
     <string name="save_plan_error_all_blank">Failed to save. All fields are empty!</string>
     <string name="plan_anki_not_started">please start ankidroid first!</string>
@@ -31,7 +31,7 @@
     <string name="confirm_add_default_plan">No plans found, add default?</string>
     <string name="default_plan_added">Default plan added, check out at plans manager</string>
     <string name="btn_help_str">Help</string>
-    <string name="btn_about_and_support_str">Donate</string>
+    <string name="btn_about_and_support_str">About</string>
     <string name="confirm_add_default_plan_when_exists_already">Add default plan(Collins dictionary)?</string>
     <string name="btn_add_default_plan_str">add default plan</string>
     <string name="duplicate_plan_name_complain">Default plan already exists, delete it in plans manager first.</string>

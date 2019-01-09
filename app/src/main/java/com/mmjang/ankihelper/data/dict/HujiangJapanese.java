@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.google.common.net.UrlEscapers;
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.util.Constant;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -52,6 +53,8 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Request;
 
 import static org.jsoup.helper.HttpConnection.DEFAULT_UA;
 
@@ -97,13 +100,20 @@ public class HujiangJapanese implements IDictionary {
 //                    .execute();
 //            Map<String, String> cookies = res.cookies();
 
-            Document doc = Jsoup.connect(wordUrl + key)
-                    .userAgent(DEFAULT_UA)
-                    .header("cookie", COOKIE)
-                    //.cookies(cookies)
-                    .timeout(5000)
-                    .get();
-            String html = doc.toString();
+//            Document doc = Jsoup.connect(wordUrl + key)
+//                    .userAgent(DEFAULT_UA)
+//                    .header("cookie", COOKIE)
+//                    //.cookies(cookies)
+//                    .timeout(5000)
+//                    .get();
+//
+            Request request = new Request.Builder().url(wordUrl + key)
+                    .addHeader("User-Agent", Constant.UA)
+                    .addHeader("Cookie",COOKIE)
+                    .build();
+            String html = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+            Document doc = Jsoup.parse(html);
+            //String html = doc.toString();
             Elements entrys = doc.select("div.word-details-pane");
             ArrayList<Definition> defList = new ArrayList<>();
             if (entrys.size() > 0) {

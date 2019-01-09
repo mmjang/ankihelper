@@ -90,7 +90,7 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
                 re.add(toDefinition(YoudaoOnline.getDefinition(key)));
             }
             catch (IOException e){
-                Toast.makeText(mContext, "本地词典未查到，有道词典在线查询失败，请检查网络连接", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "本地词典未查到，有道词典在线查询失败，请检查网络连接", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -138,6 +138,9 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
     private ArrayList<Definition> queryDefinition(String q) {
         //SQLiteDatabase db = getReadableDatabase();
         ArrayList<Definition> re = new ArrayList<>();
+        if(q.isEmpty()){
+            return re;
+        }
         Cursor cursor = db.query(TABLE_DICT,
                 new String[]{FIELD_HWD, FIELD_DISPLAYED_HWD, FIELD_PHRASE,
                         FIELD_PHONETICS, FIELD_SENSE, FIELD_EXT, FIELD_DEF_EN, FIELD_DEF_CN},

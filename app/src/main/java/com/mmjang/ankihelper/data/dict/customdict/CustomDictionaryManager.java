@@ -27,7 +27,7 @@ public class CustomDictionaryManager {
     private static final String DICTIONARY_FILE_EXTENSION = ".txt";
     private static final String DEFAULT_ENCODING = "UTF8";
     private static final String EQUAL = "=";
-    private static final int MAX_ENTRIES_ONE_WRITE = 1000;
+    private static final int MAX_ENTRIES_ONE_WRITE = 100000;
     private static final String META= "META";
     private static final String ENDMETA= "ENDMETA";
     private static final String META_VERSION = "VERSION";
@@ -117,6 +117,7 @@ public class CustomDictionaryManager {
             String tmpl = ""; //if empty, just join all fields.
             String[] fields = new String[0];
             List<String[]> entries = new LinkedList<>();
+            db.dropHwdIndex();
             try {
                   while((line = br.readLine()) != null){
 
@@ -203,9 +204,11 @@ public class CustomDictionaryManager {
                   //insert remaining entries
                   db.addEntries(id, entries);
                   db.addDictionaryInformation(id, dictName, dictLang, fields, dictIntro, tmpl);
+                  db.createHwdIndex();
 
             } catch (IOException e) {
                 e.printStackTrace();
+                db.createHwdIndex();
                 return false;
             }
         }

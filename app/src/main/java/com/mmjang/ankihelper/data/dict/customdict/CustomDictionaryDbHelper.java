@@ -15,13 +15,14 @@ import java.util.List;
  */
 
 public class CustomDictionaryDbHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "CustomDictionary.db";
     private static final String SQL_CREATE_DICT_TABLE = "CREATE TABLE IF NOT EXISTS dict" +
                                                         "(id integer, name text, lang text, " +
                                                         "elements text, description text, tmpl text)";
     private static final String SQL_CREATE_ENTRY_TABLE = "CREATE TABLE IF NOT EXISTS entry" +
                                                         "(dict_id integer, headword text, entry_texts text)";
+    private static final String SQL_CREATE_INDEX = "CREATE INDEX IF NOT EXISTS headword_index ON entry (headword)";
     private static final String SQL_CLEAR_DB = "DELETE FROM dict; DELETE FROM entry; VACUUM";
     private static final String TB_DICT = "dict";
     private static final String TB_ENTRY = "entry";
@@ -43,11 +44,14 @@ public class CustomDictionaryDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_DICT_TABLE);
         db.execSQL(SQL_CREATE_ENTRY_TABLE);
+        db.execSQL(SQL_CREATE_INDEX);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if((oldVersion == 1||oldVersion == 2) && newVersion == 3){
+            db.execSQL(SQL_CREATE_INDEX);
+        }
     }
 
     public void clearDB(){
@@ -80,7 +84,7 @@ public class CustomDictionaryDbHelper extends SQLiteOpenHelper {
             }
             ContentValues values = new ContentValues();
             values.put(CL_DICT_ID, dictId);
-            values.put(CL_HEADWORD, entry[0]);   //must have at least 2 columns, enforced in manager
+            values.put(CL_HEADWORD, entry[0].toLowerCase());   //must have at least 2 columns, enforced in manager
             String[] elements = entry;//Arrays.copyOfRange(entry, 1, entry.length - 1);
             values.put(CL_ENTRY_TEXTS, joinFields(elements));
             db.insert(TB_ENTRY, null, values);
@@ -155,10 +159,12 @@ public class CustomDictionaryDbHelper extends SQLiteOpenHelper {
     }
 
     public List<String[]> queryHeadword(int dictId, String q){
+        //don't use collate nocase, it makes index not working.
+        q = q.toLowerCase();
         Cursor cursor = getReadableDatabase().query(
                 TB_ENTRY,
                 new String[] {CL_ENTRY_TEXTS},
-                CL_DICT_ID + "=? AND " + CL_HEADWORD + "=? COLLATE NOCASE",
+                CL_DICT_ID + "=? AND " + CL_HEADWORD + "=?",
                 new String[]{String.valueOf(dictId), q}
                 ,null,null,null);
         List<String[]> result = new ArrayList<>();
@@ -179,4 +185,5 @@ public class CustomDictionaryDbHelper extends SQLiteOpenHelper {
     private static String[] fromFieldsString(String fieldsString){
         return fieldsString.split(SPLITTER);
     }
+
 }

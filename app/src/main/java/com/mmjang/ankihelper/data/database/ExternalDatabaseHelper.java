@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class ExternalDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "ankihelper.db";
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
     Context mContext;
 
     private static final String SQL_CREATE_HISTORY = String.format(
@@ -33,6 +33,10 @@ public class ExternalDatabaseHelper extends SQLiteOpenHelper {
             "elements text, description text, tmpl text)";
     private static final String SQL_CREATE_ENTRY_TABLE = "CREATE TABLE IF NOT EXISTS entry" +
             "(dict_id integer, headword text, entry_texts text)";
+
+    private static final String SQL_CREATE_INDEX = "CREATE INDEX IF NOT EXISTS headword_index ON entry (headword)";
+    private static final String SQL_DROP_INDEX = "DROP INDEX IF EXISTS headword_index";
+
 
     private static final String SQL_CREATE_BOOK_TABLE = String.format(
             "create table if not exists %s (%s integer, %s integer, %s text, %s text, %s text, %s text)",
@@ -63,5 +67,11 @@ public class ExternalDatabaseHelper extends SQLiteOpenHelper {
         if(oldVersion == 1 && newVersion == 2){
             db.execSQL(SQL_CREATE_BOOK_TABLE);
         }
+
+        if((oldVersion == 2) && newVersion == 3){
+            db.execSQL(SQL_CREATE_INDEX);
+        }
     }
+
+
 }

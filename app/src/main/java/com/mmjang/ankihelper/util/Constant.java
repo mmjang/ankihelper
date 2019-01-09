@@ -41,5 +41,6 @@ public class Constant {
     public static final String RIGHT_BOLD_SUBSTITUDE = "☽";
 
     public static final String INTENT_ANKIHELPER_CONTENT_INDEX = "com.mmjang.ankihelper.content_index";
-
+    public static final String UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
+            "(KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36";
 }

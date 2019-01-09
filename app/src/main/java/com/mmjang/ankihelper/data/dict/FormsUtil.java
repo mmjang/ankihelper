@@ -38,6 +38,9 @@ public class FormsUtil extends SQLiteAssetHelper{
         while (cursor.moveToNext()) {
             bases = cursor.getString(0);
         }
+        if(bases.isEmpty()){
+            return new String[0];
+        }
         return bases.split("@@@");
     }
 }

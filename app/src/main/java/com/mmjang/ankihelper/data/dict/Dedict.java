@@ -6,6 +6,7 @@ import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.util.Constant;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,6 +17,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Request;
+
+import static com.mmjang.ankihelper.util.Constant.UA;
 
 /**
  * Created by liao on 2017/4/28.
@@ -54,11 +59,16 @@ public class Dedict implements IDictionary {
             String frFrDef = "";
             String frEnDef = "";
 
-            Document doc = Jsoup.connect(wordUrl + key)
-                    .userAgent("Mozilla")
-                    .cookie("auth", "token")
-                    .timeout(3000)
-                    .get();
+//            Document doc = Jsoup.connect(wordUrl + key)
+//                    .userAgent("Mozilla")
+//                    .cookie("auth", "token")
+//                    .timeout(3000)
+//                    .get();
+            Request request = new Request.Builder().url(wordUrl + key)
+                    .header("User-Agent", Constant.UA)
+                    .build();
+            String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+            Document doc = Jsoup.parse(rawhtml);
             Elements word = doc.select("h2.word > span.word");
             if (word.size() == 1) {
                 headWrod = word.get(0).text().trim();

@@ -1,5 +1,7 @@
 package com.mmjang.ankihelper.data.dict;
 
+import com.mmjang.ankihelper.MyApplication;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,6 +14,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Request;
+
 /**
  * Created by liao on 2017/7/30.
  */
@@ -19,13 +24,16 @@ import java.util.Map;
 public class YoudaoOnline {
     private static final String BASE_URL = "http://dict.youdao.com/fsearch?client=deskdict&keyfrom=chrome.extension&pos=-1&doctype=xml&dogVersion=1.0&vendor=unknown&appVer=3.1.17.4208&le=eng&q=%s";
     static public YoudaoResult getDefinition(String key) throws IOException{
-            Document doc = Jsoup.connect(String.format(BASE_URL, key.trim()))
-                    .userAgent("Mozilla")
-                    .cookie("auth", "token")
-                    .timeout(2000)
-                    .parser(Parser.xmlParser())
-                    .get();
+//            Document doc = Jsoup.connect(String.format(BASE_URL, key.trim()))
+//                    .userAgent("Mozilla")
+//                    .cookie("auth", "token")
+//                    .timeout(2000)
+//                    .parser(Parser.xmlParser())
+//                    .get();
             //doc.toString();
+            Request request = new Request.Builder().url(String.format(BASE_URL, key.trim())).build();
+            String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+            Document doc = Jsoup.parse(rawhtml, "", Parser.xmlParser());
             String phonetic = getSingleQueryResult(doc, "phonetic-symbol");
             String returnPhrase = getSingleQueryResult(doc, "return-phrase");
             List<String> translation = new ArrayList<String>();

@@ -15,6 +15,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -22,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Request;
 
 /**
  * Created by liao on 2017/4/28.
@@ -85,12 +88,18 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
 
         public List<Definition> queryDefinition(String key) {
         try {
-            Document doc = Jsoup.connect(WORD_URL_BASE + key)
-                    .userAgent("Mozilla")
-                    .timeout(5000)
-                    .get();
-
+            if(key.isEmpty()){
+                return new ArrayList<Definition>();
+            }
+//            Document doc = Jsoup.connect(WORD_URL_BASE + key)
+//                    .userAgent("Mozilla")
+//                    .timeout(5000)
+//                    .get();
+            Request request = new Request.Builder().url(WORD_URL_BASE + key).build();
+            String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+            Document doc = Jsoup.parse(rawhtml);
             List<Definition> definitionList = new ArrayList<>();
+
             //remove redundant nodes
             for(Element  redundant: doc.select("sup, .vis_w, .def_labels, .dxs")){
                 redundant.remove();

@@ -43,6 +43,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.SimpleCursorAdapter;
@@ -60,6 +61,7 @@ import com.mmjang.ankihelper.data.database.ExternalDatabase;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
+import com.mmjang.ankihelper.data.dict.UrbanAutoCompleteAdapter;
 import com.mmjang.ankihelper.data.history.HistoryUtil;
 import com.mmjang.ankihelper.data.model.UserTag;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
@@ -711,6 +713,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             return;
         }
         showProgressBar();
+        progressBar.invalidate();
         showPronounce(true);
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -770,11 +773,29 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     }
 
     private void setActAdapter(IDictionary dict) {
-        SimpleCursorAdapter sca = (SimpleCursorAdapter) dict.getAutoCompleteAdapter(PopupActivity.this,
+        Object adapter = dict.getAutoCompleteAdapter(PopupActivity.this,
                 android.R.layout.simple_spinner_dropdown_item);
-        if (sca != null) {
-            act.setAdapter(sca);
+        if(adapter != null){
+            if(adapter instanceof SimpleCursorAdapter){
+                act.setAdapter((SimpleCursorAdapter) adapter);
+            }
+            else if(adapter instanceof UrbanAutoCompleteAdapter){
+                act.setAdapter((UrbanAutoCompleteAdapter) adapter);
+            }
         }
+        act.setOnFocusChangeListener(
+                new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if(hasFocus){
+                            if(act.getText().toString().trim().isEmpty()){
+                                return;
+                            }
+                            act.showDropDown();
+                        }
+                    }
+                }
+        );
     }
 
     //plan B
@@ -1158,6 +1179,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         }
         return ret;
     }
+
+
 
     @Override
     public void onDestroy() {

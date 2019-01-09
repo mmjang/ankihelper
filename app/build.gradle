@@ -57,6 +57,7 @@ dependencies {
     implementation project(':folioreader')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
     testImplementation 'junit:junit:4.12'
 }

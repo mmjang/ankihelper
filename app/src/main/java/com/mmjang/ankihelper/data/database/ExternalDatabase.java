@@ -30,6 +30,8 @@ public class ExternalDatabase {
     private static final String CL_HEADWORD = "headword";
     private static final String CL_ENTRY_TEXTS = "entry_texts";
     private static final String SPLITTER = "\t"; //original file is splitted by \t, so it's safe.
+    private static final String SQL_CREATE_INDEX = "CREATE INDEX IF NOT EXISTS headword_index ON entry (headword)";
+    private static final String SQL_DROP_INDEX = "DROP INDEX IF EXISTS headword_index";
     Context mContext;
     SQLiteDatabase mDatabase;
     private static ExternalDatabase instance;
@@ -76,7 +78,7 @@ public class ExternalDatabase {
             }
             ContentValues values = new ContentValues();
             values.put(CL_DICT_ID, dictId);
-            values.put(CL_HEADWORD, entry[0]);   //must have at least 2 columns, enforced in manager
+            values.put(CL_HEADWORD, entry[0].toLowerCase());   //must have at least 2 columns, enforced in manager
             String[] elements = entry;//Arrays.copyOfRange(entry, 1, entry.length - 1);
             values.put(CL_ENTRY_TEXTS, joinFields(elements));
             db.insert(TB_ENTRY, null, values);
@@ -91,7 +93,7 @@ public class ExternalDatabase {
                 new String[] {CL_HEADWORD, CL_ENTRY_TEXTS},
                 CL_DICT_ID + "= ? AND " + CL_HEADWORD + "= ? COLLATE NOCASE",
                 new String[]{String.valueOf(dictId), word},
-                null,null,null);
+                null,null,null, "50");
         return cursor;
     }
 
@@ -150,14 +152,33 @@ public class ExternalDatabase {
         return customDictionaryInformation;
     }
 
+    public void dropHwdIndex(){
+        mDatabase.execSQL(SQL_DROP_INDEX);
+    }
+
+    public void createHwdIndex(){
+        mDatabase.execSQL(SQL_CREATE_INDEX);
+    }
+
     public List<String[]> queryHeadword(int dictId, String q){
+        //dont use collate nocase
+        List<String[]> result = new ArrayList<>();
+        if(q.isEmpty()){
+            return result;
+        }
+        q = q.toLowerCase();
         Cursor cursor = mDatabase.query(
                 TB_ENTRY,
                 new String[] {CL_ENTRY_TEXTS},
-                CL_DICT_ID + "=? AND " + CL_HEADWORD + "=? COLLATE NOCASE",
+                CL_DICT_ID + "=? AND " + CL_HEADWORD + "=?",
                 new String[]{String.valueOf(dictId), q}
                 ,null,null,null);
-        List<String[]> result = new ArrayList<>();
+//        Cursor cursor1 = mDatabase.rawQuery(
+//                "select entry_texts from entry where rowid in (select rowid from entry where headword=?) and dict_id=?", new String[]{
+//                        q,
+//                        Integer.toString(dictId)
+//                }
+//        );
         while(cursor.moveToNext()){
             result.add(fromFieldsString(cursor.getString(0)));
         }

@@ -6,6 +6,7 @@ import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.util.com.baidu.translate.demo.HttpGet;
 
 import org.json.JSONArray;
@@ -21,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Request;
 
 /**
  * Created by liao on 2017/4/28.
@@ -59,7 +62,11 @@ public class DictionaryDotCom implements IDictionary {
     public List<Definition> wordLookup(String key) {
         try {
 
-            String doc = HttpGet.get(wordUrl + key + urlParams, null);
+//            String doc = HttpGet.get(wordUrl + key + urlParams, null);
+            Request request = new Request.Builder().url(wordUrl + key + urlParams)
+                    .header("User-Agent", Constant.UA)
+                    .build();
+            String doc = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
             JSONObject docJson = new JSONObject(doc);
             JSONArray entries = docJson.getJSONArray("entries");
             ArrayList<Definition> defList = new ArrayList<>();
@@ -109,7 +116,7 @@ public class DictionaryDotCom implements IDictionary {
             return defList;
         } catch (Exception ioe) {
             //Log.d("time out", Log.getStackTraceString(ioe));
-            Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
             return new ArrayList<Definition>();
         }
 

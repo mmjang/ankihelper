@@ -11,6 +11,8 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 import org.litepal.LitePalApplication;
 
+import okhttp3.OkHttpClient;
+
 /**
  * Created by liao on 2017/4/27.
  */
@@ -19,6 +21,7 @@ public class MyApplication extends MultiDexApplication {
     private static Context context;
     private static Application application;
     private static AnkiDroidHelper mAnkiDroid;
+    private static OkHttpClient okHttpClient;
 
     @Override
     public void onCreate() {
@@ -48,5 +51,12 @@ public class MyApplication extends MultiDexApplication {
 
     private static void getAnkiDroidPermission(Activity activity) {
 
+    }
+
+    public static OkHttpClient getOkHttpClient(){
+        if(okHttpClient == null){
+            okHttpClient = new OkHttpClient();
+        }
+        return okHttpClient;
     }
 }

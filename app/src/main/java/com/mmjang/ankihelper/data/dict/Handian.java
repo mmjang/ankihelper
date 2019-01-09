@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.ListAdapter;
 
+import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.util.Constant;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,6 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Request;
 
 import static org.jsoup.helper.HttpConnection.DEFAULT_UA;
 
@@ -52,11 +57,16 @@ public class Handian implements IDictionary {
 
     public List<Definition> wordLookup(String key) {
         try {
-            Document doc = Jsoup.connect(wordUrl + key)
-                    .userAgent(DEFAULT_UA)
-                    .timeout(5000)
-                    .get();
-            String html = doc.toString();
+//            Document doc = Jsoup.connect(wordUrl + key)
+//                    .userAgent(DEFAULT_UA)
+//                    .timeout(5000)
+//                    .get();
+//            String html = doc.toString();
+            Request request = new Request.Builder().url(wordUrl + key)
+                    .header("User-Agent", Constant.UA)
+                    .build();
+            String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+            Document doc = Jsoup.parse(rawhtml);
             Elements entrys = doc.select("div.cdnr, div.tagContent");
             ArrayList<Definition> defList = new ArrayList<>();
             if (entrys.size() > 0) {

@@ -30,7 +30,8 @@ public class DictionaryRegister {
             HujiangJapanese.class,
             Handian.class,
             BingOxford.class,
-            DictionaryDotCom.class
+            DictionaryDotCom.class,
+            UrbanDict.class
     };
 
     private static List<IDictionary> dictList;

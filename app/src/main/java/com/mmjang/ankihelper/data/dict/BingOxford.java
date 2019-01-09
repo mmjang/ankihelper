@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Request;
+
 /**
  * Created by liao on 2017/4/28.
  */
@@ -49,10 +51,9 @@ public class BingOxford implements IDictionary {
 
     public List<Definition> wordLookup(String key) {
         try {
-            Document doc = Jsoup.connect(wordUrl + key)
-                    .userAgent("Mozilla")
-                    .timeout(5000)
-                    .get();
+            Request request = new Request.Builder().url(wordUrl + key).build();
+            String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
+            Document doc = Jsoup.parse(rawhtml);
             ArrayList<Definition> defList = new ArrayList<>();
             String word = VocabCom.getSingleQueryResult(doc, ".hd_div h1", false);
             String yinbiao = VocabCom.getSingleQueryResult(doc, "div.hd_p1_1", false);
@@ -82,7 +83,7 @@ public class BingOxford implements IDictionary {
             return defList;
         } catch (IOException ioe) {
             //Log.d("time out", Log.getStackTraceString(ioe));
-            Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
             return new ArrayList<Definition>();
         }
 

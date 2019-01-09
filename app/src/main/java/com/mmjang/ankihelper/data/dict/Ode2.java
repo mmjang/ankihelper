@@ -137,6 +137,9 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
     private ArrayList<Definition> queryDefinition(String q) {
         //SQLiteDatabase db = getReadableDatabase();
         ArrayList<Definition> re = new ArrayList<>();
+        if(q.isEmpty()){
+            return re;
+        }
         Cursor cursor = db.query(TABLE_DICT,
                 new String[]{FIELD_HWD, FIELD_DISPLAYED_HWD, FIELD_PHRASE,
                         FIELD_PHONETICS, FIELD_SENSE, FIELD_EXT, FIELD_DEF_EN, FIELD_DEF_CN},

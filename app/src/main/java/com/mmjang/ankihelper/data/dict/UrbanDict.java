@@ -8,6 +8,9 @@ import android.widget.Toast;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.util.Constant;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -31,7 +34,7 @@ public class UrbanDict implements IDictionary {
     private static final String DICT_INTRO = "数据来自 urban dictionary ";
     private static final String[] EXP_ELE = new String[] {"单词", "释义", "例句", "复合项"};
 
-    private static final String wordUrl = "https://www.urbandictionary.com/define.php?term=";
+    private static final String wordUrl = "http://api.urbandictionary.com/v0/define?term=";
     //private static final String autoCompleteUrl = "https://www.esdict.cn/dicts/prefix/";
 
     public UrbanDict(Context context) {
@@ -60,23 +63,26 @@ public class UrbanDict implements IDictionary {
                     .header("User-Agent", Constant.UA)
                     .build();
             String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
-            Document doc = Jsoup.parse(rawhtml);
+            //Document doc = Jsoup.parse(rawhtml);
+            JSONObject ub = new JSONObject(rawhtml);
             ArrayList<Definition> defList = new ArrayList<>();
-         //   String word = VocabCom.getSingleQueryResult(doc, "#content . h1", false);
-         //   String yinbiao = VocabCom.getSingleQueryResult(doc, "div.hd_p1_1", false);
-            Elements posList = doc.select("div.def-panel");
-            for(Element pos : posList){
-                String word = VocabCom.getSingleQueryResult(doc, ".def-header a.word", false);
-         //       String posType = VocabCom.getSingleQueryResult(pos, "div.pos", false);
-                Elements defs = pos.select("div.meaning");
-                String def = defs.text();
-                String example = pos.select("div.example").text();
+            //Elements posList = doc.select("div.def-panel");
+
+            ///
+            JSONArray defArray = ub.getJSONArray("list");
+            for(int i = 0; i < defArray.length(); i ++){
+                JSONObject def = defArray.getJSONObject(i);
+                String word = def.getString("word");
+                String definition = def.getString("definition").replaceAll("[\\[\\]]", "")
+                        .replaceAll("\r\n", "<br/>");
+                String example = def.getString("example").replaceAll("[\\[\\]]", "")
+                        .replaceAll("\r\n", "<br/>");
                 HashMap<String, String> defMap = new HashMap<>();
                 //String definition = posType + " " + def;
                 defMap.put(EXP_ELE[0], word);
-                defMap.put(EXP_ELE[1], def);
+                defMap.put(EXP_ELE[1], definition);
                 defMap.put(EXP_ELE[2], example);
-                String html = "<div class=lwzj><danci>" + word +" </danci> " + "-" + "<span class=ys>" + def +"</span><br><font color=#4682B4><span class=yl>•" + example + "</span> </font></div>";
+                String html = "<div class=lwzj><b>" + word +" </b> " + "-" + "<span class=ys>" + definition +"</span><br/><font color=#4682B4><span class=yl>•" + example + "</span> </font></div>";
                 defMap.put(EXP_ELE[3], html);
                 defList.add(new Definition(defMap, html));
             }
@@ -85,6 +91,8 @@ public class UrbanDict implements IDictionary {
             //Log.d("time out", Log.getStackTraceString(ioe));
             //Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
             return new ArrayList<Definition>();
+        } catch (JSONException je){
+            return new ArrayList<>();
         }
 
     }

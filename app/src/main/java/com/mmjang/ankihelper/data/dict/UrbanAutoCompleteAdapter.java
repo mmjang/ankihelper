@@ -27,7 +27,11 @@ public class UrbanAutoCompleteAdapter extends ArrayAdapter<String> implements Fi
 
     @Override
     public int getCount() {
-        return resultList.size();
+        if(resultList != null) {
+            return resultList.size();
+        }else{
+            return 0;
+        }
     }
 
     @Override

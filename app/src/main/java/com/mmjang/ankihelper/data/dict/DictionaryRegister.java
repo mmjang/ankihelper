@@ -31,7 +31,8 @@ public class DictionaryRegister {
             Handian.class,
             BingOxford.class,
             DictionaryDotCom.class,
-            UrbanDict.class
+            UrbanDict.class,
+            IdiomDict.class
     };
 
     private static List<IDictionary> dictList;

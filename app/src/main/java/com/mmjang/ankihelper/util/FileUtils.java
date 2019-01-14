@@ -493,4 +493,12 @@ public class FileUtils {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         return intent;
     }
+
+    public static void EnsureAnkiImageDirectory(){
+        File f = new File(Environment.getExternalStorageDirectory(), "AnkiDroid" + File.separator +
+                "collection.media" + File.separator + Constant.IMAGE_SUB_DIRECTORY + File.separator);
+            if (!f.exists()) {
+            f.mkdirs();
+        }
+    }
 }

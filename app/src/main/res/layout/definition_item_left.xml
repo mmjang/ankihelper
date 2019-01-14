@@ -34,13 +34,26 @@
                android:background="?attr/icon_add"
                />
         </LinearLayout>
-         <TextView
-            android:id="@+id/textview_definition"
-             android:textIsSelectable="true"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:textColor="#101010"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:textIsSelectable="true"
+                android:id="@+id/textview_definition"
+                android:layout_width="match_parent"
+                android:textColor="#101010"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:visibility="gone"
+                android:layout_marginRight="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/def_img"
+                android:scaleType="fitCenter"
+                />
+        </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
 </LinearLayout>

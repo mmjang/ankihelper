@@ -30,6 +30,7 @@ public class DictionaryRegister {
             HujiangJapanese.class,
             Handian.class,
             BingOxford.class,
+            BingImage.class,
             DictionaryDotCom.class,
             UrbanDict.class,
             IdiomDict.class

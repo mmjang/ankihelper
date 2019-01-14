@@ -6,9 +6,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.net.wifi.hotspot2.omadm.PpsMoParser;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
@@ -42,6 +46,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
@@ -51,6 +56,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.ichi2.anki.FlashCardsContract;
 import com.ichi2.anki.api.NoteInfo;
 import com.mmjang.ankihelper.MyApplication;
@@ -82,6 +88,9 @@ import com.mmjang.ankihelper.util.Utils;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashSet;
@@ -825,6 +834,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         final TextView textVeiwDefinition = (TextView) view.findViewById(R.id.textview_definition);
         final ImageButton btnAddDefinition = (ImageButton) view.findViewById(R.id.btn_add_definition);
         final LinearLayout btnAddDefinitionLarge = (LinearLayout) view.findViewById(R.id.btn_add_definition_large);
+        final ImageView defImage = view.findViewById(R.id.def_img);
         btnAddDefinitionLarge.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -842,6 +852,15 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
         }
 
+        if(def.getDisplayHtml().isEmpty()){
+            textVeiwDefinition.setVisibility(View.GONE);
+        }
+
+        if(def.getImageUrl()!=null && !def.getImageUrl().isEmpty()){
+            Glide.with(this).load(def.getImageUrl()).into(defImage);
+            defImage.setVisibility(View.VISIBLE);
+        }
+
         //set custom action for the textView
         makeTextViewSelectAndSearch(textVeiwDefinition);
         //holder.itemView.setAnimation(AnimationUtils.loadAnimation(mActivity, android.R.anim.fade_in));
@@ -850,8 +869,38 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        vibarate(Constant.VIBRATE_DURATION);
+                        //vibarate(Constant.VIBRATE_DURATION);
                         //before add, check if this note is already added by check the attached tag
+                        //save image
+                        if(def.getImageUrl()!=null && !def.getImageUrl().isEmpty()){
+                            if(defImage.getDrawable()!=null){
+                                BitmapDrawable drawable = (BitmapDrawable) defImage.getDrawable();
+                                Bitmap bm = drawable.getBitmap();
+
+                                OutputStream fOut = null;
+                                //Uri outputFileUri;
+                                try {
+                                    File root = new File(Environment.getExternalStorageDirectory()
+                                            + "/AnkiDroid/collection.media/ankihelper_image/");
+                                    if(!root.exists()) {
+                                        root.mkdirs();
+                                    }
+                                    File sdImageMainDirectory = new File(root, def.getImageName());
+                                    //outputFileUri = Uri.fromFile(sdImageMainDirectory);
+                                    fOut = new FileOutputStream(sdImageMainDirectory);
+                                } catch (Exception e) {
+
+                                }
+                                try {
+                                    bm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                                    fOut.flush();
+                                    fOut.close();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        ///////////////////////////////////
                         Long noteIdAdded = (Long) btnAddDefinition.getTag(R.id.TAG_NOTE_ID);
                         if(noteIdAdded != null){
                             if(mUpdateNoteId == 0) {

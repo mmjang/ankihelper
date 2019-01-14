@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.net.wifi.hotspot2.omadm.PpsMoParser;
 import android.os.Build;
@@ -57,6 +59,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.folioreader.util.ProgressDialog;
 import com.ichi2.anki.FlashCardsContract;
 import com.ichi2.anki.api.NoteInfo;
 import com.mmjang.ankihelper.MyApplication;
@@ -90,6 +93,7 @@ import org.litepal.crud.DataSupport;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -148,6 +152,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     ImageButton mBtnFooterRotateRight;
     ImageButton mBtnFooterScrollup;
     ProgressBar progressBar;
+    ProgressBar mAudioProgress;
 
     CardView mCardViewTranslation;
     EditText mEditTextTranslation;
@@ -157,6 +162,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     //plan b
     LinearLayout viewDefinitionList;
     List<Definition> mDefinitionList;
+    //media
+    MediaPlayer mMediaPlayer;
     //async event
     private static final int PROCESS_DEFINITION_LIST = 1;
     private static final int ASYNC_SEARCH_FAILED = 2;
@@ -289,6 +296,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         mBtnFooterRotateLeft = (ImageButton) findViewById(R.id.footer_rotate_left);
         mBtnFooterRotateRight= (ImageButton) findViewById(R.id.footer_rotate_right);
         mBtnFooterScrollup = (ImageButton) findViewById(R.id.footer_scroll_up);
+        mAudioProgress = findViewById(R.id.audio_progress);
     }
 
     private void loadData() {
@@ -859,6 +867,102 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         if(def.getImageUrl()!=null && !def.getImageUrl().isEmpty()){
             Glide.with(this).load(def.getImageUrl()).into(defImage);
             defImage.setVisibility(View.VISIBLE);
+        }
+
+        if(def.getAudioUrl()!=null && !def.getAudioName().isEmpty()){
+            textVeiwDefinition.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mMediaPlayer == null) {
+                                mMediaPlayer = new MediaPlayer();
+                                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                                mMediaPlayer.setOnPreparedListener(
+                                        new MediaPlayer.OnPreparedListener() {
+                                            @Override
+                                            public void onPrepared(MediaPlayer mp) {
+                                                mMediaPlayer.start();
+                                                mAudioProgress.setVisibility(View.GONE);
+                                            }
+                                        }
+                                );
+                            }
+                            try {
+                                if(mMediaPlayer.isPlaying()) {
+                                    mMediaPlayer.reset();
+                                    //mMediaPlayer.release();
+                                }
+                            }catch(IllegalStateException e){
+
+                            }
+                            try {
+                                mMediaPlayer.setDataSource(PopupActivity.this, Uri.parse(def.getAudioUrl()));
+                                mAudioProgress.setVisibility(View.VISIBLE);
+                                mMediaPlayer.prepareAsync();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(PopupActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
+                            } catch (IllegalStateException e){
+
+                            }
+//                            mMediaPlayer.setOnPreparedListener(
+//                                    new MediaPlayer.OnPreparedListener() {
+//                                        @Override
+//                                        public void onPrepared(MediaPlayer mp) {
+//                                        }
+//                                    }
+//                            );
+
+                            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    mp.reset();
+                                    mAudioProgress.setVisibility(View.GONE);
+                                }
+                            });
+
+                            mMediaPlayer.setOnErrorListener(
+                                    new MediaPlayer.OnErrorListener() {
+                                        @Override
+                                        public boolean onError(MediaPlayer mp, int what, int extra) {
+                                            mp.reset();
+                                            Toast.makeText(PopupActivity.this, "Failed to play audio, check your connection.", Toast.LENGTH_SHORT);
+                                            mAudioProgress.setVisibility(View.GONE);
+                                            return false;
+                                        }
+                                    }
+                            );
+//                            if(mMediaPlayer == null){
+//                                mMediaPlayer = new MediaPlayer();
+//                            }
+//
+//                            try {
+//                                if(mMediaPlayer.isPlaying()) {
+//                                    mMediaPlayer.reset();
+//                                    //mMediaPlayer.release();
+//                                }
+//                            }catch(IllegalStateException e){
+//
+//                            }
+//                            try {
+//                                Toast.makeText(PopupActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
+//                                mMediaPlayer.setDataSource(PopupActivity.this, Uri.parse(def.getAudioUrl()));
+//                                mMediaPlayer.prepare();
+//                                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                                    @Override
+//                                    public void onCompletion(MediaPlayer mp) {
+//                                        mMediaPlayer.reset();
+//                                        //mMediaPlayer.release();
+//                                    }
+//                                });
+//                                mMediaPlayer.start();
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                                Toast.makeText(PopupActivity.this, "Failed to play audio", Toast.LENGTH_SHORT).show();
+//                            }
+                        }
+                    }
+            );
         }
 
         //set custom action for the textView

@@ -318,4 +318,12 @@
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
+
+    <ProgressBar
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/audio_progress"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
 </android.support.design.widget.CoordinatorLayout>

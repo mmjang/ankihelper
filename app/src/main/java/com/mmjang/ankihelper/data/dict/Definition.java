@@ -13,16 +13,22 @@ public class Definition {
     private String imageUrl;
     private String imageName;
 
+    private String audioUrl;
+    private String audioName;
+
     public Definition(Map<String, String> expEle, String dspHtml) {
         exportElements = expEle;
         displayHtml = dspHtml;
     }
 
-    public Definition(Map<String, String> expEle, String dspHtml, String imageUrl, String imageName) {
+    public Definition(Map<String, String> expEle, String dspHtml, String imageUrl, String imageName, String audioUrl, String audioName) {
         exportElements = expEle;
         displayHtml = dspHtml;
         this.imageUrl = imageUrl;
         this.imageName = imageName;
+
+        this.audioUrl = audioUrl;
+        this.audioName = audioName;
     }
 
     public String getExportElement(String key) {
@@ -43,5 +49,13 @@ public class Definition {
 
     public String getImageName(){
         return imageName;
+    }
+
+    public String getAudioUrl(){
+        return audioUrl;
+    }
+
+    public String getAudioName(){
+        return audioName;
     }
 }

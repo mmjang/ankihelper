@@ -161,7 +161,7 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
 
         } catch (IOException ioe) {
             //Log.d("time out", Log.getStackTraceString(ioe));
-            Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
             return new ArrayList<Definition>();
         }
 

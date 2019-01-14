@@ -19,6 +19,7 @@ public class DictionaryRegister {
             Ode2.class,
             Collins.class,
             CollinsEnEn.class,
+            EudicSentence.class,
             Esdict.class,
             Frdict.class,
             Dedict.class,

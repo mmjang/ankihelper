@@ -2,6 +2,7 @@ package com.mmjang.ankihelper.domain;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -21,16 +22,48 @@ public class PlayAudioManager {
     private static TextToSpeech tts;
 
     private static void playAudio(final Context context, final String url) throws Exception {
+//        if (mediaPlayer == null) {
+//            mediaPlayer = MediaPlayer.create(context, Uri.parse(url));
+//        }
+//        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                killMediaPlayer();
+//            }
+//        });
+//        mediaPlayer.start();
         if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(context, Uri.parse(url));
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setOnPreparedListener(
+                    new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mediaPlayer.start();
+                        }
+                    }
+            );
         }
+
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setDataSource(context, Uri.parse(url));
+        mediaPlayer.prepareAsync();
+
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                killMediaPlayer();
+                mp.reset();
             }
         });
-        mediaPlayer.start();
+
+        mediaPlayer.setOnErrorListener(
+                new MediaPlayer.OnErrorListener() {
+                    @Override
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+                        mp.reset();
+                        return false;
+                    }
+                }
+        );
     }
 
     private static void killMediaPlayer() {

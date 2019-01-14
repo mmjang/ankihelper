@@ -7,15 +7,14 @@ import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.util.Utils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,17 +25,27 @@ import okhttp3.Request;
  * Created by liao on 2017/4/28.
  */
 
-public class BingImage implements IDictionary {
+public class EudicSentence implements IDictionary {
 
     private static final String AUDIO_TAG = "MP3";
-    private static final String DICT_NAME = "必应图片搜索";
-    private static final String DICT_INTRO = "图片保存至 collection.media/ankihelper_image/";
-    private static final String[] EXP_ELE = new String[] {"单词", "图片"};
+    private static final String DICT_NAME = "欧路词典原声例句";
+    private static final String DICT_INTRO = "";
+    private static final String[] EXP_ELE = new String[] {"单词", "原声例句"};
 
-    private static final String wordUrl = "https://cn.bing.com/images/search?q=";
+    private static final String wordUrl = "http://dict.eudic.net/liju/en/";
     private static final String mp3Url = "https://audio.vocab.com/1.0/us/";
+    private static final String tplt_card = "<div class='eudic_sentence'>" +
+            "<div class='eudic_en'>%s %s</div>" +
+            "<div class='eudic_cn'>%s</div>" +
+            "<div class='eudic_title'>%s</div>" +
+             "</div>";
+    private static final String tplt_ui = "" +
+            "<span>\uD83D\uDD0A%s</span>" +
+            "<span>%s</span>" +
+            "<span>%s</span>" +
+            "";
 
-    public BingImage(Context context){
+    public EudicSentence(Context context){
 
     }
 
@@ -58,7 +67,7 @@ public class BingImage implements IDictionary {
 //                    .userAgent("Mozilla")
 //                    .timeout(5000)
 //                    .get();
-            Request request = new Request.Builder().url(wordUrl + key + "&FORM=BESBTB&ensearch=1")
+            Request request = new Request.Builder().url(wordUrl + key)
                     //.addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36")
                     .addHeader("User-Agent", Constant.UA)
                     .build();
@@ -66,20 +75,44 @@ public class BingImage implements IDictionary {
             Document doc = Jsoup.parse(rawhtml);
             List<Definition> definitionList = new ArrayList<>();
 
-            for(Element imgEle : doc.select(".imgpt > a")){
-                String fileName = key.trim() + "_" + Utils.getRandomHexString(8) + ".png";
-                String json = imgEle.attr("m");
-                String url = null;
-                try {
-                    url = (new JSONObject(json)).getString("turl");
-                } catch (JSONException e) {
-                    continue;
-                }
+            for(Element audioEle : doc.select("div.lj_item")){
                 HashMap<String, String> eleMap = new HashMap<>();
+
+                String fileName = key.trim() + "_" + Utils.getRandomHexString(8) + ".mp3";
+                String audioId = audioEle.attr("source");
+                audioId = URLDecoder.decode(audioId, "UTF-8");
+                audioId = audioId.replace("/","_");
+                String audioUrl = String.format("https://fs-gateway.esdict.cn/store_main/sentencemp3/%s.mp3", audioId);
+//                Elements a = audioEle.select("div.content > p.line a");
+//                String audioUrl = "";
+//                if(a.size() > 0){
+//                    audioUrl = "http://api.frdic.com/api/v2/speech/speakweb?" + a.get(0).attr("data-rel");
+//                }else{
+//                    continue;
+//                }
+                //audioUrl = URLDecoder.decode(audioUrl, "UTF-8");
+                String audioTag = String.format("[sound:%s]", audioUrl);
+                String channelTitle = getSingleQueryResult(audioEle, "div.channel > span.channel_title", false);
+                String en = getSingleQueryResult(audioEle, "div.content > p.line", true);
+                en = en.replaceAll("<a href=.*?</a>$", "");
+                en = en.replaceAll("<span class=\"key\">(.*?)</span>", "<font color=blue>$1</font>");
+                String cn = getSingleQueryResult(audioEle, "div.content > p.exp", true);
+                cn = cn.replaceAll("<span class=\"key\">(.*?)</span>", "<font color=blue>$1</font>");
+                String html = String.format(tplt_card,
+                        en,
+                        audioTag,
+                        cn,
+                        "<font color=grey>" + channelTitle + "</font>"
+                        );
+
+                String html_ui = String.format(tplt_ui,
+                        en,
+                        cn,
+                        "<font color=grey>" + channelTitle + "</font>"
+                );
                 eleMap.put(EXP_ELE[0], key);
-                eleMap.put(EXP_ELE[1], String.format("<img src='%s' class='ankihelper_image'/>",
-                        Constant.IMAGE_SUB_DIRECTORY + File.separator + fileName));
-                definitionList.add(new Definition(eleMap, "", url, fileName, "", ""));
+                eleMap.put(EXP_ELE[1], html);
+                definitionList.add(new Definition(eleMap, html_ui, "", "", audioUrl, fileName));
             }
 
             return definitionList;

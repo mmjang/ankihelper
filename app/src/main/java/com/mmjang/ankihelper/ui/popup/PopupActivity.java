@@ -67,10 +67,14 @@ import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.dict.BingImage;
 import com.mmjang.ankihelper.data.dict.Definition;
+import com.mmjang.ankihelper.data.dict.DictionaryDotCom;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
+import com.mmjang.ankihelper.data.dict.EudicSentence;
 import com.mmjang.ankihelper.data.dict.IDictionary;
 import com.mmjang.ankihelper.data.dict.UrbanAutoCompleteAdapter;
+import com.mmjang.ankihelper.data.dict.VocabCom;
 import com.mmjang.ankihelper.data.history.HistoryUtil;
 import com.mmjang.ankihelper.data.model.UserTag;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
@@ -88,7 +92,19 @@ import com.mmjang.ankihelper.util.RegexUtil;
 import com.mmjang.ankihelper.util.TextSplitter;
 import com.mmjang.ankihelper.util.Translator;
 import com.mmjang.ankihelper.util.Utils;
+import com.tonyodev.fetch2.Download;
+import com.tonyodev.fetch2.Error;
+import com.tonyodev.fetch2.Fetch;
+import com.tonyodev.fetch2.FetchConfiguration;
+import com.tonyodev.fetch2.FetchListener;
+import com.tonyodev.fetch2.NetworkType;
+import com.tonyodev.fetch2.Priority;
+import com.tonyodev.fetch2.Request;
+import com.tonyodev.fetch2core.DownloadBlock;
+import com.tonyodev.fetch2core.Func;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.litepal.crud.DataSupport;
 
 import java.io.File;
@@ -164,6 +180,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     List<Definition> mDefinitionList;
     //media
     MediaPlayer mMediaPlayer;
+    //downloader
+    Fetch fetch;
+    boolean isFetchDownloading = false;
     //async event
     private static final int PROCESS_DEFINITION_LIST = 1;
     private static final int ASYNC_SEARCH_FAILED = 2;
@@ -869,7 +888,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             defImage.setVisibility(View.VISIBLE);
         }
 
-        if(def.getAudioUrl()!=null && !def.getAudioName().isEmpty()){
+        if(currentDicitonary instanceof EudicSentence && def.getAudioUrl()!=null && !def.getAudioUrl().isEmpty()){
+            textVeiwDefinition.setTextIsSelectable(false);
             textVeiwDefinition.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
@@ -975,36 +995,6 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     public void onClick(View v) {
                         //vibarate(Constant.VIBRATE_DURATION);
                         //before add, check if this note is already added by check the attached tag
-                        //save image
-                        if(def.getImageUrl()!=null && !def.getImageUrl().isEmpty()){
-                            if(defImage.getDrawable()!=null){
-                                BitmapDrawable drawable = (BitmapDrawable) defImage.getDrawable();
-                                Bitmap bm = drawable.getBitmap();
-
-                                OutputStream fOut = null;
-                                //Uri outputFileUri;
-                                try {
-                                    File root = new File(Environment.getExternalStorageDirectory()
-                                            + "/AnkiDroid/collection.media/ankihelper_image/");
-                                    if(!root.exists()) {
-                                        root.mkdirs();
-                                    }
-                                    File sdImageMainDirectory = new File(root, def.getImageName());
-                                    //outputFileUri = Uri.fromFile(sdImageMainDirectory);
-                                    fOut = new FileOutputStream(sdImageMainDirectory);
-                                } catch (Exception e) {
-
-                                }
-                                try {
-                                    bm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-                                    fOut.flush();
-                                    fOut.close();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        ///////////////////////////////////
                         Long noteIdAdded = (Long) btnAddDefinition.getTag(R.id.TAG_NOTE_ID);
                         if(noteIdAdded != null){
                             if(mUpdateNoteId == 0) {
@@ -1025,6 +1015,37 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             }
                             return ;
                         }
+
+                        //save image
+                        if(def.getImageUrl()!=null && !def.getImageUrl().isEmpty()){
+                            if(defImage.getDrawable()!=null && currentDicitonary instanceof BingImage){
+                                BitmapDrawable drawable = (BitmapDrawable) defImage.getDrawable();
+                                Bitmap bm = drawable.getBitmap();
+
+                                OutputStream fOut = null;
+                                //Uri outputFileUri;
+                                try {
+                                    File root = new File(Constant.IMAGE_MEDIA_DIRECTORY);
+                                    if(!root.exists()) {
+                                        root.mkdirs();
+                                    }
+                                    File sdImageMainDirectory = new File(root, def.getImageName());
+                                    //outputFileUri = Uri.fromFile(sdImageMainDirectory);
+                                    fOut = new FileOutputStream(sdImageMainDirectory);
+                                } catch (Exception e) {
+
+                                }
+                                try {
+                                    bm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                                    fOut.flush();
+                                    fOut.close();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        ///////////////////////////////////
+
                         AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid();
                         String[] sharedExportElements = Constant.getSharedExportElements();
                         String[] exportFields = new String[currentOutputPlan.getFieldsMap().size()];
@@ -1087,9 +1108,67 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 i++;
                                 continue;
                             }
+
                             exportFields[i] = "";
                             i++;
                         }
+                        //handle download; audio or image
+                        if(currentDicitonary instanceof EudicSentence){
+                            if(fetch == null){
+                                initFetch();
+                            }
+                            if(map.containsValue("原声例句")){
+                                final Request request = new Request(def.getAudioUrl(), Constant.AUDIO_MEDIA_DIRECTORY + def.getAudioName());
+                                request.setPriority(Priority.HIGH);
+                                request.setNetworkType(NetworkType.ALL);
+                                isFetchDownloading = true;
+                                fetch.enqueue(request,
+                                        new Func<Request>() {
+                                            @Override
+                                            public void call(@NotNull Request result) {
+                                                mAudioProgress.setVisibility(View.VISIBLE);
+                //                                isFetchDownloading = true;
+                                            }
+                                        }
+                                        ,
+                                        new Func<Error>() {
+                                            @Override
+                                            public void call(@NotNull Error result) {
+                                                isFetchDownloading = false;
+                                            }
+                                        }
+                                );
+                            }
+                        }
+
+                        if(currentDicitonary instanceof VocabCom){
+                            if(fetch == null){
+                                initFetch();
+                            }
+                            if(map.containsValue("离线发音")){
+                                final Request request = new Request(def.getAudioUrl(), Constant.AUDIO_MEDIA_DIRECTORY + def.getAudioName());
+                                request.setPriority(Priority.HIGH);
+                                request.setNetworkType(NetworkType.ALL);
+                                isFetchDownloading = true;
+                                fetch.enqueue(request,
+                                        new Func<Request>() {
+                                            @Override
+                                            public void call(@NotNull Request result) {
+                                                mAudioProgress.setVisibility(View.VISIBLE);
+                                                isFetchDownloading = true;
+                                            }
+                                        }
+                                        ,
+                                        new Func<Error>() {
+                                            @Override
+                                            public void call(@NotNull Error result) {
+                                                isFetchDownloading = false;
+                                            }
+                                        }
+                                );
+                            }
+                        }
+                        /////////////////
                         long deckId = currentOutputPlan.getOutputDeckId();
                         long modelId = currentOutputPlan.getOutputModelId();
                         if(mUpdateNoteId == 0){
@@ -1100,13 +1179,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                     btnAddDefinition.setBackground(ContextCompat.getDrawable(
                                             PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
                                 }
-                                //btnAddDefinition.setEnabled(false);
-                                if (settings.getAutoCancelPopupQ()) {
-                                    finish();
-                                }else{
-                                    clearBigbangSelection();
-                                    mNoteEditedByUser = "";
-                                }
+                                clearBigbangSelection();
+                                mNoteEditedByUser = "";
                                 //attach the noteid to the button
                                 btnAddDefinition.setTag(R.id.TAG_NOTE_ID, result);
                                 //if there is a note id field in the model, update the note
@@ -1175,15 +1249,21 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                     btnAddDefinition.setBackground(ContextCompat.getDrawable(
                                             PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
                                 }
-                                btnAddDefinition.setEnabled(false);
-                                if(settings.getAutoCancelPopupQ()) {
-                                    finish();
-                                }
+                                //btnAddDefinition.setEnabled(false);
                             } else {
                                 Toast.makeText(PopupActivity.this, R.string.str_error_note_update, Toast.LENGTH_SHORT).show();
                             }
                         }
-
+                        if(settings.getAutoCancelPopupQ()) {
+                            if(fetch == null)
+                            {
+                                finish();
+                            }else{
+                                if(!isFetchDownloading){
+                                    finish();
+                                }
+                            }
+                        }
                     }
                 });
         return view;
@@ -1304,6 +1384,91 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
+    }
+
+    private void initFetch(){
+        FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(this)
+                .setDownloadConcurrentLimit(3)
+                .build();
+        fetch = Fetch.Impl.getInstance(fetchConfiguration);
+        fetch.addListener(
+                new FetchListener() {
+                    @Override
+                    public void onAdded(@NotNull Download download) {
+
+                    }
+
+                    @Override
+                    public void onQueued(@NotNull Download download, boolean b) {
+
+                    }
+
+                    @Override
+                    public void onWaitingNetwork(@NotNull Download download) {
+
+                    }
+
+                    @Override
+                    public void onCompleted(@NotNull Download download) {
+                        Toast.makeText(PopupActivity.this, "Download Completed!", Toast.LENGTH_SHORT).show();
+                        mAudioProgress.setVisibility(View.GONE);
+                        isFetchDownloading = false;
+                        if(settings.getAutoCancelPopupQ()) {
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NotNull Download download, @NotNull Error error, @Nullable Throwable throwable) {
+                        Toast.makeText(PopupActivity.this, "Download Failed!", Toast.LENGTH_SHORT).show();
+                        mAudioProgress.setVisibility(View.GONE);
+                        isFetchDownloading = false;
+                        if(settings.getAutoCancelPopupQ()) {
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onDownloadBlockUpdated(@NotNull Download download, @NotNull DownloadBlock downloadBlock, int i) {
+
+                    }
+
+                    @Override
+                    public void onStarted(@NotNull Download download, @NotNull List<? extends DownloadBlock> list, int i) {
+
+                    }
+
+                    @Override
+                    public void onProgress(@NotNull Download download, long l, long l1) {
+
+                    }
+
+                    @Override
+                    public void onPaused(@NotNull Download download) {
+
+                    }
+
+                    @Override
+                    public void onResumed(@NotNull Download download) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NotNull Download download) {
+
+                    }
+
+                    @Override
+                    public void onRemoved(@NotNull Download download) {
+
+                    }
+
+                    @Override
+                    public void onDeleted(@NotNull Download download) {
+
+                    }
+                }
+        );
     }
 
     //cancel auto completetextview focus

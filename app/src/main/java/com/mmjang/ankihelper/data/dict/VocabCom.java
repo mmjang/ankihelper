@@ -6,6 +6,8 @@ import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.util.Constant;
+import com.mmjang.ankihelper.util.Utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,6 +15,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +32,7 @@ public class VocabCom implements IDictionary {
     private static final String AUDIO_TAG = "MP3";
     private static final String DICT_NAME = "Vocabulary.com";
     private static final String DICT_INTRO = "";
-    private static final String[] EXP_ELE = new String[] {"单词", "发音", "释义", "复合项"};
+    private static final String[] EXP_ELE = new String[] {"单词", "发音", "离线发音", "释义", "复合项"};
 
     private static final String wordUrl = "http://app.vocabulary.com/app/1.0/dictionary/search?word=";
     private static final String mp3Url = "https://audio.vocab.com/1.0/us/";
@@ -63,11 +66,13 @@ public class VocabCom implements IDictionary {
             String defShort = getSingleQueryResult(doc, "p.short", true).replace("<i>","<b>").replace("</i>","</b>");
             String defLong = getSingleQueryResult(doc, "p.long", true).replace("<i>","<b>").replace("</i>","</b>");
             Elements mp3Soup = doc.select("a.audio");
+            String audioUrl = "";
+            String audioFile = headWord + "_" + "vocab" + "_" + Utils.getRandomHexString(8) + ".mp3";
             String mp3Id = "";
             if(mp3Soup.size() > 0){
                 mp3Id = mp3Soup.get(0).attr("data-audio");
             }
-
+            audioUrl = getMp3Url(mp3Id);
             List<Definition> definitionList = new ArrayList<>();
 
             if(headWord.isEmpty()){
@@ -76,15 +81,16 @@ public class VocabCom implements IDictionary {
             if(!defShort.isEmpty()){
                 HashMap<String, String> eleMap = new HashMap<>();
                 eleMap.put(EXP_ELE[0], headWord);
-                eleMap.put(EXP_ELE[1], getMp3Url(mp3Id));
-                eleMap.put(EXP_ELE[2], defShort + defLong);
-                eleMap.put(EXP_ELE[3],
+                eleMap.put(EXP_ELE[1], "[sound:" + audioUrl + "]");
+                eleMap.put(EXP_ELE[2], "[sound:" + Constant.AUDIO_SUB_DIRECTORY + File.separator + audioFile + "]");
+                eleMap.put(EXP_ELE[3], defShort + defLong);
+                eleMap.put(EXP_ELE[4],
                         "<div class='dictionary_vocab'>" +
                                 "<div class='vocab_hwd'>" + headWord + "</div>" +
                                 "<div class='vocab_def'>" + defShort + defLong + "</div>" +
                         "</div>"
                         );
-                definitionList.add(new Definition(eleMap, defShort + defLong));
+                definitionList.add(new Definition(eleMap, defShort + defLong, "", "", audioUrl, audioFile));
             }
 
             for(Element def : doc.select("h3.definition")){
@@ -92,14 +98,15 @@ public class VocabCom implements IDictionary {
                 String defText = getDefHtml(def);
                 eleMap.put(EXP_ELE[0], headWord);
                 eleMap.put(EXP_ELE[1], getMp3Url(mp3Id));
-                eleMap.put(EXP_ELE[2], defText);
-                eleMap.put(EXP_ELE[3],
+                eleMap.put(EXP_ELE[2], "[sound:" + Constant.AUDIO_SUB_DIRECTORY + File.separator + audioFile + "]");
+                eleMap.put(EXP_ELE[3], defText);
+                eleMap.put(EXP_ELE[4],
                         "<div class='dictionary_vocab'>" +
                                 "<div class='vocab_hwd'>" + headWord + "</div>" +
                                 "<div class='vocab_def'>" + defText + "</div>" +
                                 "</div>"
                 );
-                definitionList.add(new Definition(eleMap, defText));
+                definitionList.add(new Definition(eleMap, defText, "", "", audioUrl, audioFile));
             }
 
             return definitionList;
@@ -144,7 +151,7 @@ public class VocabCom implements IDictionary {
     }
 
     private String getMp3Url(String id){
-        return "[sound:" + mp3Url + id + ".mp3]";
+        return mp3Url + id + ".mp3";
     }
 
     private String getDefHtml(Element def){

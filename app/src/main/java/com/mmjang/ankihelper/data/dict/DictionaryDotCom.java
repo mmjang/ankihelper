@@ -97,9 +97,9 @@ public class DictionaryDotCom implements IDictionary {
                         expele.put(EXP_ELE[3], "<i>" + pos + "</i>" + "<br/>" + defHtml);
                         expele.put(EXP_ELE[4],
                                 "<div class='div_dictionary'><div class='dictionary_hwd'>" + headWord + "</div>" +
-                                 "<div class='dictionary_ipa'>" + "/" + prounceIPA +"/" + audioURL + "</div>" +
-                                "<div class='dictionary_def'><i>" + pos + "</i>" + "<br/>" + defHtml + "</div></div>"
-                                );
+                                        "<div class='dictionary_ipa'>" + "/" + prounceIPA +"/" + audioURL + "</div>" +
+                                        "<div class='dictionary_def'><i>" + pos + "</i>" + "<br/>" + defHtml + "</div></div>"
+                        );
                         String exportedHtml;
                         if(n == 0){
                             exportedHtml = "<b>" + headWord + " </b>" +

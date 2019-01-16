@@ -1,5 +1,7 @@
 package com.mmjang.ankihelper.util;
 
+import android.os.Environment;
+
 /**
  * Created by liao on 2017/4/27.
  */
@@ -45,4 +47,11 @@ public class Constant {
             "(KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36";
 
     public static final String IMAGE_SUB_DIRECTORY = "ankihelper_image";
+    public static final String AUDIO_SUB_DIRECTORY = "ankihelper_audio";
+
+    public static final String IMAGE_MEDIA_DIRECTORY = Environment.getExternalStorageDirectory()
+            + "/AnkiDroid/collection.media/ankihelper_image/";
+
+    public static final String AUDIO_MEDIA_DIRECTORY = Environment.getExternalStorageDirectory()
+            + "/AnkiDroid/collection.media/ankihelper_audio/";
 }

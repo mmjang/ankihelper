@@ -12,6 +12,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -91,7 +92,7 @@ public class EudicSentence implements IDictionary {
 //                    continue;
 //                }
                 //audioUrl = URLDecoder.decode(audioUrl, "UTF-8");
-                String audioTag = String.format("[sound:%s]", audioUrl);
+                String audioTag = String.format("[sound:%s]", Constant.AUDIO_SUB_DIRECTORY + File.separator + fileName);
                 String channelTitle = getSingleQueryResult(audioEle, "div.channel > span.channel_title", false);
                 String en = getSingleQueryResult(audioEle, "div.content > p.line", true);
                 en = en.replaceAll("<a href=.*?</a>$", "");

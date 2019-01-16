@@ -27,6 +27,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content">
             <TextView
+                android:textIsSelectable="true"
                 android:id="@+id/textview_definition"
                 android:layout_width="match_parent"
                 android:textColor="#101010"

@@ -73,6 +73,7 @@ import com.mmjang.ankihelper.data.dict.DictionaryDotCom;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.EudicSentence;
 import com.mmjang.ankihelper.data.dict.IDictionary;
+import com.mmjang.ankihelper.data.dict.RenRenCiDianSentence;
 import com.mmjang.ankihelper.data.dict.UrbanAutoCompleteAdapter;
 import com.mmjang.ankihelper.data.dict.VocabCom;
 import com.mmjang.ankihelper.data.history.HistoryUtil;
@@ -595,7 +596,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             else if(currentPos == mPlanSize - 1){
                                 planSpinner.setSelection(0);
                             }
-                            vibarate(Constant.VIBRATE_DURATION);
+                            //vibarate(Constant.VIBRATE_DURATION);
                             //scrollView.fullScroll(ScrollView.FOCUS_UP);
                         }else{
                             Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();
@@ -617,7 +618,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             else if(currentPos == 0){
                                 planSpinner.setSelection(mPlanSize - 1);
                             }
-                            vibarate(Constant.VIBRATE_DURATION);
+                        //    vibarate(Constant.VIBRATE_DURATION);
                             //scrollView.fullScroll(ScrollView.FOCUS_UP);
                         }else{
                             Toast.makeText(PopupActivity.this, R.string.str_only_one_plan_cant_switch, Toast.LENGTH_SHORT).show();
@@ -888,7 +889,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             defImage.setVisibility(View.VISIBLE);
         }
 
-        if(currentDicitonary instanceof EudicSentence && def.getAudioUrl()!=null && !def.getAudioUrl().isEmpty()){
+        if((currentDicitonary instanceof EudicSentence || currentDicitonary instanceof RenRenCiDianSentence) && def.getAudioUrl()!=null && !def.getAudioUrl().isEmpty()){
             textVeiwDefinition.setTextIsSelectable(false);
             textVeiwDefinition.setOnClickListener(
                     new View.OnClickListener() {
@@ -1018,7 +1019,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
                         //save image
                         if(def.getImageUrl()!=null && !def.getImageUrl().isEmpty()){
-                            if(defImage.getDrawable()!=null && currentDicitonary instanceof BingImage){
+                            if(defImage.getDrawable()!=null && (currentDicitonary instanceof BingImage || currentDicitonary instanceof RenRenCiDianSentence)){
                                 BitmapDrawable drawable = (BitmapDrawable) defImage.getDrawable();
                                 Bitmap bm = drawable.getBitmap();
 
@@ -1113,7 +1114,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             i++;
                         }
                         //handle download; audio or image
-                        if(currentDicitonary instanceof EudicSentence){
+                        if(currentDicitonary instanceof EudicSentence || currentDicitonary instanceof RenRenCiDianSentence){
                             if(fetch == null){
                                 initFetch();
                             }

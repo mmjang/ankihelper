@@ -71,6 +71,7 @@ import com.mmjang.ankihelper.data.dict.BingImage;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.dict.DictionaryDotCom;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
+import com.mmjang.ankihelper.data.dict.Dub91Sentence;
 import com.mmjang.ankihelper.data.dict.EudicSentence;
 import com.mmjang.ankihelper.data.dict.IDictionary;
 import com.mmjang.ankihelper.data.dict.RenRenCiDianSentence;
@@ -889,7 +890,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             defImage.setVisibility(View.VISIBLE);
         }
 
-        if((currentDicitonary instanceof EudicSentence || currentDicitonary instanceof RenRenCiDianSentence) && def.getAudioUrl()!=null && !def.getAudioUrl().isEmpty()){
+        if((currentDicitonary instanceof EudicSentence ||
+                currentDicitonary instanceof RenRenCiDianSentence) && def.getAudioUrl()!=null && !def.getAudioUrl().isEmpty()){
             textVeiwDefinition.setTextIsSelectable(false);
             textVeiwDefinition.setOnClickListener(
                     new View.OnClickListener() {
@@ -1019,7 +1021,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
                         //save image
                         if(def.getImageUrl()!=null && !def.getImageUrl().isEmpty()){
-                            if(defImage.getDrawable()!=null && (currentDicitonary instanceof BingImage || currentDicitonary instanceof RenRenCiDianSentence)){
+                            if(defImage.getDrawable()!=null &&
+                                    (currentDicitonary instanceof BingImage ||
+                                            currentDicitonary instanceof RenRenCiDianSentence ||
+                                            currentDicitonary instanceof Dub91Sentence)){
                                 BitmapDrawable drawable = (BitmapDrawable) defImage.getDrawable();
                                 Bitmap bm = drawable.getBitmap();
 

@@ -7,6 +7,9 @@ import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.util.Utils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,10 +18,11 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
@@ -27,27 +31,29 @@ import okhttp3.Request;
  * Created by liao on 2017/4/28.
  */
 
-public class EudicSentence implements IDictionary {
+public class Dub91Sentence implements IDictionary {
 
+    private static final Pattern jsonPattern = Pattern.compile("window\\.__NUXT__=(.*?);</script>");
     private static final String AUDIO_TAG = "MP3";
-    private static final String DICT_NAME = "欧路词典原声例句";
-    private static final String DICT_INTRO = "";
-    private static final String[] EXP_ELE = new String[] {"单词", "原声例句"};
+    private static final String DICT_NAME = "英语随心配例句";
+    private static final String DICT_INTRO = "www.91dub.com";
+    private static final String[] EXP_ELE = new String[] {"单词", "随心配例句"};
 
-    private static final String wordUrl = "http://dict.eudic.net/liju/en/";
+    private static final String wordUrl = "https://www.91dub.com/api/sub_seek_ytb.php?keyword=%s&pageno=%s";
     private static final String mp3Url = "https://audio.vocab.com/1.0/us/";
     private static final String tplt_card = "<div class='eudic_sentence'>" +
-            "<div class='eudic_en'>%s %s</div>" +
-            "<div class='eudic_cn'>%s</div>" +
-            "<div class='eudic_title'>%s</div>" +
+            "<div class='dub91_en'>%s</div>" +
+            "<div class='dub91_cn'>%s</div>" +
+            "<div class='dub91_title'>%s</div>" +
+            "<img class='dub91_img' src='%s'/>" +
              "</div>";
     private static final String tplt_ui = "" +
-            "<span>\uD83D\uDD0A%s</span>" +
-            "<span>%s</span>" +
+            "<div>%s</div>" +
+            "<div>%s</div>" +
             "<span>%s</span>" +
             "";
 
-    public EudicSentence(Context context){
+    public Dub91Sentence(Context context){
 
     }
 
@@ -69,44 +75,49 @@ public class EudicSentence implements IDictionary {
 //                    .userAgent("Mozilla")
 //                    .timeout(5000)
 //                    .get();
-            Request request = new Request.Builder().url(wordUrl + key)
+            Request request = new Request.Builder().url(String.format(wordUrl, key, 1))
                     //.addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36")
                     .addHeader("User-Agent", Constant.UA)
                     .build();
             String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
-            Document doc = Jsoup.parse(rawhtml);
             List<Definition> definitionList = new ArrayList<>();
+            JSONObject json = new JSONObject(rawhtml);
+            JSONArray results = json.getJSONArray("seek_list");
+            for(int i = 0; i < results.length(); i ++){
+                JSONObject item = results.getJSONObject(i);
+                String en = item.getString("sub_orig")
+                        .replaceAll("<em>","<b>")
+                        .replaceAll("</em>","</b>");
+                String cn = item.getString("sub_trans")
+                        .replaceAll("<em>","<b>")
+                        .replaceAll("</em>","</b>");
+                String channel = item.getString("chn_nm");
+                String imgUrl = item.getString("cover_img").replace("style/w3", "style/w1");
+                String imgName = key + "_91dub_" + Utils.getRandomHexString(8) + ".png";
 
-            for(Element audioEle : doc.select("div.lj_item")){
-                processOneSentence(key, audioEle, definitionList);
+                HashMap<String, String> eleMap = new HashMap<>();
+                eleMap.put(EXP_ELE[0], key);
+                eleMap.put(EXP_ELE[1], String.format(tplt_card,
+                        en,
+                        cn,
+                       "<font color=#808080>" + channel + "</font>",
+                        Constant.IMAGE_SUB_DIRECTORY + File.separator + imgName
+                ));
+                String html = String.format(tplt_ui,
+                        en,
+                        cn,
+                        "<font color=#808080>" + channel + "</font>"
+                        );
+                definitionList.add(new Definition(eleMap, html, imgUrl, imgName, "", ""));
             }
-
-            Element load_more = doc.getElementById("liju_ting_loadmore");
-            if(load_more != null){
-                String pageStatus = doc.getElementById("page-status").attr("value");
-                FormBody formBody = new FormBody.Builder()
-                        .add("status", pageStatus)
-                        .add("start", "20")
-                        .add("type", "ting")
-                        .build();
-                Request request2 = new Request.Builder()
-                        .post(formBody)
-                        .url(wordUrl + key)
-                        .addHeader("User-Agent", Constant.UA)
-                        .build();
-                String rawhtml2 = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
-                Document doc2 = Jsoup.parse("<html><body>" + rawhtml + "</body></html>");
-                for(Element audioEle : doc2.select("div.lj_item")){
-                    processOneSentence(key, audioEle, definitionList);
-                }
-            }
-
             return definitionList;
 
         } catch (IOException ioe) {
             //Log.d("time out", Log.getStackTraceString(ioe));
             //Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
             return new ArrayList<Definition>();
+        } catch (JSONException e){
+            return new ArrayList<>();
         }
 
     }

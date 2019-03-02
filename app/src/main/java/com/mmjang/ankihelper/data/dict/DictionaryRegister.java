@@ -20,6 +20,7 @@ public class DictionaryRegister {
             Collins.class,
             CollinsEnEn.class,
             EudicSentence.class,
+            SolrDictionary.class,
             RenRenCiDianSentence.class,
             Dub91Sentence.class,
             Esdict.class,

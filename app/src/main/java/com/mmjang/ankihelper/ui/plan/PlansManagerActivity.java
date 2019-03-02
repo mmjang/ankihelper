@@ -149,6 +149,12 @@ public class PlansManagerActivity extends AppCompatActivity {
                 long modeld = Long.parseLong(items[2]);
                 String dictKey = items[3].trim();
                 String fieldMapString = items[4];
+                for(OutputPlanPOJO outputPlan : mPlanList){
+                    if(outputPlan.getPlanName().equals(planName)){
+                        planName = planName + "_copy";
+                        break;
+                    }
+                }
                 OutputPlanPOJO outputPlan = new OutputPlanPOJO();
                 outputPlan.setPlanName(planName);
                 outputPlan.setOutputDeckId(deckId);

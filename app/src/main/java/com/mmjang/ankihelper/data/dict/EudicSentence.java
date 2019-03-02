@@ -31,8 +31,8 @@ public class EudicSentence implements IDictionary {
 
     private static final String AUDIO_TAG = "MP3";
     private static final String DICT_NAME = "欧路词典原声例句";
-    private static final String DICT_INTRO = "";
-    private static final String[] EXP_ELE = new String[] {"单词", "原声例句"};
+    private static final String DICT_INTRO = "其中输入项<原声例句>为前面项目的组合";
+    private static final String[] EXP_ELE = new String[] {"单词", "英文", "中文", "音频", "来源", "原声例句"};
 
     private static final String wordUrl = "http://dict.eudic.net/liju/en/";
     private static final String mp3Url = "https://audio.vocab.com/1.0/us/";
@@ -147,7 +147,11 @@ public class EudicSentence implements IDictionary {
                 "<font color=grey>" + channelTitle + "</font>"
         );
         eleMap.put(EXP_ELE[0], key);
-        eleMap.put(EXP_ELE[1], html);
+        eleMap.put(EXP_ELE[1], en);
+        eleMap.put(EXP_ELE[2], cn);
+        eleMap.put(EXP_ELE[3], audioTag);
+        eleMap.put(EXP_ELE[4], channelTitle);
+        eleMap.put(EXP_ELE[5], html);
         definitionList.add(new Definition(eleMap, html_ui, "", "", audioUrl, fileName));
     }
 

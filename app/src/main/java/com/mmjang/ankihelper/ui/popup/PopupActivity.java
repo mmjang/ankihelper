@@ -75,6 +75,7 @@ import com.mmjang.ankihelper.data.dict.Dub91Sentence;
 import com.mmjang.ankihelper.data.dict.EudicSentence;
 import com.mmjang.ankihelper.data.dict.IDictionary;
 import com.mmjang.ankihelper.data.dict.RenRenCiDianSentence;
+import com.mmjang.ankihelper.data.dict.SolrDictionary;
 import com.mmjang.ankihelper.data.dict.UrbanAutoCompleteAdapter;
 import com.mmjang.ankihelper.data.dict.VocabCom;
 import com.mmjang.ankihelper.data.history.HistoryUtil;
@@ -738,7 +739,19 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         for (String localSegment : localSegments) {
             bigBangLayout.addTextItem(localSegment);
         }
-        ;
+        bigBangLayout.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        String currentWord = FieldUtil.getSelectedText(bigBangLayout.getLines());
+                        if (!currentWord.equals("")&&!currentWord.equals(act.getText().toString())) {
+                            mCurrentKeyWord = currentWord;
+                            act.setText(currentWord);
+                            asyncSearch(currentWord);
+                        }
+                    }
+                }
+        );
     }
 
 
@@ -891,6 +904,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         }
 
         if((currentDicitonary instanceof EudicSentence ||
+                currentDicitonary instanceof SolrDictionary ||
                 currentDicitonary instanceof RenRenCiDianSentence) && def.getAudioUrl()!=null && !def.getAudioUrl().isEmpty()){
             textVeiwDefinition.setTextIsSelectable(false);
             textVeiwDefinition.setOnClickListener(
@@ -1119,7 +1133,8 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                             i++;
                         }
                         //handle download; audio or image
-                        if(currentDicitonary instanceof EudicSentence || currentDicitonary instanceof RenRenCiDianSentence){
+                        if(currentDicitonary instanceof EudicSentence ||
+                                currentDicitonary instanceof RenRenCiDianSentence){
                             if(fetch == null){
                                 initFetch();
                             }
@@ -1134,6 +1149,34 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                             public void call(@NotNull Request result) {
                                                 mAudioProgress.setVisibility(View.VISIBLE);
                 //                                isFetchDownloading = true;
+                                            }
+                                        }
+                                        ,
+                                        new Func<Error>() {
+                                            @Override
+                                            public void call(@NotNull Error result) {
+                                                isFetchDownloading = false;
+                                            }
+                                        }
+                                );
+                            }
+                        }
+
+                        if(currentDicitonary instanceof SolrDictionary){
+                            if(fetch == null){
+                                initFetch();
+                            }
+                            if(!def.getAudioUrl().isEmpty() && (map.containsValue("音频") || map.containsValue("复合项"))){
+                                final Request request = new Request(def.getAudioUrl(), Constant.AUDIO_MEDIA_DIRECTORY + def.getAudioName());
+                                request.setPriority(Priority.HIGH);
+                                request.setNetworkType(NetworkType.ALL);
+                                isFetchDownloading = true;
+                                fetch.enqueue(request,
+                                        new Func<Request>() {
+                                            @Override
+                                            public void call(@NotNull Request result) {
+                                                mAudioProgress.setVisibility(View.VISIBLE);
+                                                isFetchDownloading = true;
                                             }
                                         }
                                         ,

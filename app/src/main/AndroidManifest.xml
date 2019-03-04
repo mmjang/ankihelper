@@ -18,6 +18,7 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon_light"
         android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network"
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.popup.PopupActivity"

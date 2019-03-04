@@ -70,8 +70,8 @@ public class EudicSentence implements IDictionary {
 //                    .timeout(5000)
 //                    .get();
             Request request = new Request.Builder().url(wordUrl + key)
-                    //.addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36")
-                    .addHeader("User-Agent", Constant.UA)
+                    .addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36")
+                    //.addHeader("User-Agent", Constant.UA)
                     .build();
             String rawhtml = MyApplication.getOkHttpClient().newCall(request).execute().body().string();
             Document doc = Jsoup.parse(rawhtml);
@@ -105,7 +105,7 @@ public class EudicSentence implements IDictionary {
 
         } catch (IOException ioe) {
             //Log.d("time out", Log.getStackTraceString(ioe));
-            //Toast.makeText(MyApplication.getContext(), Log.getStackTraceString(ioe), Toast.LENGTH_SHORT).show();
+            ioe.printStackTrace();
             return new ArrayList<Definition>();
         }
 

@@ -114,7 +114,7 @@ public class EudicSentence implements IDictionary {
     public void processOneSentence(String key, Element audioEle, List<Definition> definitionList) throws IOException{
         HashMap<String, String> eleMap = new HashMap<>();
 
-        String fileName = key.trim() + "_" + Utils.getRandomHexString(8) + ".mp3";
+        String fileName = key.trim().replaceAll(" ", "_") + "_" + Utils.getRandomHexString(8) + ".mp3";
         String audioId = audioEle.attr("source");
         audioId = URLDecoder.decode(audioId, "UTF-8");
         audioId = audioId.replace("/","_");

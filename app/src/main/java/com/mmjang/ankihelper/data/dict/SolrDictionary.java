@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
@@ -103,10 +104,12 @@ public class SolrDictionary implements IDictionary {
                 if(highlights != null && highlights.has(id)){
                     JSONObject hl = highlights.getJSONObject(id);
                     if(hl.has("cn")){
-                        cn = em2b(hl.getJSONArray("cn").getString(0));
+                        String cn_hl = hl.getJSONArray("cn").getString(0);
+                        cn = cn.replace(em2null(cn_hl), em2b(cn_hl));
                     }
                     if(hl.has("en")){
-                        en = em2b(hl.getJSONArray("en").getString(0));
+                        String en_hl = hl.getJSONArray("en").getString(0);
+                        en = en.replace(em2null(en_hl), em2b(en_hl));
                     }
                 }
                 String source = oneResult.getString("source");
@@ -171,7 +174,15 @@ public class SolrDictionary implements IDictionary {
 
     }
 
+    String mLastKey = "";
+
     private String generageSolrQueryFromKey(String key) {
+        boolean rand = false;
+
+        if(mLastKey.equals(key)){
+            rand = true;
+        }
+        mLastKey = key;
         String[] splitted = key.split(" ");
         for(int i = 0; i < splitted.length; i ++){
             splitted[i] = splitted[i].trim();
@@ -192,13 +203,34 @@ public class SolrDictionary implements IDictionary {
                 }
             }
         }
-        query += "&sort=order asc&rows=100&hl=on&hl.fl=en,cn";
+        //query += "&sort=order asc&rows=100&hl=on&hl.fl=en,cn";
+        if(rand){
+            String seed = getRandomHexString(16);
+            query += "&sort=random_" + seed + " asc&rows=100&hl=on&hl.fl=en,cn";
+        }else {
+            query += "&rows=100&hl=on&hl.fl=en,cn";
+        }
         return query;
+    }
+
+    static private String getRandomHexString(int numchars){
+        Random r = new Random();
+        StringBuffer sb = new StringBuffer();
+        while(sb.length() < numchars){
+            sb.append(Integer.toHexString(r.nextInt()));
+        }
+
+        return sb.toString().substring(0, numchars);
     }
 
     public static String em2b(String b){
         return b.replaceAll("<em>","<b>")
                 .replaceAll("</em>","</b>");
+    }
+
+    public static String em2null(String b){
+        return b.replaceAll("<em>","")
+                .replaceAll("</em>","");
     }
 
     public ListAdapter getAutoCompleteAdapter(Context context, int layout) {

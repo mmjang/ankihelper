@@ -36,7 +36,7 @@ public class DictionaryDotCom implements IDictionary {
             "复合项 css class：";
     private static final String[] EXP_ELE = new String[]{"单词", "音标", "发音", "释义", "复合项"};
 
-    private static final String wordUrl = "http://restcdn.dictionary.com//v2/word.json/";
+    private static final String wordUrl = "http://restcdn.dictionary.com/v2/word.json/";
     private static final String urlParams = "/completeFormatted?api_key=I6SnT6uSpyaarEn&audio=mp3&entry=all&part=all&hotlinks=on&platform=android&app_id=dcomAndroidFreeV7513";
 
     public DictionaryDotCom(Context context) {

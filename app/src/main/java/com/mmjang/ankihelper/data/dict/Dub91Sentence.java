@@ -69,13 +69,17 @@ public class Dub91Sentence implements IDictionary {
         return EXP_ELE;
     }
 
+    private String mLastKey = "";
+    private int mCurrentPage = 1;
     public List<Definition> wordLookup(String key) {
         try {
-//            Document doc = Jsoup.connect(wordUrl + key)
-//                    .userAgent("Mozilla")
-//                    .timeout(5000)
-//                    .get();
-            Request request = new Request.Builder().url(String.format(wordUrl, key, 1))
+            if(mLastKey.equals(key)){
+                mCurrentPage ++;
+            }else{
+                mCurrentPage = 1;
+            }
+            mLastKey = key;
+            Request request = new Request.Builder().url(String.format(wordUrl, key, mCurrentPage))
                     //.addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36")
                     .addHeader("User-Agent", Constant.UA)
                     .build();
@@ -93,7 +97,7 @@ public class Dub91Sentence implements IDictionary {
                         .replaceAll("</em>","</b>");
                 String channel = item.getString("chn_nm");
                 String imgUrl = item.getString("cover_img").replace("style/w3", "style/w1");
-                String imgName = key + "_91dub_" + Utils.getRandomHexString(8) + ".png";
+                String imgName = key.replace(" ", "_") + "_91dub_" + Utils.getRandomHexString(8) + ".png";
 
                 HashMap<String, String> eleMap = new HashMap<>();
                 eleMap.put(EXP_ELE[0], key);
@@ -108,6 +112,9 @@ public class Dub91Sentence implements IDictionary {
                         cn,
                         "<font color=#808080>" + channel + "</font>"
                         );
+                if(i == 0){//第一个条目显示页码
+                    html = "<div><font color=#808080>page: " + mCurrentPage + "</font></div>" + html;
+                }
                 definitionList.add(new Definition(eleMap, html, imgUrl, imgName, "", ""));
             }
             return definitionList;

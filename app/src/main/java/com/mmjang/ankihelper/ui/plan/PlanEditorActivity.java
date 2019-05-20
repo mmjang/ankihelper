@@ -68,12 +68,16 @@ public class PlanEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_editor);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initAnkiApi();
-        setViewMember();
-        handleIntent();
-        loadDecksAndModels();
-        populateDictionary();
-        populateDecksAndModels();
+        try {
+            initAnkiApi();
+            setViewMember();
+            handleIntent();
+            loadDecksAndModels();
+            populateDictionary();
+            populateDecksAndModels();
+        }catch (Exception e){
+            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

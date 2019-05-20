@@ -266,6 +266,22 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             }
         });
 
+        //async invoke droid
+        asyncInvokeDroid();
+    }
+
+    private void asyncInvokeDroid() {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            MyApplication.getAnkiDroid().getApi().getDeckList();
+                        }catch (Exception e){
+                        }
+                    }
+                }
+        ).start();
     }
 
     private void setTargetWord(){
@@ -1012,108 +1028,109 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     public void onClick(View v) {
                         //vibarate(Constant.VIBRATE_DURATION);
                         //before add, check if this note is already added by check the attached tag
-                        Long noteIdAdded = (Long) btnAddDefinition.getTag(R.id.TAG_NOTE_ID);
-                        if(noteIdAdded != null){
-                            if(mUpdateNoteId == 0) {
-                                if(Utils.deleteNote(PopupActivity.this, noteIdAdded.longValue())){
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                                PopupActivity.this,
-                                                Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add)));
+                        try {
+                            Long noteIdAdded = (Long) btnAddDefinition.getTag(R.id.TAG_NOTE_ID);
+                            if (noteIdAdded != null) {
+                                if (mUpdateNoteId == 0) {
+                                    if (Utils.deleteNote(PopupActivity.this, noteIdAdded.longValue())) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                            btnAddDefinition.setBackground(ContextCompat.getDrawable(
+                                                    PopupActivity.this,
+                                                    Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add)));
+                                        }
+                                        btnAddDefinition.setTag(R.id.TAG_NOTE_ID, null);
+                                        Toast.makeText(PopupActivity.this, R.string.str_cancel_note_add, Toast.LENGTH_SHORT).show();
+
+                                    } else {
+                                        Toast.makeText(PopupActivity.this, R.string.error_note_cancel, Toast.LENGTH_SHORT).show();
                                     }
-                                    btnAddDefinition.setTag(R.id.TAG_NOTE_ID, null);
-                                    Toast.makeText(PopupActivity.this, R.string.str_cancel_note_add, Toast.LENGTH_SHORT).show();
-
-                                }else{
-                                    Toast.makeText(PopupActivity.this, R.string.error_note_cancel, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(PopupActivity.this, R.string.str_not_cancelable_append_mode, Toast.LENGTH_SHORT).show();
                                 }
-                            }else{
-                                Toast.makeText(PopupActivity.this, R.string.str_not_cancelable_append_mode, Toast.LENGTH_SHORT).show();
+                                return;
                             }
-                            return ;
-                        }
 
-                        //save image
-                        if(def.getImageUrl()!=null && !def.getImageUrl().isEmpty()){
-                            if(defImage.getDrawable()!=null &&
-                                    (currentDicitonary instanceof BingImage ||
-                                            currentDicitonary instanceof RenRenCiDianSentence ||
-                                            currentDicitonary instanceof Dub91Sentence)){
-                                BitmapDrawable drawable = (BitmapDrawable) defImage.getDrawable();
-                                Bitmap bm = drawable.getBitmap();
+                            //save image
+                            if (def.getImageUrl() != null && !def.getImageUrl().isEmpty()) {
+                                if (defImage.getDrawable() != null &&
+                                        (currentDicitonary instanceof BingImage ||
+                                                currentDicitonary instanceof RenRenCiDianSentence ||
+                                                currentDicitonary instanceof Dub91Sentence)) {
+                                    BitmapDrawable drawable = (BitmapDrawable) defImage.getDrawable();
+                                    Bitmap bm = drawable.getBitmap();
 
-                                OutputStream fOut = null;
-                                //Uri outputFileUri;
-                                try {
-                                    File root = new File(Constant.IMAGE_MEDIA_DIRECTORY);
-                                    if(!root.exists()) {
-                                        root.mkdirs();
+                                    OutputStream fOut = null;
+                                    //Uri outputFileUri;
+                                    try {
+                                        File root = new File(Constant.IMAGE_MEDIA_DIRECTORY);
+                                        if (!root.exists()) {
+                                            root.mkdirs();
+                                        }
+                                        File sdImageMainDirectory = new File(root, def.getImageName());
+                                        //outputFileUri = Uri.fromFile(sdImageMainDirectory);
+                                        fOut = new FileOutputStream(sdImageMainDirectory);
+                                    } catch (Exception e) {
+
                                     }
-                                    File sdImageMainDirectory = new File(root, def.getImageName());
-                                    //outputFileUri = Uri.fromFile(sdImageMainDirectory);
-                                    fOut = new FileOutputStream(sdImageMainDirectory);
-                                } catch (Exception e) {
-
-                                }
-                                try {
-                                    bm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-                                    fOut.flush();
-                                    fOut.close();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                    try {
+                                        bm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                                        fOut.flush();
+                                        fOut.close();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
-                        }
-                        ///////////////////////////////////
+                            ///////////////////////////////////
 
-                        AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid();
-                        String[] sharedExportElements = Constant.getSharedExportElements();
-                        String[] exportFields = new String[currentOutputPlan.getFieldsMap().size()];
-                        int i = 0;
-                        Map<String, String> map = currentOutputPlan.getFieldsMap();
-                        for (String exportedFieldKey : currentOutputPlan.getFieldsMap().values()) {
-                            if (exportedFieldKey.equals(sharedExportElements[0])) {
-                                exportFields[i] = "";
-                                i++;
-                                continue;
-                            }
+                            AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid();
+                            String[] sharedExportElements = Constant.getSharedExportElements();
+                            String[] exportFields = new String[currentOutputPlan.getFieldsMap().size()];
+                            int i = 0;
+                            Map<String, String> map = currentOutputPlan.getFieldsMap();
+                            for (String exportedFieldKey : currentOutputPlan.getFieldsMap().values()) {
+                                if (exportedFieldKey.equals(sharedExportElements[0])) {
+                                    exportFields[i] = "";
+                                    i++;
+                                    continue;
+                                }
 
-                            if (exportedFieldKey.equals(sharedExportElements[1])) {
-                                exportFields[i] = getNormalSentence(bigBangLayout.getLines());
-                                i++;
-                                continue;
-                            }
+                                if (exportedFieldKey.equals(sharedExportElements[1])) {
+                                    exportFields[i] = getNormalSentence(bigBangLayout.getLines());
+                                    i++;
+                                    continue;
+                                }
 
-                            if (exportedFieldKey.equals(sharedExportElements[2])) {
-                                exportFields[i] = getBoldSentence(bigBangLayout.getLines());
-                                i++;
-                                continue;
-                            }
-                            if (exportedFieldKey.equals(sharedExportElements[3])) {
-                                exportFields[i] = getBlankSentence(bigBangLayout.getLines());
-                                i++;
-                                continue;
-                            }
-                            if (exportedFieldKey.equals(sharedExportElements[4])) {
-                                exportFields[i] = mNoteEditedByUser;
-                                i++;
-                                continue;
-                            }
-                            if (exportedFieldKey.equals(sharedExportElements[5])) {
-                                exportFields[i] = mUrl;
-                                i++;
-                                continue;
-                            }
-                            if (exportedFieldKey.equals(sharedExportElements[6])){
-                                exportFields[i] = Utils.getAllHtmlFromDefinitionList(mDefinitionList);
-                                i++;
-                                continue;
-                            }
-                            if (exportedFieldKey.equals(sharedExportElements[7])){
-                                exportFields[i] = mEditTextTranslation.getText().toString().replace("\n", "<br/>");
-                                i++;
-                                continue;
-                            }
+                                if (exportedFieldKey.equals(sharedExportElements[2])) {
+                                    exportFields[i] = getBoldSentence(bigBangLayout.getLines());
+                                    i++;
+                                    continue;
+                                }
+                                if (exportedFieldKey.equals(sharedExportElements[3])) {
+                                    exportFields[i] = getBlankSentence(bigBangLayout.getLines());
+                                    i++;
+                                    continue;
+                                }
+                                if (exportedFieldKey.equals(sharedExportElements[4])) {
+                                    exportFields[i] = mNoteEditedByUser;
+                                    i++;
+                                    continue;
+                                }
+                                if (exportedFieldKey.equals(sharedExportElements[5])) {
+                                    exportFields[i] = mUrl;
+                                    i++;
+                                    continue;
+                                }
+                                if (exportedFieldKey.equals(sharedExportElements[6])) {
+                                    exportFields[i] = Utils.getAllHtmlFromDefinitionList(mDefinitionList);
+                                    i++;
+                                    continue;
+                                }
+                                if (exportedFieldKey.equals(sharedExportElements[7])) {
+                                    exportFields[i] = mEditTextTranslation.getText().toString().replace("\n", "<br/>");
+                                    i++;
+                                    continue;
+                                }
 //                            if(exportedFieldKey.equals(sharedExportElements[5])){
 //                                if(mFbReaderBookmarkId != null){
 //                                    exportFields[i] = String.format(Constant.FBREADER_URL_TMPL, mFbReaderBookmarkId);
@@ -1123,195 +1140,195 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 //                                i++;
 //                                continue;
 //                            }
-                            if (def.hasElement(exportedFieldKey)) {
-                                exportFields[i] = def.getExportElement(exportedFieldKey);
+                                if (def.hasElement(exportedFieldKey)) {
+                                    exportFields[i] = def.getExportElement(exportedFieldKey);
+                                    i++;
+                                    continue;
+                                }
+
+                                exportFields[i] = "";
                                 i++;
-                                continue;
                             }
-
-                            exportFields[i] = "";
-                            i++;
-                        }
-                        //handle download; audio or image
-                        if(currentDicitonary instanceof EudicSentence ||
-                                currentDicitonary instanceof RenRenCiDianSentence){
-                            if(fetch == null){
-                                initFetch();
-                            }
-                            if(map.containsValue("原声例句")){
-                                final Request request = new Request(def.getAudioUrl(), Constant.AUDIO_MEDIA_DIRECTORY + def.getAudioName());
-                                request.setPriority(Priority.HIGH);
-                                request.setNetworkType(NetworkType.ALL);
-                                isFetchDownloading = true;
-                                fetch.enqueue(request,
-                                        new Func<Request>() {
-                                            @Override
-                                            public void call(@NotNull Request result) {
-                                                mAudioProgress.setVisibility(View.VISIBLE);
-                //                                isFetchDownloading = true;
-                                            }
-                                        }
-                                        ,
-                                        new Func<Error>() {
-                                            @Override
-                                            public void call(@NotNull Error result) {
-                                                isFetchDownloading = false;
-                                            }
-                                        }
-                                );
-                            }
-                        }
-
-                        if(currentDicitonary instanceof SolrDictionary){
-                            if(fetch == null){
-                                initFetch();
-                            }
-                            if(!def.getAudioUrl().isEmpty() && (map.containsValue("音频") || map.containsValue("复合项"))){
-                                final Request request = new Request(def.getAudioUrl(), Constant.AUDIO_MEDIA_DIRECTORY + def.getAudioName());
-                                request.setPriority(Priority.HIGH);
-                                request.setNetworkType(NetworkType.ALL);
-                                isFetchDownloading = true;
-                                fetch.enqueue(request,
-                                        new Func<Request>() {
-                                            @Override
-                                            public void call(@NotNull Request result) {
-                                                mAudioProgress.setVisibility(View.VISIBLE);
-                                                isFetchDownloading = true;
-                                            }
-                                        }
-                                        ,
-                                        new Func<Error>() {
-                                            @Override
-                                            public void call(@NotNull Error result) {
-                                                isFetchDownloading = false;
-                                            }
-                                        }
-                                );
-                            }
-                        }
-
-                        if(currentDicitonary instanceof VocabCom){
-                            if(fetch == null){
-                                initFetch();
-                            }
-                            if(map.containsValue("离线发音")){
-                                final Request request = new Request(def.getAudioUrl(), Constant.AUDIO_MEDIA_DIRECTORY + def.getAudioName());
-                                request.setPriority(Priority.HIGH);
-                                request.setNetworkType(NetworkType.ALL);
-                                isFetchDownloading = true;
-                                fetch.enqueue(request,
-                                        new Func<Request>() {
-                                            @Override
-                                            public void call(@NotNull Request result) {
-                                                mAudioProgress.setVisibility(View.VISIBLE);
-                                                isFetchDownloading = true;
-                                            }
-                                        }
-                                        ,
-                                        new Func<Error>() {
-                                            @Override
-                                            public void call(@NotNull Error result) {
-                                                isFetchDownloading = false;
-                                            }
-                                        }
-                                );
-                            }
-                        }
-                        /////////////////
-                        long deckId = currentOutputPlan.getOutputDeckId();
-                        long modelId = currentOutputPlan.getOutputModelId();
-                        if(mUpdateNoteId == 0){
-                            Long result = mAnkiDroid.getApi().addNote(modelId, deckId, exportFields, mTagEditedByUser);
-                            if (result != null) {
-                                Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                    btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                            PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
+                            //handle download; audio or image
+                            if (currentDicitonary instanceof EudicSentence ||
+                                    currentDicitonary instanceof RenRenCiDianSentence) {
+                                if (fetch == null) {
+                                    initFetch();
                                 }
-                                clearBigbangSelection();
-                                mNoteEditedByUser = "";
-                                //attach the noteid to the button
-                                btnAddDefinition.setTag(R.id.TAG_NOTE_ID, result);
-                                //if there is a note id field in the model, update the note
-                                int count = 0;
-                                for(String field : currentOutputPlan.getFieldsMap().keySet()){
-                                    if(field.replace(" ","").toLowerCase().equals("noteid")){
-                                        exportFields[count] = result.toString();
-                                        boolean success = mAnkiDroid.getApi().updateNoteFields(
-                                                result.longValue(),
-                                                exportFields
-                                        );
-                                        if(!success){
-                                            Toast.makeText(PopupActivity.this, R.string.str_error_noteid, Toast.LENGTH_SHORT).show();
-                                        }
-                                        break;
+                                if (map.containsValue("原声例句")) {
+                                    final Request request = new Request(def.getAudioUrl(), Constant.AUDIO_MEDIA_DIRECTORY + def.getAudioName());
+                                    request.setPriority(Priority.HIGH);
+                                    request.setNetworkType(NetworkType.ALL);
+                                    isFetchDownloading = true;
+                                    fetch.enqueue(request,
+                                            new Func<Request>() {
+                                                @Override
+                                                public void call(@NotNull Request result) {
+                                                    mAudioProgress.setVisibility(View.VISIBLE);
+                                                    //                                isFetchDownloading = true;
+                                                }
+                                            }
+                                            ,
+                                            new Func<Error>() {
+                                                @Override
+                                                public void call(@NotNull Error result) {
+                                                    isFetchDownloading = false;
+                                                }
+                                            }
+                                    );
+                                }
+                            }
+
+                            if (currentDicitonary instanceof SolrDictionary) {
+                                if (fetch == null) {
+                                    initFetch();
+                                }
+                                if (!def.getAudioUrl().isEmpty() && (map.containsValue("音频") || map.containsValue("复合项"))) {
+                                    final Request request = new Request(def.getAudioUrl(), Constant.AUDIO_MEDIA_DIRECTORY + def.getAudioName());
+                                    request.setPriority(Priority.HIGH);
+                                    request.setNetworkType(NetworkType.ALL);
+                                    isFetchDownloading = true;
+                                    fetch.enqueue(request,
+                                            new Func<Request>() {
+                                                @Override
+                                                public void call(@NotNull Request result) {
+                                                    mAudioProgress.setVisibility(View.VISIBLE);
+                                                    isFetchDownloading = true;
+                                                }
+                                            }
+                                            ,
+                                            new Func<Error>() {
+                                                @Override
+                                                public void call(@NotNull Error result) {
+                                                    isFetchDownloading = false;
+                                                }
+                                            }
+                                    );
+                                }
+                            }
+
+                            if (currentDicitonary instanceof VocabCom) {
+                                if (fetch == null) {
+                                    initFetch();
+                                }
+                                if (map.containsValue("离线发音")) {
+                                    final Request request = new Request(def.getAudioUrl(), Constant.AUDIO_MEDIA_DIRECTORY + def.getAudioName());
+                                    request.setPriority(Priority.HIGH);
+                                    request.setNetworkType(NetworkType.ALL);
+                                    isFetchDownloading = true;
+                                    fetch.enqueue(request,
+                                            new Func<Request>() {
+                                                @Override
+                                                public void call(@NotNull Request result) {
+                                                    mAudioProgress.setVisibility(View.VISIBLE);
+                                                    isFetchDownloading = true;
+                                                }
+                                            }
+                                            ,
+                                            new Func<Error>() {
+                                                @Override
+                                                public void call(@NotNull Error result) {
+                                                    isFetchDownloading = false;
+                                                }
+                                            }
+                                    );
+                                }
+                            }
+                            /////////////////
+                            long deckId = currentOutputPlan.getOutputDeckId();
+                            long modelId = currentOutputPlan.getOutputModelId();
+                            if (mUpdateNoteId == 0) {
+                                Long result = mAnkiDroid.getApi().addNote(modelId, deckId, exportFields, mTagEditedByUser);
+                                if (result != null) {
+                                    Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        btnAddDefinition.setBackground(ContextCompat.getDrawable(
+                                                PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
                                     }
-                                    count ++;
-                                }
-                                //save note add
-                                HistoryUtil.saveNoteAdd("", getBoldSentence(bigBangLayout.getLines()),
-                                    currentDicitonary.getDictionaryName(),
-                                    textVeiwDefinition.getText().toString(),
-                                    mTranslatedResult,
-                                    mNoteEditedByUser,
-                                        mTagEditedByUser.toString()
-                                );
-                            } else {
-                                Toast.makeText(PopupActivity.this, R.string.str_failed_add, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        else{//there's note id, so we need to retrieve note first
-                            NoteInfo note = mAnkiDroid.getApi().getNote(mUpdateNoteId);
-                            String[] original = note.getFields();
-                            Set<String> tags = note.getTags();
-                            if(original == null || original.length != exportFields.length){
-                                Toast.makeText(PopupActivity.this, R.string.str_error_notetype_noncompatible, Toast.LENGTH_SHORT).show();
-                                return ;
-                            }
-
-                            if(mUpdateAction != null && mUpdateAction.equals("replace")) {
-                                //replace
-                                for (int j = 0; j < original.length; j++) {
-                                    if (exportFields[j].isEmpty()) {
-                                        exportFields[j] = original[j];
+                                    clearBigbangSelection();
+                                    mNoteEditedByUser = "";
+                                    //attach the noteid to the button
+                                    btnAddDefinition.setTag(R.id.TAG_NOTE_ID, result);
+                                    //if there is a note id field in the model, update the note
+                                    int count = 0;
+                                    for (String field : currentOutputPlan.getFieldsMap().keySet()) {
+                                        if (field.replace(" ", "").toLowerCase().equals("noteid")) {
+                                            exportFields[count] = result.toString();
+                                            boolean success = mAnkiDroid.getApi().updateNoteFields(
+                                                    result.longValue(),
+                                                    exportFields
+                                            );
+                                            if (!success) {
+                                                Toast.makeText(PopupActivity.this, R.string.str_error_noteid, Toast.LENGTH_SHORT).show();
+                                            }
+                                            break;
+                                        }
+                                        count++;
                                     }
+                                    //save note add
+                                    HistoryUtil.saveNoteAdd("", getBoldSentence(bigBangLayout.getLines()),
+                                            currentDicitonary.getDictionaryName(),
+                                            textVeiwDefinition.getText().toString(),
+                                            mTranslatedResult,
+                                            mNoteEditedByUser,
+                                            mTagEditedByUser.toString()
+                                    );
+                                } else {
+                                    Toast.makeText(PopupActivity.this, R.string.str_failed_add, Toast.LENGTH_SHORT).show();
+                                }
+                            } else {//there's note id, so we need to retrieve note first
+                                NoteInfo note = mAnkiDroid.getApi().getNote(mUpdateNoteId);
+                                String[] original = note.getFields();
+                                Set<String> tags = note.getTags();
+                                if (original == null || original.length != exportFields.length) {
+                                    Toast.makeText(PopupActivity.this, R.string.str_error_notetype_noncompatible, Toast.LENGTH_SHORT).show();
+                                    return;
                                 }
 
-                            }
-                            else {
-                                //append
-                                for (int j = 0; j < original.length; j++) {
-                                    if (original[j].trim().isEmpty() || exportFields[j].trim().isEmpty()) {
-                                        exportFields[j] = original[j] + exportFields[j];
-                                    } else {
-                                        exportFields[j] = original[j] + "<br/>" + exportFields[j];
+                                if (mUpdateAction != null && mUpdateAction.equals("replace")) {
+                                    //replace
+                                    for (int j = 0; j < original.length; j++) {
+                                        if (exportFields[j].isEmpty()) {
+                                            exportFields[j] = original[j];
+                                        }
+                                    }
+
+                                } else {
+                                    //append
+                                    for (int j = 0; j < original.length; j++) {
+                                        if (original[j].trim().isEmpty() || exportFields[j].trim().isEmpty()) {
+                                            exportFields[j] = original[j] + exportFields[j];
+                                        } else {
+                                            exportFields[j] = original[j] + "<br/>" + exportFields[j];
+                                        }
                                     }
                                 }
-                            }
-                            //we need to check the tag used by user is already in the tags, if not, add it
-                            tags.addAll(mTagEditedByUser);
-                            boolean success = mAnkiDroid.getApi().updateNoteFields(mUpdateNoteId, exportFields);
-                            boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, tags);
-                            if (success && successTag) {
-                                Toast.makeText(PopupActivity.this, R.string.str_note_updated, Toast.LENGTH_SHORT).show();
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                    btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                            PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
+                                //we need to check the tag used by user is already in the tags, if not, add it
+                                tags.addAll(mTagEditedByUser);
+                                boolean success = mAnkiDroid.getApi().updateNoteFields(mUpdateNoteId, exportFields);
+                                boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, tags);
+                                if (success && successTag) {
+                                    Toast.makeText(PopupActivity.this, R.string.str_note_updated, Toast.LENGTH_SHORT).show();
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        btnAddDefinition.setBackground(ContextCompat.getDrawable(
+                                                PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
+                                    }
+                                    //btnAddDefinition.setEnabled(false);
+                                } else {
+                                    Toast.makeText(PopupActivity.this, R.string.str_error_note_update, Toast.LENGTH_SHORT).show();
                                 }
-                                //btnAddDefinition.setEnabled(false);
-                            } else {
-                                Toast.makeText(PopupActivity.this, R.string.str_error_note_update, Toast.LENGTH_SHORT).show();
                             }
-                        }
-                        if(settings.getAutoCancelPopupQ()) {
-                            if(fetch == null)
-                            {
-                                finish();
-                            }else{
-                                if(!isFetchDownloading){
+                            if (settings.getAutoCancelPopupQ()) {
+                                if (fetch == null) {
                                     finish();
+                                } else {
+                                    if (!isFetchDownloading) {
+                                        finish();
+                                    }
                                 }
                             }
+                        }catch (Exception e){
+                            Toast.makeText(PopupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

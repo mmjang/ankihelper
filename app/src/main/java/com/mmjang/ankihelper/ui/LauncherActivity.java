@@ -394,9 +394,13 @@ public class LauncherActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            DefaultPlan plan = new DefaultPlan(LauncherActivity.this);
-                            plan.addDefaultPlan();
-                            Toast.makeText(LauncherActivity.this, R.string.default_plan_added, Toast.LENGTH_SHORT).show();
+                            try {
+                                DefaultPlan plan = new DefaultPlan(LauncherActivity.this);
+                                plan.addDefaultPlan();
+                                Toast.makeText(LauncherActivity.this, R.string.default_plan_added, Toast.LENGTH_SHORT).show();
+                            }catch (Exception e){
+                                Toast.makeText(LauncherActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     })
                     .setNegativeButton(android.R.string.no, null).show();

@@ -64,6 +64,18 @@ public class PlansManagerActivity extends AppCompatActivity {
             }
         });
         initPlanList();
+
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            MyApplication.getAnkiDroid().getApi().getDeckList();
+                        }catch (Exception e){
+                        }
+                    }
+                }
+        ).start();
     }
 
     @Override

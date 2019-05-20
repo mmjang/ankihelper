@@ -1,9 +1,15 @@
 package com.mmjang.ankihelper.util;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.mmjang.ankihelper.ui.widget.BigBangLayout;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by chenxiangjie on 2017/7/26.
@@ -100,6 +106,20 @@ public class FieldUtil {
                 }
             }
         }
-        return sb.toString().replace("}}{{c1::","").trim(); //combine adjacent cloze
+        String result = sb.toString().replace("}}{{c1::","").trim(); //combine adjacent cloze
+        if(result.length() < 4){
+            return result;
+        }
+        sb = new StringBuilder(result);
+        StringBuilder sbnew = new StringBuilder(result);
+        int close_count = 1;
+        for(int i = 3; i < sb.length(); i ++){
+            String sub = sb.substring(i - 3, i);
+            if(sub.equals("{{c")){
+                sbnew.replace(i, i + 1, Integer.toString(close_count));
+                close_count ++;
+            }
+        }
+        return sbnew.toString();
     }
 }

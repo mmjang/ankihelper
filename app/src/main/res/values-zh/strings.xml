@@ -64,5 +64,6 @@
     <string name="epub_reader_label">划词 EPUB 阅读</string>
     <string name="menu_title_statistics">统计</string>
     <string name="str_use_as_default_tags">作为默认标签</string>
+    <string name="set_custom_fanyi_api">自定义百度翻译 API</string>
 
 </resources>

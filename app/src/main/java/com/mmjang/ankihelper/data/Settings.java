@@ -36,6 +36,9 @@ public class Settings {
     private final static String SHOW_CONTENT_ALREADY_READ = "show_content_already_read";
     private final static String FIRST_TIME_RUNNING_READER = "first_time_running_reader";
 
+    private final static String USER_BAIDUFANYI_APP_ID = "user_baidu_fanyi_app_id";
+    private final static String USER_BAIDUFANYI_APP_KEY = "user_baidu_fanyi_app_key";
+
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
 
@@ -215,6 +218,24 @@ public class Settings {
 
     public void setFirstTimeRunningReader(boolean firstTimeRunningReader){
         editor.putBoolean(FIRST_TIME_RUNNING_READER, firstTimeRunningReader);
+        editor.commit();
+    }
+
+    public String getUserBaidufanyiAppId(){
+        return sp.getString(USER_BAIDUFANYI_APP_ID, "");
+    }
+
+    public void setUserBaidufanyiAppId(String userBaidufanyiAppId){
+        editor.putString(USER_BAIDUFANYI_APP_ID, userBaidufanyiAppId);
+        editor.commit();
+    }
+
+    public String getUserBaidufanyiAppKey(){
+        return sp.getString(USER_BAIDUFANYI_APP_KEY, "");
+    }
+
+    public void setUserBaidufanyiAppKey(String userBaidufanyiAppKey){
+        editor.putString(USER_BAIDUFANYI_APP_KEY, userBaidufanyiAppKey);
         editor.commit();
     }
 

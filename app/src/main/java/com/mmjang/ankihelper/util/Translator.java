@@ -3,6 +3,7 @@ package com.mmjang.ankihelper.util;
 import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.util.com.baidu.translate.demo.RandomAPIKeyGenerator;
 import com.mmjang.ankihelper.util.com.baidu.translate.demo.TransApi;
 
@@ -18,8 +19,15 @@ public class Translator {
         //remove line break
         //query = query.replaceAll("\n","");
         if(api == null) {
-            String[] appAndKey = RandomAPIKeyGenerator.next();
-            api = new TransApi(appAndKey[0], appAndKey[1]);
+            Settings settings = Settings.getInstance(MyApplication.getContext());
+            if(settings.getUserBaidufanyiAppId().isEmpty()) {
+                String[] appAndKey = RandomAPIKeyGenerator.next();
+                api = new TransApi(appAndKey[0], appAndKey[1]);
+            }else{
+                String id = settings.getUserBaidufanyiAppId();
+                String key = settings.getUserBaidufanyiAppKey();
+                api = new TransApi(id, key);
+            }
         }
         String jsonStr = "";
         try {

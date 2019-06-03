@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="com.ichi2.anki.permission.READ_WRITE_DATABASE" />
 
     <application
@@ -16,10 +16,11 @@
         android:allowBackup="true"
         android:icon="@drawable/icon_light"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network"
         android:roundIcon="@drawable/icon_light"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.translation.CustomTranslationActivity"></activity>
         <activity
             android:name=".ui.popup.PopupActivity"
             android:excludeFromRecents="true"
@@ -137,10 +138,10 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".ui.content.ContentViewerActivity"
+        <activity
+            android:name=".ui.content.ContentViewerActivity"
             android:label="@string/str_btn_open_random_quote"
-            android:parentActivityName=".ui.content.ContentActivity"
-            ></activity>
+            android:parentActivityName=".ui.content.ContentActivity" />
     </application>
 
 </manifest>

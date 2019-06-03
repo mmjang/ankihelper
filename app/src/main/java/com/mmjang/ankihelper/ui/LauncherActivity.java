@@ -40,7 +40,10 @@ import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.popup.PopupActivity;
 import com.mmjang.ankihelper.ui.read.BookshelfActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
+import com.mmjang.ankihelper.ui.translation.CustomTranslationActivity;
 import com.mmjang.ankihelper.util.Constant;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.List;
@@ -61,6 +64,7 @@ public class LauncherActivity extends AppCompatActivity {
     TextView textViewAddDefaultPlan;
     TextView textViewAddQQGroup;
     TextView textViewRandomQuote;
+    TextView textViewCustomTranslation;
 
     private static final int REQUEST_CODE_ANKI = 0;
     private static final int REQUEST_CODE_STORAGE = 1;
@@ -86,6 +90,7 @@ public class LauncherActivity extends AppCompatActivity {
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
         textViewAddQQGroup = (TextView) findViewById(R.id.btn_qq_group);
         textViewRandomQuote = (TextView) findViewById(R.id.btn_show_random_content);
+        textViewCustomTranslation = findViewById(R.id.btn_set_custom_fanyi);
 
         textViewAbout.setText(Html.fromHtml("<font color='red'>❤</font>" + getResources().getString(R.string.btn_about_and_support_str)));
         switchMoniteClipboard.setChecked(
@@ -185,6 +190,16 @@ public class LauncherActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(LauncherActivity.this, AboutActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        textViewCustomTranslation.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(LauncherActivity.this, CustomTranslationActivity.class);
                         startActivity(intent);
                     }
                 }

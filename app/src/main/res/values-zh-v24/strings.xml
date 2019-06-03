@@ -45,5 +45,6 @@
     <string name="str_only_one_plan_cant_switch">只有一个方案，没法切换</string>
     <string name="str_btn_open_random_quote">📚刷一刷</string>
     <string name="str_pink_theme_q">🌸粉色主题</string>
+    <string name="set_custom_fanyi_api">🐻自定义百度翻译 API</string>
 
 </resources>

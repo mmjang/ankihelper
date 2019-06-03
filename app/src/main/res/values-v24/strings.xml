@@ -43,4 +43,5 @@
     <string name="str_only_one_plan_cant_switch">There is only one plan, not switchable.</string>
     <string name="str_btn_open_random_quote">📚Random Content</string>
     <string name="str_pink_theme_q">🌸Pink Theme</string>
+    <string name="set_custom_fanyi_api">🐻Set Custom Baidu Translation Api</string>
 </resources>

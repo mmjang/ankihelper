@@ -1,0 +1,39 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="16dp"
+    >
+    <TextView
+        android:layout_margin="8dp"
+        android:id="@+id/textview_custom_translation_introduction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/custom_translation_introduction"
+    />
+    <TextView
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="APP ID:"
+        />
+    <EditText
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edittext_baidufanyi_appid"
+        />
+    <TextView
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="密钥:"
+        />
+    <EditText
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edittext_baidufanyi_key"
+        />
+</LinearLayout>

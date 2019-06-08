@@ -18,8 +18,15 @@ public class CustomTranslationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         final Settings settings = Settings.getInstance(this);
-
         setContentView(R.layout.activity_custom_translation);
+        if(Settings.getInstance(this).getPinkThemeQ()){
+            setTheme(R.style.AppThemePink);
+        }else{
+            setTheme(R.style.AppTheme);
+        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_custom_translation);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         TextView introduction = findViewById(R.id.textview_custom_translation_introduction);
         introduction.setMovementMethod(LinkMovementMethod.getInstance());
 

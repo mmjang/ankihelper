@@ -90,8 +90,7 @@ public class LauncherActivity extends AppCompatActivity {
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
         textViewAddQQGroup = (TextView) findViewById(R.id.btn_qq_group);
         textViewRandomQuote = (TextView) findViewById(R.id.btn_show_random_content);
-        textViewCustomTranslation = findViewById(R.id.textview_custom_translation_introduction);
-
+        textViewCustomTranslation = findViewById(R.id.btn_set_custom_fanyi);
         textViewAbout.setText(Html.fromHtml("<font color='red'>❤</font>" + getResources().getString(R.string.btn_about_and_support_str)));
         switchMoniteClipboard.setChecked(
                 settings.getMoniteClipboardQ()

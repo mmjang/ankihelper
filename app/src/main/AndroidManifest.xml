@@ -20,7 +20,11 @@
         android:roundIcon="@drawable/icon_light"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.translation.CustomTranslationActivity"></activity>
+
+        <activity android:name=".ui.translation.CustomTranslationActivity"
+            android:label="@string/set_custom_fanyi_api"
+            android:parentActivityName=".ui.LauncherActivity"
+            ></activity>
         <activity
             android:name=".ui.popup.PopupActivity"
             android:excludeFromRecents="true"

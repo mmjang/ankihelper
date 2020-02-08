@@ -54,4 +54,6 @@ public class Constant {
 
     public static final String AUDIO_MEDIA_DIRECTORY = Environment.getExternalStorageDirectory()
             + "/AnkiDroid/collection.media/ankihelper_audio/";
+
+    public static final String USE_CLIPBOARD_CONTENT_FLAG = "use_clipboard_content_flag";
 }

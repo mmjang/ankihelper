@@ -1,15 +1,8 @@
 package com.mmjang.ankihelper.util;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.mmjang.ankihelper.ui.widget.BigBangLayout;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by chenxiangjie on 2017/7/26.

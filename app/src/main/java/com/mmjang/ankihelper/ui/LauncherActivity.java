@@ -28,8 +28,6 @@ import com.mmjang.ankihelper.data.database.ExternalDatabase;
 import com.mmjang.ankihelper.data.database.MigrationUtil;
 import com.mmjang.ankihelper.data.plan.DefaultPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
-import com.mmjang.ankihelper.data.quote.Quote;
-import com.mmjang.ankihelper.data.quote.RandomQuote;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
@@ -37,13 +35,9 @@ import com.mmjang.ankihelper.ui.about.AboutActivity;
 import com.mmjang.ankihelper.ui.content.ContentActivity;
 import com.mmjang.ankihelper.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
-import com.mmjang.ankihelper.ui.popup.PopupActivity;
-import com.mmjang.ankihelper.ui.read.BookshelfActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
 import com.mmjang.ankihelper.ui.translation.CustomTranslationActivity;
 import com.mmjang.ankihelper.util.Constant;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.List;
@@ -302,10 +296,10 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_book_shelf:
-                Intent intent = new Intent(this, BookshelfActivity.class);
-                startActivity(intent);
-                break;
+//                case R.id.menu_item_book_shelf:
+//                    Intent intent = new Intent(this, BookshelfActivity.class);
+//                    startActivity(intent);
+//                    break;
             case R.id.menu_item_stat:
                 Intent intent2 = new Intent(this, StatActivity.class);
                 startActivity(intent2);

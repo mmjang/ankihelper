@@ -154,4 +154,5 @@
     <string name="str_use_as_default_tags">作为默认标签</string>
     <string name="set_custom_fanyi_api">Set Custom Baidu Translation Api</string>
     <string name="custom_translation_introduction">本应用自带的翻译功能调用的是百度翻译的api，存在每月200万总字符的限额，如果使用翻译功能时出现带 recharge 字样的报错，则需要自行申请一个<a href="https://jingyan.baidu.com/article/219f4bf7bdb028de442d38e1.html">百度翻译API秘钥</a>填入下方，申请后每月的200万字符限额完全能满足个人使用。</string>
+    <string name="str_clipboard_service_running_version_q">Copy text and click this notification</string>
 </resources>

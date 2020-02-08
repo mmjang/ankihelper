@@ -3,6 +3,7 @@ package com.mmjang.ankihelper.ui.popup;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -59,7 +60,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.folioreader.util.ProgressDialog;
 import com.ichi2.anki.FlashCardsContract;
 import com.ichi2.anki.api.NoteInfo;
 import com.mmjang.ankihelper.MyApplication;
@@ -251,20 +251,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         populatePlanSpinner();
         populateLanguageSpinner();
         setEventListener();
-        handleIntent();
         if (settings.getMoniteClipboardQ()) {
             startCBService();
         }
 
-        bigBangLayout.post( new Runnable() {
-            @Override
-            public void run() {
-                setTargetWord();
-                if(Utils.containsTranslationField(currentOutputPlan)){
-                    asyncTranslate(mTextToProcess);
-                }
-            }
-        });
+        handleIntent();
 
         //async invoke droid
         asyncInvokeDroid();
@@ -696,7 +687,34 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(isFromAndroidQClipboard) {
+            if (!Settings.getInstance(MyApplication.getContext()).getMoniteClipboardQ()) {
+                return;
+            }
+            ClipboardManager cb = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            if (cb.hasPrimaryClip()) {
+                if (cb.hasText()) {
+                    String text = cb.getText().toString();
+                    mTextToProcess = text;
+                }
+            }
+            populateWordSelectBox();
+            bigBangLayout.post( new Runnable() {
+                @Override
+                public void run() {
+                    setTargetWord();
+                    if(Utils.containsTranslationField(currentOutputPlan)){
+                        asyncTranslate(mTextToProcess);
+                    }
+                }
+            });
+        }
+    }
 
+    boolean isFromAndroidQClipboard = false;
     private void handleIntent() {
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -711,6 +729,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
             String base64 = intent.getStringExtra(Constant.INTENT_ANKIHELPER_BASE64);
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if(mTextToProcess != null && mTextToProcess.equals(Constant.USE_CLIPBOARD_CONTENT_FLAG)){
+                mTextToProcess = "";
+                isFromAndroidQClipboard = true;
+            }
             if(base64 != null && !base64.equals("0")){
                 mTextToProcess = new String(Base64.decode(mTextToProcess, Base64.DEFAULT));
             }
@@ -748,10 +770,21 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         populateWordSelectBox();
 
         HistoryUtil.savePopupOpen(mTextToProcess);
+
+        bigBangLayout.post( new Runnable() {
+            @Override
+            public void run() {
+                setTargetWord();
+                if(Utils.containsTranslationField(currentOutputPlan)){
+                    asyncTranslate(mTextToProcess);
+                }
+            }
+        });
     }
 
     private void populateWordSelectBox() {
         List<String> localSegments = TextSplitter.getLocalSegments(mTextToProcess);
+        bigBangLayout.removeAllViews();
         for (String localSegment : localSegments) {
             bigBangLayout.addTextItem(localSegment);
         }

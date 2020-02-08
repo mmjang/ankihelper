@@ -6,10 +6,4 @@
         android:title="@string/menu_title_statistics"
         app:showAsAction="always"
         />
-
-    <item
-        android:id="@+id/menu_item_book_shelf"
-        android:title="@string/epub_reader"
-        app:showAsAction="always"
-        />
 </menu>

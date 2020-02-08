@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.ichi2.anki.FlashCardsContract;
@@ -124,7 +125,10 @@ public class Utils {
     public static void hideSoftKeyboard(Activity context) {
         //Hides the SoftKeyboard
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
+        View currentFocus = context.getCurrentFocus();
+        if(currentFocus != null){
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
     }
 
     public static int getArrayIndex(long[] arr, long value) {

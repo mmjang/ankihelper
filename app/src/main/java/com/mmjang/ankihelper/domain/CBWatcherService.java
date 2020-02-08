@@ -20,6 +20,9 @@ import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.ui.LauncherActivity;
 import com.mmjang.ankihelper.ui.popup.PopupActivity;
+import com.mmjang.ankihelper.util.Constant;
+
+import java.sql.BatchUpdateException;
 
 import static android.app.NotificationManager.IMPORTANCE_HIGH;
 
@@ -63,17 +66,30 @@ public class CBWatcherService extends Service {
             manager.createNotificationChannel(notificationChannel);
         }else{
         }
-        Intent intentStart = new Intent(this, LauncherActivity.class);
+        long[] vibList = new long[1];
+        vibList[0] = 10L;
+        Intent intentStart = new Intent(getApplicationContext(), PopupActivity.class);
+        intentStart.setAction(Intent.ACTION_SEND);
+        intentStart.setType("text/plain");
+        //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intentStart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intentStart.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intentStart.putExtra(Intent.EXTRA_TEXT, Constant.USE_CLIPBOARD_CONTENT_FLAG);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intentStart, PendingIntent.FLAG_UPDATE_CURRENT);
         //NotificationManager notiManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Notification noti = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setChannelId(CHANNEL_ONE_ID)
-                .setContentText(getString(R.string.str_clipboard_service_running))
+//                .setContentText(getString(R.string.str_clipboard_service_running))
                 .setSmallIcon(R.drawable.icon_light)
                 .setContentTitle(getResources().getText(R.string.app_name))
                 .setContentIntent(pendingIntent)
-                .setWhen(System.currentTimeMillis())
-                .build();
+                .setWhen(System.currentTimeMillis());
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+            builder = builder.setContentText(getString(R.string.str_clipboard_service_running_version_q));
+        } else {
+            builder = builder.setContentText(getString(R.string.str_clipboard_service_running));
+        }
+        Notification noti = builder.build();
         noti.flags |= Notification.FLAG_FOREGROUND_SERVICE;
         startForeground(2333, noti);
         return START_STICKY;

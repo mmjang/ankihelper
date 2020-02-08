@@ -24,7 +24,6 @@ public class CustomTranslationActivity extends AppCompatActivity {
         }else{
             setTheme(R.style.AppTheme);
         }
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_translation);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         TextView introduction = findViewById(R.id.textview_custom_translation_introduction);

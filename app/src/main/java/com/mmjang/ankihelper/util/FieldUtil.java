@@ -82,7 +82,7 @@ public class FieldUtil {
             return sb.toString().trim();
     }
 
-    public static String getBlankSentence(List<BigBangLayout.Line> lines) {
+    public static String getBlankSentence(List<BigBangLayout.Line> lines, boolean multiCardMode) {
         StringBuilder sb = new StringBuilder();
         for (int lineIndex = 0; lineIndex < lines.size(); lineIndex++) {
             BigBangLayout.Line line = lines.get(lineIndex);
@@ -103,16 +103,20 @@ public class FieldUtil {
         if(result.length() < 4){
             return result;
         }
-        sb = new StringBuilder(result);
-        StringBuilder sbnew = new StringBuilder(result);
-        int close_count = 1;
-        for(int i = 3; i < sb.length(); i ++){
-            String sub = sb.substring(i - 3, i);
-            if(sub.equals("{{c")){
-                sbnew.replace(i, i + 1, Integer.toString(close_count));
-                close_count ++;
+        if (multiCardMode) {
+            sb = new StringBuilder(result);
+            StringBuilder sbnew = new StringBuilder(result);
+            int close_count = 1;
+            for (int i = 3; i < sb.length(); i++) {
+                String sub = sb.substring(i - 3, i);
+                if (sub.equals("{{c")) {
+                    sbnew.replace(i, i + 1, Integer.toString(close_count));
+                    close_count++;
+                }
             }
+            return sbnew.toString();
+        } else {
+            return result;
         }
-        return sbnew.toString();
     }
 }

@@ -24,7 +24,7 @@ public class Cloze implements IDictionary {
     }
 
     public String getIntroduction() {
-        return "无释义，用户快速制作填空";
+        return "无释义，用于快速制作填空";
     }
 
     public String[] getExportElementsList() {

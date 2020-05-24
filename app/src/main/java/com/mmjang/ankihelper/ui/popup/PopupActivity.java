@@ -1140,26 +1140,31 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                     continue;
                                 }
                                 if (exportedFieldKey.equals(sharedExportElements[3])) {
-                                    exportFields[i] = getBlankSentence(bigBangLayout.getLines());
+                                    exportFields[i] = getBlankSentence(bigBangLayout.getLines(), true);
                                     i++;
                                     continue;
                                 }
                                 if (exportedFieldKey.equals(sharedExportElements[4])) {
-                                    exportFields[i] = mNoteEditedByUser;
+                                    exportFields[i] = getBlankSentence(bigBangLayout.getLines(), false);
                                     i++;
                                     continue;
                                 }
                                 if (exportedFieldKey.equals(sharedExportElements[5])) {
-                                    exportFields[i] = mUrl;
+                                    exportFields[i] = mNoteEditedByUser;
                                     i++;
                                     continue;
                                 }
                                 if (exportedFieldKey.equals(sharedExportElements[6])) {
-                                    exportFields[i] = Utils.getAllHtmlFromDefinitionList(mDefinitionList);
+                                    exportFields[i] = mUrl;
                                     i++;
                                     continue;
                                 }
                                 if (exportedFieldKey.equals(sharedExportElements[7])) {
+                                    exportFields[i] = Utils.getAllHtmlFromDefinitionList(mDefinitionList);
+                                    i++;
+                                    continue;
+                                }
+                                if (exportedFieldKey.equals(sharedExportElements[8])) {
                                     exportFields[i] = mEditTextTranslation.getText().toString().replace("\n", "<br/>");
                                     i++;
                                     continue;

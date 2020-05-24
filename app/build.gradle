@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion ANDROID_COMPILE_SDK_VERSION
-    buildToolsVersion "28.0.3"
+    buildToolsVersion '29.0.2'
     defaultConfig {
         applicationId "com.mmjang.ankihelper"
         minSdkVersion ANDROID_MIN_SDK

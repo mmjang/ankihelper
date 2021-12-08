@@ -11,7 +11,7 @@ android {
         versionName VERSION_NAME
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        setProperty("archivesBaseName", "Anki 划词助手" + " " + versionName)
+        setProperty("archivesBaseName", "Anki-划词助手")
     }
     buildTypes {
         release {

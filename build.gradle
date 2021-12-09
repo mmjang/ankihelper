@@ -19,12 +19,18 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
-        jcenter(){url "http://jcenter.bintray.com/"}
-        maven { url 'https://jitpack.io' }
-        maven { url "https://dl.bintray.com/mobisystech/maven" }
-        mavenLocal()
-        google()
+         mavenLocal()
+         maven {url "https://maven.google.com/"}
+         maven { url 'https://jitpack.io' }
+         maven {url "https://maven.aliyun.com/repository/public"}
+         maven {url "https://maven.aliyun.com/repository/public"}
+          google()
+       //  jcenter()
+       // jcenter(){url "http://jcenter.bintray.com/"}
+      
+       // maven { url "https://dl.bintray.com/mobisystech/maven" }
+      
+      
     }
 }
 

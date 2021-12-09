@@ -22,7 +22,7 @@ import okhttp3.Request;
  */
 
 public class YoudaoOnline {
-    private static final String BASE_URL = "http://dict.youdao.com/fsearch?client=deskdict&keyfrom=chrome.extension&pos=-1&doctype=xml&dogVersion=1.0&vendor=unknown&appVer=3.1.17.4208&le=eng&q=%s";
+    private static final String BASE_URL = "https://dict.youdao.com/fsearch?client=deskdict&keyfrom=chrome.extension&pos=-1&doctype=xml&dogVersion=1.0&vendor=unknown&appVer=3.1.17.4208&le=eng&q=%s";
     static public YoudaoResult getDefinition(String key) throws IOException{
 //            Document doc = Jsoup.connect(String.format(BASE_URL, key.trim()))
 //                    .userAgent("Mozilla")

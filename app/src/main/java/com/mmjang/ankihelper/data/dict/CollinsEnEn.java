@@ -273,6 +273,6 @@ public class CollinsEnEn extends SQLiteAssetHelper implements IDictionary {
     }
 
     String getYoudaoAudioTag(String word, int voiceType){
-        return "[sound:http://dict.youdao.com/dictvoice?audio=" + word + "&type=" + voiceType +"]";
+        return "[sound:https://dict.youdao.com/dictvoice?audio=" + word + "&type=" + voiceType +"]";
     }
 }

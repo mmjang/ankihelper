@@ -5,7 +5,10 @@ buildscript {
 
     repositories {
         google()
-        maven { url "http://jcenter.bintray.com" }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.2'
@@ -19,12 +22,11 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
-        jcenter(){url "http://jcenter.bintray.com/"}
-        maven { url 'https://jitpack.io' }
-        maven { url "https://dl.bintray.com/mobisystech/maven" }
-        mavenLocal()
         google()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -33,7 +35,7 @@ ext {
     R2_STREAMER_KOTLIN_VERSION = '1.0.3-5'
     R2_SHARED_KOTLIN_VERSION = '1.0.3-2'
 
-    VERSION_NAME = "2.30.5"
+    VERSION_NAME = "2.30.7"
     VERSION_CODE = 151
     ANDROID_MIN_SDK = 19
     ANDROID_COMPILE_SDK_VERSION = 29

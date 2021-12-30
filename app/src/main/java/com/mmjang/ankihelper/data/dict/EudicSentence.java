@@ -77,7 +77,7 @@ public class EudicSentence implements IDictionary {
             Document doc = Jsoup.parse(rawhtml);
             List<Definition> definitionList = new ArrayList<>();
 
-            for(Element audioEle : doc.select("div.lj_item")){
+            for(Element audioEle : doc.select("#TingLiju div.lj_item")){
                 processOneSentence(key, audioEle, definitionList);
             }
 
@@ -118,7 +118,7 @@ public class EudicSentence implements IDictionary {
         String audioId = audioEle.attr("source");
         audioId = URLDecoder.decode(audioId, "UTF-8");
         audioId = audioId.replace("/","_");
-        String audioUrl = String.format("https://fs-gateway.esdict.cn/store_main/sentencemp3/%s.mp3", audioId);
+        String audioUrl = String.format("https://fs-gateway.esdict.cn/buckets/main/store_main/sentencemp3/%s.mp3", audioId);
 //                Elements a = audioEle.select("div.content > p.line a");
 //                String audioUrl = "";
 //                if(a.size() > 0){

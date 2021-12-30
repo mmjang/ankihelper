@@ -7,7 +7,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
-import com.tencent.bugly.crashreport.CrashReport;
+//import com.tencent.bugly.crashreport.CrashReport;
 
 import org.litepal.LitePalApplication;
 
@@ -29,7 +29,7 @@ public class MyApplication extends MultiDexApplication {
         context = getApplicationContext();
         application = this;
         LitePalApplication.initialize(context);
-        CrashReport.initCrashReport(getApplicationContext(), "398dc6145b", false);
+//        CrashReport.initCrashReport(getApplicationContext(), "398dc6145b", false);
         AndroidThreeTen.init(this);
 
     }

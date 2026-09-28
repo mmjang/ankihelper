@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.book.Book;

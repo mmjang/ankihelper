@@ -19,14 +19,6 @@ public class OutputPlan extends DataSupport{
     private long outputModelId;
     private String fieldsMap;
 
-//    public void setOrder(int order) {
-//        this.order = order;
-//    }
-//
-//    public int getOrder() {
-//        return order;
-//    }
-
     public void setPlanName(String planName) {
         this.planName = planName;
     }

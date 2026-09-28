@@ -31,13 +31,11 @@
     <string name="confirm_add_default_plan">No plans found, add default?</string>
     <string name="default_plan_added">Default plan added, check out at plans manager</string>
     <string name="btn_help_str">❓Help</string>
-    <string name="btn_about_and_support_str">Donate</string>
     <string name="confirm_add_default_plan_when_exists_already">Add default plan(Collins dictionary)？</string>
     <string name="btn_add_default_plan_str">♻️add default plan</string>
     <string name="duplicate_plan_name_complain">Default plan already exists, delete it in plans manager first.</string>
     <string name="toast_no_available_plan">No usable plan, add one in the main window of ankihelper.</string>
     <string name="left_hand_mode">👈🏻Left Hand Mode</string>
-    <string name="str_add_qq_group">👧🏻Join QQ Group</string>
     <string name="str_clipboard_service_running">Clipboard Monitor is Running</string>
     <string name="str_field_map">Fields Mapping:</string>
     <string name="str_only_one_plan_cant_switch">There is only one plan, not switchable.</string>

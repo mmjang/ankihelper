@@ -22,19 +22,43 @@ public class ExternalContent {
     private Context mContext;
     private ExternalContentDatabaseHelper[] helperList;
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public ExternalContent(Context context){
         mContext = context;
-        File contentFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
-                + Constant.EXTERNAL_STORAGE_DIRECTORY + File.separator +
-                Constant.EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY);
-        File[] listOfFiles = contentFolder.listFiles();
-        dbFileList = new ArrayList<>();
-        for(File f : listOfFiles){
-            String fileName = f.getName();
-            if(fileName.endsWith(suffix)){
-                dbFileList.add(f);
+        List<File> allFiles = new ArrayList<>();
+
+        if (context.getExternalFilesDir(null) != null) {
+            File standardFolder = new File(context.getExternalFilesDir(null),
+                    Constant.EXTERNAL_STORAGE_DIRECTORY + File.separator +
+                            Constant.EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY);
+            if (!standardFolder.exists()) {
+                standardFolder.mkdirs();
+            }
+            File[] files = standardFolder.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.getName().endsWith(suffix)) {
+                        allFiles.add(f);
+                    }
+                }
             }
         }
+
+        File primaryFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
+                + Constant.EXTERNAL_STORAGE_DIRECTORY + File.separator +
+                Constant.EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY);
+        if (primaryFolder.exists()) {
+            File[] files = primaryFolder.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.getName().endsWith(suffix) && !allFiles.contains(f)) {
+                        allFiles.add(f);
+                    }
+                }
+            }
+        }
+
+        dbFileList = allFiles;
         helperList = new ExternalContentDatabaseHelper[dbFileList.size()];
     }
 

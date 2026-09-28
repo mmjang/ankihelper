@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.mmjang.ankihelper.data.Settings;
 
 public class OnlockReceiver extends BroadcastReceiver {
@@ -14,7 +16,7 @@ public class OnlockReceiver extends BroadcastReceiver {
         Settings settings = Settings.getInstance(context);
         if(settings.getMoniteClipboardQ()) {
             Toast.makeText(context, "debug", Toast.LENGTH_SHORT).show();
-            context.startService(newIntent);
+            ContextCompat.startForegroundService(context, newIntent);
         }
     }
 }

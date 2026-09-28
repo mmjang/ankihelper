@@ -3,7 +3,7 @@ package com.mmjang.ankihelper;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;

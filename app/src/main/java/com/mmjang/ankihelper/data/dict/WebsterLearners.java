@@ -10,6 +10,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.data.database.ExternalDatabaseContext;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import org.jsoup.Jsoup;
@@ -45,8 +46,15 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
     private SQLiteDatabase db;
     private Context mContext;
     public WebsterLearners(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getReadableDatabase();
+        super(new ExternalDatabaseContext(context), DATABASE_NAME,
+                new ExternalDatabaseContext(context).getDatabaseDir(DATABASE_NAME),
+                null, DATABASE_VERSION);
+        try {
+            db = getReadableDatabase();
+        } catch (Exception e) {
+            Log.e("WebsterLearners", "Failed to open database " + DATABASE_NAME, e);
+            db = null;
+        }
         mContext = context;
     }
 
@@ -210,11 +218,17 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
 
     private Cursor getFilterCursor(String q) {
         Log.d("databse", "getFilterCursor" + q);
+        if (db == null || !db.isOpen()) {
+            return null;
+        }
         Cursor cursor = db.query("hwds", new String[]{"rowid _id", "hwd"}, "hwd LIKE ?", new String[]{q + "%"}, null, null, null);
         return cursor;
     }
 
     private boolean isWordInDict(String word){
+        if (db == null || !db.isOpen()) {
+            return false;
+        }
         Cursor cursor = db.query("hwds", new String[] {"hwd"},
                 "hwd=? COLLATE NOCASE", new String[]{word}, null, null, null);
         if(cursor.moveToNext()){

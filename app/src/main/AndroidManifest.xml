@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="com.ichi2.anki.permission.READ_WRITE_DATABASE" />
 
     <application
@@ -28,6 +29,7 @@
         <activity
             android:name=".ui.popup.PopupActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:theme="@style/Transparent"
@@ -74,6 +76,7 @@
 
         <activity
             android:name=".ui.LauncherActivity"
+            android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -81,7 +84,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.about.AboutActivity" />
         <activity
             android:name=".ui.customdict.CustomDictionaryActivity"
             android:label="@string/btn_open_custom_dicitonary_str"
@@ -92,7 +94,7 @@
         </activity>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -103,6 +105,7 @@
 
         <activity
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/FilePickerTheme">
             <intent-filter>

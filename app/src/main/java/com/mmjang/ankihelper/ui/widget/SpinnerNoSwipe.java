@@ -4,7 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-public class SpinnerNoSwipe extends android.support.v7.widget.AppCompatSpinner {
+
+import androidx.appcompat.widget.AppCompatSpinner;
+
+public class SpinnerNoSwipe extends AppCompatSpinner {
 
     private GestureDetector mGestureDetector;
 

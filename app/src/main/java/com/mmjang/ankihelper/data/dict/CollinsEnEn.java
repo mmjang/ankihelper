@@ -9,6 +9,7 @@ import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.mmjang.ankihelper.data.database.ExternalDatabaseContext;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.io.IOException;
@@ -42,8 +43,15 @@ public class CollinsEnEn extends SQLiteAssetHelper implements IDictionary {
     private Context mContext;
 
     public CollinsEnEn(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getReadableDatabase();
+        super(new ExternalDatabaseContext(context), DATABASE_NAME,
+                new ExternalDatabaseContext(context).getDatabaseDir(DATABASE_NAME),
+                null, DATABASE_VERSION);
+        try {
+            db = getReadableDatabase();
+        } catch (Exception e) {
+            Log.e("CollinsEnEn", "Failed to open database " + DATABASE_NAME, e);
+            db = null;
+        }
         mContext = context;
     }
 
@@ -138,6 +146,9 @@ public class CollinsEnEn extends SQLiteAssetHelper implements IDictionary {
     private ArrayList<Definition> queryDefinition(String q) {
         //SQLiteDatabase db = getReadableDatabase();
         ArrayList<Definition> re = new ArrayList<>();
+        if (db == null || !db.isOpen() || q.isEmpty()) {
+            return re;
+        }
         Cursor cursor = db.query(TABLE_DICT,
                 new String[]{FIELD_HWD, FIELD_DISPLAYED_HWD, FIELD_PHRASE,
                         FIELD_PHONETICS, FIELD_SENSE, FIELD_EXT, FIELD_DEF_EN, FIELD_DEF_CN},
@@ -214,6 +225,9 @@ public class CollinsEnEn extends SQLiteAssetHelper implements IDictionary {
 
     private String[] getForms(String q) {
         //SQLiteDatabase db = getReadableDatabase();
+        if (db == null || !db.isOpen()) {
+            return new String[0];
+        }
         Cursor cursor = db.query("forms", new String[]{"bases"}, "hwd=? ", new String[]{q.toLowerCase()}, null, null, null);
         String bases = "";
         while (cursor.moveToNext()) {
@@ -232,6 +246,9 @@ public class CollinsEnEn extends SQLiteAssetHelper implements IDictionary {
 
     private Cursor getFilterCursor(String q) {
         Log.d("databse", "getFilterCursor" + q);
+        if (db == null || !db.isOpen()) {
+            return null;
+        }
         Cursor cursor = db.query("hwds", new String[]{"rowid _id", "hwd"}, "hwd LIKE ?", new String[]{q + "%"}, null, null, null);
         return cursor;
     }

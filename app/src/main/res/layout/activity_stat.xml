@@ -37,7 +37,7 @@
             </Spinner>
         </LinearLayout>
 
-        <android.support.design.chip.ChipGroup
+        <com.google.android.material.chip.ChipGroup
             android:id="@+id/last_days_stat_chipgroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             app:singleSelection="true"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-            <android.support.design.chip.Chip
+            <com.google.android.material.chip.Chip
                 android:checked="true"
                 android:id="@+id/chip_1"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text="today" />
 
-            <android.support.design.chip.Chip
+            <com.google.android.material.chip.Chip
                 android:checked="true"
                 android:id="@+id/chip_7"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:text="7 days" />
 
-            <android.support.design.chip.Chip
+            <com.google.android.material.chip.Chip
                 android:checked="false"
                 android:id="@+id/chip_30"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -70,16 +70,16 @@
                 android:layout_height="wrap_content"
                 android:text="30 days" />
 
-            <android.support.design.chip.Chip
+            <com.google.android.material.chip.Chip
                 android:checked="false"
                 android:id="@+id/chip_365"
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1 year" />
-        </android.support.design.chip.ChipGroup>
+        </com.google.android.material.chip.ChipGroup>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -97,9 +97,9 @@
                 android:layout_height="200dp"
                 android:layout_margin="8dp"
                 android:id="@+id/hourt_chart"/>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -117,7 +117,7 @@
                 android:layout_height="200dp"
                 android:layout_margin="8dp"
                 android:id="@+id/last_days_chart"/>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </ScrollView>

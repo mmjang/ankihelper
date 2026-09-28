@@ -1,4 +1,4 @@
-<android.support.design.chip.Chip android:checked="false"
+<com.google.android.material.chip.Chip android:checked="false"
     android:id="@+id/chip_item"
     style="@style/Widget.MaterialComponents.Chip.Filter"
     android:layout_width="wrap_content"

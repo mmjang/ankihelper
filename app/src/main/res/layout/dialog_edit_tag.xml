@@ -20,13 +20,13 @@
         android:id="@+id/checkbox_as_default_tag"
         />
 
-    <android.support.design.chip.ChipGroup
+    <com.google.android.material.chip.ChipGroup
         android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tag_chip_list"
         >
 
-    </android.support.design.chip.ChipGroup>
+    </com.google.android.material.chip.ChipGroup>
 
 </LinearLayout>

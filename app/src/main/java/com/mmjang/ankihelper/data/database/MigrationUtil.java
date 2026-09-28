@@ -1,6 +1,6 @@
 package com.mmjang.ankihelper.data.database;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.mmjang.ankihelper.data.history.History;
 import com.mmjang.ankihelper.data.history.HistoryPOJO;

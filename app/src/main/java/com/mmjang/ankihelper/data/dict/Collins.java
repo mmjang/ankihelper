@@ -7,8 +7,8 @@ import android.util.Log;
 import android.widget.FilterQueryProvider;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
+import com.mmjang.ankihelper.data.database.ExternalDatabaseContext;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.io.IOException;
@@ -42,8 +42,15 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
     private Context mContext;
 
     public Collins(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getReadableDatabase();
+        super(new ExternalDatabaseContext(context), DATABASE_NAME,
+                new ExternalDatabaseContext(context).getDatabaseDir(DATABASE_NAME),
+                null, DATABASE_VERSION);
+        try {
+            db = getReadableDatabase();
+        } catch (Exception e) {
+            Log.e("Collins", "Failed to open database " + DATABASE_NAME, e);
+            db = null;
+        }
         mContext = context;
     }
 
@@ -138,7 +145,7 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
     private ArrayList<Definition> queryDefinition(String q) {
         //SQLiteDatabase db = getReadableDatabase();
         ArrayList<Definition> re = new ArrayList<>();
-        if(q.isEmpty()){
+        if (db == null || !db.isOpen() || q.isEmpty()) {
             return re;
         }
         Cursor cursor = db.query(TABLE_DICT,
@@ -217,6 +224,9 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
 
     private String[] getForms(String q) {
         //SQLiteDatabase db = getReadableDatabase();
+        if (db == null || !db.isOpen()) {
+            return new String[0];
+        }
         Cursor cursor = db.query("forms", new String[]{"bases"}, "hwd=? ", new String[]{q.toLowerCase()}, null, null, null);
         String bases = "";
         while (cursor.moveToNext()) {
@@ -235,6 +245,9 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
 
     private Cursor getFilterCursor(String q) {
         Log.d("databse", "getFilterCursor" + q);
+        if (db == null || !db.isOpen()) {
+            return null;
+        }
         Cursor cursor = db.query("hwds", new String[]{"rowid _id", "hwd"}, "hwd LIKE ?", new String[]{q + "%"}, null, null, null);
         return cursor;
     }

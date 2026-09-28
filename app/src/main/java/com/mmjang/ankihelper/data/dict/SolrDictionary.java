@@ -1,7 +1,7 @@
 package com.mmjang.ankihelper.data.dict;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.widget.ListAdapter;
 
 import com.mmjang.ankihelper.MyApplication;

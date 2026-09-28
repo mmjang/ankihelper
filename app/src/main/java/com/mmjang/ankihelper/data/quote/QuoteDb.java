@@ -3,7 +3,9 @@ package com.mmjang.ankihelper.data.quote;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.mmjang.ankihelper.data.database.ExternalDatabaseContext;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.Random;
@@ -21,9 +23,16 @@ public class QuoteDb extends SQLiteAssetHelper{
     SQLiteDatabase db;
 
     protected QuoteDb(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSIOn);
+        super(new ExternalDatabaseContext(context), DATABASE_NAME,
+                new ExternalDatabaseContext(context).getDatabaseDir(DATABASE_NAME),
+                null, DATABASE_VERSIOn);
         mContext = context;
-        db = getReadableDatabase();
+        try {
+            db = getReadableDatabase();
+        } catch (Exception e) {
+            Log.e("QuoteDb", "Failed to open database " + DATABASE_NAME, e);
+            db = null;
+        }
     }
 
     public static QuoteDb getInstance(Context context){
@@ -35,7 +44,9 @@ public class QuoteDb extends SQLiteAssetHelper{
 
 
     public String getQuote() {
-        //SQLiteDatabase db = getReadableDatabase();
+        if (db == null || !db.isOpen()) {
+            return "";
+        }
         int randomKey = randInt(0, ID_MAX);
 //        Cursor cursor = db.query("quote", new String[]{"content"}, "id=?", new String[]{Integer.toString(randomKey)}, null, null, null);
         Cursor cursor = db.rawQuery("select content from quote where id=" + randomKey, null);

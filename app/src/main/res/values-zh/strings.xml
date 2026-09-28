@@ -33,13 +33,11 @@
     <string name="confirm_add_default_plan">您还没有任何划词方案，是否写入默认方案(柯林斯词典)？</string>
     <string name="default_plan_added">默认方案已添加，可在方案管理器中查看</string>
     <string name="btn_help_str">帮助</string>
-    <string name="btn_about_and_support_str">打赏(´,,•ω•,,)</string>
     <string name="confirm_add_default_plan_when_exists_already">已存在划词方案，确认添加默认方案（柯林斯词典）？</string>
     <string name="btn_add_default_plan_str">添加默认方案</string>
     <string name="duplicate_plan_name_complain">已存在默认方案，不得重复添加。可在方案管理器中删除后再添加。</string>
     <string name="toast_no_available_plan">没有任何可用划词方案，无法正常使用，请前往Anki划词助手主界面设置</string>
     <string name="left_hand_mode">左手模式</string>
-    <string name="str_add_qq_group">加入用户QQ群</string>
     <string name="str_clipboard_service_running">剪切板服务正在运行</string>
     <string name="str_field_map">字段映射:</string>
     <string name="str_only_one_plan_cant_switch">只有一个方案，没法切换</string>
